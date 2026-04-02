@@ -4,8 +4,10 @@ import java.util.Set;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
 import org.example.collectors.FilteringCollector;
 import org.example.implementations.FibonacciSequenceGenerator;
 import org.example.model.FibonacciSequence;
@@ -48,5 +50,36 @@ public class GroupingWithCustomCollectorDemo {
 
            System.out.println("Grouped even collector: " + groupedEven);
 
+           //Collection sum
+          Map<Integer, Long> summed =
+                  groupedEven.entrySet()
+                          .stream()
+                          .collect(Collectors.toMap(
+                                  Map.Entry::getKey,
+                                  e -> e.getValue().stream().mapToLong(Long::longValue).sum()
+                          ));
+          System.out.println("Summed: " + summed);
+
+          Map<Integer, Long> summedOption2 = new HashMap<>();
+
+          groupedEven.forEach((k, v) ->
+                  summedOption2.put(k, v.stream().mapToLong(Long::longValue).sum())
+          );
+
+          System.out.println("Summed Option2: " + summedOption2);
+
+
+          //Total sum
+          Long sum = groupedEven.values()
+                  .stream()
+                  .flatMap(Set::stream)
+                  .collect(Collectors.summingLong(Long::longValue));
+          System.out.println("Summed: " + sum);
+
+          long sum1 = groupedEven.values()
+                  .stream()
+                  .flatMapToLong(set -> set.stream().mapToLong(Long::longValue))
+                  .sum();
+          System.out.println("Summed Option2: " + sum1);
       }
   }

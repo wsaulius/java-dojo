@@ -8,7 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import jakarta.inject.Inject;
 import jakarta.inject.Qualifier;
 
-import org.example.interfaces.MyFunctionalInterface; 
+import org.example.interfaces.MyFunctionalInterface;
+import org.example.interfaces.Printer;
 
 /** Hello world, Guice! */
 public class CalculatorBase {

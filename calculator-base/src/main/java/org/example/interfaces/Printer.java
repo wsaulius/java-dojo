@@ -1,4 +1,4 @@
-package org.example;
+package org.example.interfaces; 
 
 /** Interface for printing messages. */
 public interface Printer {

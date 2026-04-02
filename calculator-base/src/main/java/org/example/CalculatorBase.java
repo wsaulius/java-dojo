@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import jakarta.inject.Inject;
 import jakarta.inject.Qualifier;
 
+import org.example.interfaces.MyFunctionalInterface; 
+
 /** Hello world, Guice! */
 public class CalculatorBase {
 
@@ -17,6 +19,8 @@ public class CalculatorBase {
 
   private final Printer printer;
   private final String message;
+
+  private MyFunctionalInterface calculator;
 
   @Inject
   CalculatorBase(Printer printer, @Message String message) {

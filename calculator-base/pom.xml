@@ -3,8 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.sda.app</groupId>
-    <artifactId>memory-example</artifactId>
+    <artifactId>calculator-base</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <parent>
+    <groupId>com.sda.app</groupId>
+    <artifactId>java-dojo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+    </parent>
 
     <properties>
         <guice.version>7.0.0</guice.version>
@@ -103,7 +110,7 @@
                <version>3.11.0</version>
                <configuration>
                       <compilerArgs>
-        
+
                       </compilerArgs>
                    <source>21</source>
                    <target>21</target>

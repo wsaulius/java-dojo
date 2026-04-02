@@ -23,7 +23,6 @@ public class FunctionalInterfaceDemo{
           e.printStackTrace();
       }
 
-
  }
 
 }

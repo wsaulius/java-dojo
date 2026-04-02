@@ -1,7 +1,9 @@
-package org.example;
+package org.example.implementations;
+
+import org.example.interfaces.MyFunctionalInterface;
 
 // Implementation class (NOT using lambda)
-class PercentageCalculator implements MyFunctionalInterface {
+public class PercentageCalculator implements MyFunctionalInterface {
 
     // Calculate percentage: (value * percentage) / 100
     @Override

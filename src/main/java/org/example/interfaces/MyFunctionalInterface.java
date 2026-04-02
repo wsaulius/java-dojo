@@ -1,7 +1,7 @@
-package org.example;
+package org.example.interfaces;
 
 @FunctionalInterface
-interface MyFunctionalInterface {
+public interface MyFunctionalInterface {
 
     // Abstract method
     double operate(double a, double b);

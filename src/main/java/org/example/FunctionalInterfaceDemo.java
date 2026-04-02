@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.implementations.PercentageCalculator;
+import org.example.interfaces.MyFunctionalInterface;
+
 public class FunctionalInterfaceDemo {
 
     public static void main(String[] args) {

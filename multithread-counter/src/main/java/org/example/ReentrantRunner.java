@@ -1,11 +1,9 @@
 package org.example;
 
 
-import org.example.implementations.CounterAsObject;
 import org.example.implementations.ReentrantCounter;
 
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class ReentrantRunner {
 

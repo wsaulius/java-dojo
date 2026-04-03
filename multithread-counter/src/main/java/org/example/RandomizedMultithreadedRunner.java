@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.implementations.CounterAsObject;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomizedMultithreadedRunner {

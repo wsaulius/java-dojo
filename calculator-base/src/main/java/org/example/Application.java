@@ -8,13 +8,19 @@ import org.example.enums.BinaryType;
 import org.example.enums.UnaryBooleanType;
 import org.example.enums.UnaryIntType;
 import org.example.enums.UnaryLongType;
+import org.example.interfaces.CalculationConsumer;
+import org.example.interfaces.ResultConsumer;
 import org.example.interfaces.SequenceConsumer;
 import org.example.modules.*;
 import org.example.services.CalculatorService;
+import org.example.suppliers.ListSupplier;
+import org.example.suppliers.RandomNumberSupplier;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Application {
     public static void main(String[] args) {
@@ -25,18 +31,41 @@ public class Application {
                 new UnaryBooleanOperationModule(),
                 new BinaryOperationModule(),
                 new SequenceModule(),
-                new SelectorModule()
+                new SelectorModule(),
+                new CalculatorConsumerModule()
         );
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
-        BiConsumer<List<Long>, Predicate<Long>> sequenceConsumer =
-                injector.getInstance(Key.get(new TypeLiteral<SequenceConsumer>() {}));
+
+        //Sequence Supplier example declaration and functionality
+        ListSupplier<Long> listSupplier = new ListSupplier<>(() -> 500L, 10);
+
+        //Random number list supplier declaration and functionality
+        Supplier<List<Long>> randomListSupplier =
+                new ListSupplier<>(() -> ThreadLocalRandom.current().nextLong(0, 100), 5);
+
+
+
+
+        //Result Consumer example
+        ResultConsumer<Integer> intConsumer =
+                injector.getInstance(Key.get(new TypeLiteral<ResultConsumer<Integer>>() {}));
+
+        intConsumer.accept(calculator.runUnaryInt(UnaryIntType.CUBE, 5));
+
+        //Sequence Consumer example
+        SequenceConsumer<Long> sequenceConsumer =
+                injector.getInstance(Key.get(new TypeLiteral<SequenceConsumer<Long>>() {}));
 
         Predicate<Long> evenPredicate =
                 injector.getInstance(new Key<Predicate<Long>>() {});
 
-        sequenceConsumer.accept(List.of(1L, 2L, 3L, 4L, 5L, 6L), evenPredicate);
+        sequenceConsumer.accept(randomListSupplier.get(), evenPredicate);
 
+
+
+
+        //Calculator Functionality
         System.out.println(calculator.runUnaryInt(UnaryIntType.CUBE, 5));
         System.out.println(calculator.runBinary(BinaryType.ADD, 10.0, 20.0));
         System.out.println(calculator.runUnaryBoolean(UnaryBooleanType.IS_PRIME, 17));

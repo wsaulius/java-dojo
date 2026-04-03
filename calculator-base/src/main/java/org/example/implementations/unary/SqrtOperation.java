@@ -1,10 +1,11 @@
 package org.example.implementations.unary;
 
-import org.example.interfaces.UnaryOperation;
+import java.util.function.IntToDoubleFunction;
 
-public class SqrtOperation implements UnaryOperation<Integer, Double> {
+public class SqrtOperation implements IntToDoubleFunction {
+
     @Override
-    public Double apply(Integer n) {
+    public double applyAsDouble(int n) {
 
         if (n < 0) {
             throw new IllegalArgumentException("Square root of negative number");

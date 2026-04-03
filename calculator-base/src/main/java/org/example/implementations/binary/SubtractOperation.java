@@ -1,10 +1,11 @@
 package org.example.implementations.binary;
 
-import org.example.interfaces.BinaryOperation;
+import java.util.function.DoubleBinaryOperator;
 
-public class SubtractOperation implements BinaryOperation<Double> {
+public class SubtractOperation implements DoubleBinaryOperator {
+
     @Override
-    public Double apply(Double left, Double right) {
+    public double applyAsDouble(double left, double right) {
         return left - right;
     }
 }

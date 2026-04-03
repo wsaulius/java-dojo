@@ -1,11 +1,11 @@
 package org.example.implementations.unary;
 
-import org.example.interfaces.UnaryOperation;
+import java.util.function.IntToLongFunction;
 
-public class FibonacciOperation implements UnaryOperation<Integer, Long> {
+public class FibonacciOperation implements IntToLongFunction {
 
     @Override
-    public Long apply(Integer n) {
+    public long applyAsLong(int n) {
 
         if (n < 0) {
             throw new IllegalArgumentException("Negative not allowed");

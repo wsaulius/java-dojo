@@ -3,8 +3,8 @@ package org.example.consumers;
 import org.example.interfaces.SequenceConsumer;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
-
 
 public class SequencePrinter implements SequenceConsumer {
     @Override

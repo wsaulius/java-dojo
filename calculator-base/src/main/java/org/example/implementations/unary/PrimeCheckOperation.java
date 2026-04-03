@@ -1,13 +1,12 @@
 package org.example.implementations.unary;
 
-import org.example.interfaces.UnaryOperation;
+import java.util.function.IntPredicate;
 
-public class PrimeCheckOperation implements UnaryOperation<Integer, Boolean> {
+public class PrimeCheckOperation implements IntPredicate {
+
     @Override
-    public Boolean apply(Integer n) {
-        if (n == null) {
-            throw new IllegalArgumentException("IS_PRIME input cannot be null");
-        }
+    public boolean test(int n) {
+
         if (n < 2) {
             return false;
         }

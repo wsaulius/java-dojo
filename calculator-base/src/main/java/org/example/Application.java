@@ -3,6 +3,7 @@ package org.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
+import com.google.inject.TypeLiteral;
 import org.example.enums.BinaryType;
 import org.example.enums.UnaryBooleanType;
 import org.example.enums.UnaryIntType;
@@ -12,6 +13,7 @@ import org.example.modules.*;
 import org.example.services.CalculatorService;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 public class Application {
@@ -27,8 +29,11 @@ public class Application {
         );
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
-        SequenceConsumer sequenceConsumer = injector.getInstance(SequenceConsumer.class);
-        Predicate<Long> evenPredicate = injector.getInstance(new Key<Predicate<Long>>() {});
+        BiConsumer<List<Long>, Predicate<Long>> sequenceConsumer =
+                injector.getInstance(Key.get(new TypeLiteral<SequenceConsumer>() {}));
+
+        Predicate<Long> evenPredicate =
+                injector.getInstance(new Key<Predicate<Long>>() {});
 
         sequenceConsumer.accept(List.of(1L, 2L, 3L, 4L, 5L, 6L), evenPredicate);
 

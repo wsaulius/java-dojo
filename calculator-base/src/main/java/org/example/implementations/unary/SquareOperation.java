@@ -1,10 +1,11 @@
 package org.example.implementations.unary;
 
-import org.example.interfaces.UnaryOperation;
+import java.util.function.IntUnaryOperator;
 
-public class SquareOperation implements UnaryOperation<Integer, Integer> {
+public class SquareOperation implements IntUnaryOperator {
+
     @Override
-    public Integer apply(Integer n) {
+    public int applyAsInt(int n) {
         return n * n;
     }
 }

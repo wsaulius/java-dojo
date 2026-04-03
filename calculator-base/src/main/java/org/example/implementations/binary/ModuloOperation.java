@@ -1,11 +1,11 @@
 package org.example.implementations.binary;
 
-import org.example.interfaces.BinaryOperation;
+import java.util.function.DoubleBinaryOperator;
 
-public class ModuloOperation implements BinaryOperation<Double> {
+public class ModuloOperation implements DoubleBinaryOperator {
+
     @Override
-    public Double apply(Double left, Double right) {
-
+    public double applyAsDouble(double left, double right) {
         if (right == 0) {
             throw new ArithmeticException("Modulo by zero");
         }

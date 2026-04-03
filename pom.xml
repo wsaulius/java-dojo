@@ -22,6 +22,7 @@
         <module>multithread-counter</module>
         <module>concurrency-cbarrier</module>
         <module>concurrency-blocking-queue</module>
+        <module>concurrency-event-ledger</module>
 
         <module>fibonacci-demo</module>
     </modules>

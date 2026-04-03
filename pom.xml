@@ -20,6 +20,9 @@
         <module>fibonacci-predicates</module>
         <module>functional-interface</module>
         <module>multithread-counter</module>
+        <module>concurrency-cbarrier</module>
+        <module>concurrency-blocking-queue</module>
+
         <module>fibonacci-demo</module>
     </modules>
 

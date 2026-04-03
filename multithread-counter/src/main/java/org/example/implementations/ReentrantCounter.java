@@ -1,6 +1,7 @@
 package org.example.implementations;
 
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,20 +16,21 @@ public class ReentrantCounter {
     // Special instance of counter for multithreaded
     public AtomicInteger countAtomic = new AtomicInteger(0);
 
-    // Option 1
-    public synchronized void increment( final String thread ) {
+    // Good example of a thread released after the exception
+    public synchronized void increment( final String thread ) throws InterruptedException {
 
-        lock.lock();
+        lock.tryLock(1, TimeUnit.SECONDS);
         try {
             count++;
+            this.tag = thread;
+            System.out.println("Inc count: " + this.counter() + " by " + this.tagged() );
+            throw new Exception(" dsfs");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         } finally {
             lock.unlock();
         }
 
-        this.tag = thread;
-
-        System.out.println("Inc count: " + count + " by " + this.tagged() );
-        this.tag = "clean";
     }
 
     // Option 2
@@ -40,7 +42,7 @@ public class ReentrantCounter {
             count++;
             this.tag = thread;
 
-            System.out.println("Inc count: " + count + " by " + this.tagged());
+            System.out.println("Inc count: " + this.counter() + " by " + this.tagged());
             this.tag = "clean";
 
         }
@@ -55,7 +57,7 @@ public class ReentrantCounter {
             count++;
             this.tag = thread;
 
-            System.out.println("Inc count: " + count + " by " + this.tagged());
+            System.out.println("Inc count: " + this.counter() + " by " + this.tagged());
             this.tag = "clean";
 
         }
@@ -67,14 +69,18 @@ public class ReentrantCounter {
             countAtomic.incrementAndGet();
             this.tag = thread;
 
-            System.out.println("Inc count atomic: " + countAtomic + " by " + this.tagged());
+            System.out.println("Inc count atomic: " + this.counter() + " by " + this.tagged());
             this.tag = "clean";
 
     }
 
-
     public int counter() {
-        return count;
+        lock.lock();
+        try {
+            return count;
+        } finally {
+            lock.unlock();
+        }
     }
 
     public String tagged() {

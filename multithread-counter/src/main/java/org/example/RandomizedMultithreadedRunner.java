@@ -9,25 +9,73 @@ public class RandomizedMultithreadedRunner {
 
         CounterAsObject counter = new CounterAsObject();
 
-        Thread t1 = new Thread(() -> {
-            for (int i = 0; i < 1000; i++) {
-                counter.increment("t1");
-                randomPause();
-            }
-        });
+        try {
 
-        Thread t2 = new Thread(() -> {
-            for (int i = 0; i < 1000; i++) {
-                counter.increment("t2");
-                randomPause();
-            }
-        });
+            Thread t1 = new Thread(() -> {
+                for (int i = 0; i < 1000; i++) {
 
-        t1.start();
-        t2.start();
+                    try {
+                        counter.incrementAsSemaphore("t1");
 
-        t1.join();
-        t2.join();
+                    } catch ( InterruptedException exception ) {
+                        System.err.println( exception );
+                    }
+
+                    randomPause();
+                }
+            });
+
+            Thread t2 = new Thread(() -> {
+                for (int i = 0; i < 1000; i++) {
+
+                    try {
+                    counter.incrementAsSemaphore("t2");
+
+                    } catch ( InterruptedException exception ) {
+                        System.err.println( exception );
+                    }
+
+                    randomPause();
+                }
+            });
+
+            Thread t3 = new Thread(() -> {
+                for (int i = 0; i < 1000; i++) {
+
+                    try {
+                        counter.incrementAsSemaphore("t3");
+
+                    } catch ( Exception exception ) {
+                        System.err.println( exception );
+                    }
+
+                    randomPause();
+                }
+            });
+
+            Thread t4 = new Thread(() -> {
+                for (int i = 0; i < 1000; i++) {
+
+                    try {
+                        counter.incrementAsSemaphore("t4");
+
+                    } catch ( Exception exception ) {
+                        System.err.println( exception );
+                    }
+
+                    randomPause();
+                }
+            });
+
+
+        t1.start(); t2.start(); t3.start(); t4.start();
+
+        t1.join(); t2.join(); t3.join(); t4.join();
+
+        } catch ( Exception exception ) {
+            System.err.println( exception );
+
+        };
 
         System.out.println( counter.counter() );
     }

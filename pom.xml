@@ -19,6 +19,7 @@
         <module>fibonacci-collectors</module>
         <module>fibonacci-predicates</module>
         <module>functional-interface</module>
+        <module>multithread-counter</module>
         <module>fibonacci-demo</module>
     </modules>
 

@@ -81,7 +81,7 @@
                <artifactId>exec-maven-plugin</artifactId>
                <version>3.1.0</version>
                <configuration>
-                   <mainClass>org.example.RandomizedMultithreadedRunner</mainClass>
+                   <mainClass>org.example.ReentrantRunner</mainClass>
                </configuration>
            </plugin>
 

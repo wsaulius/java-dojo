@@ -2,10 +2,9 @@ package org.example.modules;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import org.example.consumers.CalculationPrinter;
 import org.example.consumers.SequencePrinter;
 import org.example.interfaces.SequenceConsumer;
-import org.example.predicates.EvenPredicate;
+import org.example.predicates.sequence.EvenPredicate;
 
 import java.util.function.Predicate;
 

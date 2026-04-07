@@ -5,17 +5,18 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import org.example.enums.UnaryIntType;
 import org.example.implementations.unary.*;
-import org.example.interfaces.UnaryOperation;
+
+import java.util.function.IntUnaryOperator;
 
 public class UnaryIntOperationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        MapBinder<UnaryIntType, UnaryOperation<Integer, Integer>> binder =
+        MapBinder<UnaryIntType, IntUnaryOperator> binder =
                 MapBinder.newMapBinder(
                         binder(),
                         new TypeLiteral<UnaryIntType>() {},
-                        new TypeLiteral<UnaryOperation<Integer, Integer>>() {}
+                        new TypeLiteral<IntUnaryOperator>() {}
                 );
 
         binder.addBinding(UnaryIntType.SQUARE).to(SquareOperation.class);

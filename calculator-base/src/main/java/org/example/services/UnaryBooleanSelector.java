@@ -2,21 +2,21 @@ package org.example.services;
 
 import jakarta.inject.Inject;
 import org.example.enums.UnaryBooleanType;
-import org.example.interfaces.UnaryOperation;
 
 import java.util.Map;
+import java.util.function.IntPredicate;
 
 public class UnaryBooleanSelector {
 
-    private final Map<UnaryBooleanType, UnaryOperation<Integer, Boolean>> operations;
+    private final Map<UnaryBooleanType, IntPredicate> operations;
 
     @Inject
-    public UnaryBooleanSelector(Map<UnaryBooleanType, UnaryOperation<Integer, Boolean>> operations) {
+    public UnaryBooleanSelector(Map<UnaryBooleanType, IntPredicate> operations) {
         this.operations = operations;
     }
 
-    public UnaryOperation<Integer, Boolean> get(UnaryBooleanType type) {
-        UnaryOperation<Integer, Boolean> operation = operations.get(type);
+    public IntPredicate get(UnaryBooleanType type) {
+        IntPredicate operation = operations.get(type);
         if (operation == null) {
             throw new IllegalArgumentException("No unary boolean operation registered for: " + type);
         }

@@ -5,17 +5,18 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import org.example.enums.UnaryBooleanType;
 import org.example.implementations.unary.PrimeCheckOperation;
-import org.example.interfaces.UnaryOperation;
+
+import java.util.function.IntPredicate;
 
 public class UnaryBooleanOperationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        MapBinder<UnaryBooleanType, UnaryOperation<Integer, Boolean>> binder =
+        MapBinder<UnaryBooleanType, IntPredicate> binder =
                 MapBinder.newMapBinder(
                         binder(),
                         new TypeLiteral<UnaryBooleanType>() {},
-                        new TypeLiteral<UnaryOperation<Integer, Boolean>>() {}
+                        new TypeLiteral<IntPredicate>() {}
                 );
 
         binder.addBinding(UnaryBooleanType.IS_PRIME).to(PrimeCheckOperation.class);

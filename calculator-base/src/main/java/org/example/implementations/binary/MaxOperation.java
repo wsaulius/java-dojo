@@ -1,10 +1,11 @@
 package org.example.implementations.binary;
 
-import org.example.interfaces.BinaryOperation;
+import java.util.function.DoubleBinaryOperator;
 
-public class MaxOperation implements BinaryOperation<Double> {
+public class MaxOperation implements DoubleBinaryOperator {
+
     @Override
-    public Double apply(Double left, Double right) {
+    public double applyAsDouble(double left, double right) {
         return Math.max(left, right);
     }
 }

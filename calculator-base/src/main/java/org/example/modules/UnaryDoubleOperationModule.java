@@ -7,17 +7,18 @@ import org.example.enums.UnaryDoubleType;
 import org.example.implementations.unary.ExpOperation;
 import org.example.implementations.unary.LogOperation;
 import org.example.implementations.unary.SqrtOperation;
-import org.example.interfaces.UnaryOperation;
+
+import java.util.function.IntToDoubleFunction;
 
 public class UnaryDoubleOperationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        MapBinder<UnaryDoubleType, UnaryOperation<Integer, Double>> binder =
+        MapBinder<UnaryDoubleType, IntToDoubleFunction> binder =
                 MapBinder.newMapBinder(
                         binder(),
                         new TypeLiteral<UnaryDoubleType>() {},
-                        new TypeLiteral<UnaryOperation<Integer, Double>>() {}
+                        new TypeLiteral<IntToDoubleFunction>() {}
                 );
 
         binder.addBinding(UnaryDoubleType.SQRT).to(SqrtOperation.class);

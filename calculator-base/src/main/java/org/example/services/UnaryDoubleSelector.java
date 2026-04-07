@@ -2,21 +2,21 @@ package org.example.services;
 
 import jakarta.inject.Inject;
 import org.example.enums.UnaryDoubleType;
-import org.example.interfaces.UnaryOperation;
 
 import java.util.Map;
+import java.util.function.IntToDoubleFunction;
 
 public class UnaryDoubleSelector {
 
-    private final Map<UnaryDoubleType, UnaryOperation<Integer, Double>> operations;
+    private final Map<UnaryDoubleType, IntToDoubleFunction> operations;
 
     @Inject
-    public UnaryDoubleSelector(Map<UnaryDoubleType, UnaryOperation<Integer, Double>> operations) {
+    public UnaryDoubleSelector(Map<UnaryDoubleType, IntToDoubleFunction> operations) {
         this.operations = operations;
     }
 
-    public UnaryOperation<Integer, Double> get(UnaryDoubleType type) {
-        UnaryOperation<Integer, Double> operation = operations.get(type);
+    public IntToDoubleFunction get(UnaryDoubleType type) {
+        IntToDoubleFunction operation = operations.get(type);
         if (operation == null) {
             throw new IllegalArgumentException("No unary double operation registered for: " + type);
         }

@@ -5,17 +5,18 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import org.example.enums.BinaryType;
 import org.example.implementations.binary.*;
-import org.example.interfaces.BinaryOperation;
+
+import java.util.function.DoubleBinaryOperator;
 
 public class BinaryOperationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        MapBinder<BinaryType, BinaryOperation<Double>> binder =
+        MapBinder<BinaryType, DoubleBinaryOperator> binder =
                 MapBinder.newMapBinder(
                         binder(),
                         new TypeLiteral<BinaryType>() {},
-                        new TypeLiteral<BinaryOperation<Double>>() {}
+                        new TypeLiteral<DoubleBinaryOperator>() {}
                 );
 
         binder.addBinding(BinaryType.ADD).to(AddOperation.class);

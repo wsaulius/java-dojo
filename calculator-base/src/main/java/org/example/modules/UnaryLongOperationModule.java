@@ -6,17 +6,18 @@ import com.google.inject.multibindings.MapBinder;
 import org.example.enums.UnaryLongType;
 import org.example.implementations.unary.FactorialOperation;
 import org.example.implementations.unary.FibonacciOperation;
-import org.example.interfaces.UnaryOperation;
+
+import java.util.function.IntToLongFunction;
 
 public class UnaryLongOperationModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        MapBinder<UnaryLongType, UnaryOperation<Integer, Long>> binder =
+        MapBinder<UnaryLongType, IntToLongFunction> binder =
                 MapBinder.newMapBinder(
                         binder(),
                         new TypeLiteral<UnaryLongType>() {},
-                        new TypeLiteral<UnaryOperation<Integer, Long>>() {}
+                        new TypeLiteral<IntToLongFunction>() {}
                 );
 
         binder.addBinding(UnaryLongType.FACTORIAL).to(FactorialOperation.class);

@@ -1,10 +1,11 @@
 package org.example.implementations.unary;
 
-import org.example.interfaces.UnaryOperation;
+import java.util.function.IntToLongFunction;
 
-public class FactorialOperation implements UnaryOperation<Integer, Long> {
+public class FactorialOperation implements IntToLongFunction {
+
     @Override
-    public Long apply(Integer n) {
+    public long applyAsLong(int n) {
         if (n < 0) throw new IllegalArgumentException("Negative not allowed");
         long result = 1;
         for (int i = 2; i <= n; i++) {

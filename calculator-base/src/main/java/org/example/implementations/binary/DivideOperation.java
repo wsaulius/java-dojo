@@ -1,10 +1,11 @@
 package org.example.implementations.binary;
 
-import org.example.interfaces.BinaryOperation;
+import java.util.function.DoubleBinaryOperator;
 
-public class DivideOperation implements BinaryOperation<Double> {
+public class DivideOperation implements DoubleBinaryOperator {
+
     @Override
-    public Double apply(Double left, Double right) {
+    public double applyAsDouble(double left, double right) {
         if (right == 0) {
             throw new ArithmeticException("Division by zero");
         }

@@ -2,21 +2,21 @@ package org.example.services;
 
 import jakarta.inject.Inject;
 import org.example.enums.UnaryLongType;
-import org.example.interfaces.UnaryOperation;
 
 import java.util.Map;
+import java.util.function.IntToLongFunction;
 
 public class UnaryLongSelector {
 
-    private final Map<UnaryLongType, UnaryOperation<Integer, Long>> operations;
+    private final Map<UnaryLongType, IntToLongFunction> operations;
 
     @Inject
-    public UnaryLongSelector(Map<UnaryLongType, UnaryOperation<Integer, Long>> operations) {
+    public UnaryLongSelector(Map<UnaryLongType, IntToLongFunction> operations) {
         this.operations = operations;
     }
 
-    public UnaryOperation<Integer, Long> get(UnaryLongType type) {
-        UnaryOperation<Integer, Long> operation = operations.get(type);
+    public IntToLongFunction get(UnaryLongType type) {
+        IntToLongFunction operation = operations.get(type);
         if (operation == null) {
             throw new IllegalArgumentException("No unary long operation registered for: " + type);
         }

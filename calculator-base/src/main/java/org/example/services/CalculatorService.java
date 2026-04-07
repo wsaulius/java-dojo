@@ -27,22 +27,22 @@ public class CalculatorService {
     }
 
     public Integer runUnaryInt(UnaryIntType type, Integer input) {
-        return unaryIntSelector.get(type).apply(input);
+        return unaryIntSelector.get(type).applyAsInt(input);
     }
 
     public Double runUnaryDouble(UnaryDoubleType type, Integer input) {
-        return unaryDoubleSelector.get(type).apply(input);
+        return unaryDoubleSelector.get(type).applyAsDouble(input);
     }
 
     public Long runUnaryLong(UnaryLongType type, Integer input) {
-        return unaryLongSelector.get(type).apply(input);
+        return unaryLongSelector.get(type).applyAsLong(input);
     }
 
     public Boolean runUnaryBoolean(UnaryBooleanType type, Integer input) {
-        return unaryBooleanSelector.get(type).apply(input);
+        return unaryBooleanSelector.get(type).test(input);
     }
 
     public Double runBinary(BinaryType type, Double left, Double right) {
-        return binarySelector.get(type).apply(left, right);
+        return binarySelector.get(type).applyAsDouble(left, right);
     }
 }

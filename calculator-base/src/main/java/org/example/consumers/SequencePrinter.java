@@ -5,10 +5,10 @@ import org.example.interfaces.SequenceConsumer;
 import java.util.List;
 import java.util.function.Predicate;
 
+public class SequencePrinter<T> implements SequenceConsumer<T> {
 
-public class SequencePrinter implements SequenceConsumer {
     @Override
-    public void accept(List<Long> sequence, Predicate<Long> predicate) {
+    public void accept(List<T> sequence, Predicate<T> predicate) {
         sequence.stream()
                 .filter(predicate)
                 .forEach(System.out::println);

@@ -1,10 +1,12 @@
 package org.example.implementations.binary;
 
-import org.example.interfaces.BinaryOperation;
+import java.util.function.DoubleBinaryOperator;
 
-public class MinOperation implements BinaryOperation<Double> {
+public class MinOperation implements DoubleBinaryOperator {
+
     @Override
-    public Double apply(Double left, Double right) {
+    public double applyAsDouble(double left, double right) {
         return Math.min(left, right);
     }
+
 }

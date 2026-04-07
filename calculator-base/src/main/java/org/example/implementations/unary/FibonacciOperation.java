@@ -1,24 +1,26 @@
 package org.example.implementations.unary;
 
+import java.math.BigInteger;
+import java.util.function.Function;
 import java.util.function.IntToLongFunction;
 
-public class FibonacciOperation implements IntToLongFunction {
+public class FibonacciOperation implements Function<Integer, BigInteger> {
 
     @Override
-    public long applyAsLong(int n) {
+    public BigInteger apply(Integer n) {
+        return compute(n);
+    }
 
-        if (n < 0) {
-            throw new IllegalArgumentException("Negative not allowed");
-        }
+    private BigInteger compute(int n) {
+        if (n < 0) throw new IllegalArgumentException("Negative not allowed");
+        if (n == 0) return BigInteger.ZERO;
+        if (n == 1) return BigInteger.ONE;
 
-        if (n == 0) return 0L;
-        if (n == 1) return 1L;
-
-        long a = 0;
-        long b = 1;
+        BigInteger a = BigInteger.ZERO;
+        BigInteger b = BigInteger.ONE;
 
         for (int i = 2; i <= n; i++) {
-            long next = a + b;
+            BigInteger next = a.add(b);
             a = b;
             b = next;
         }

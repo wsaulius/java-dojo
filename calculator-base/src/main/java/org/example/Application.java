@@ -4,10 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-import org.example.enums.BinaryType;
-import org.example.enums.UnaryBooleanType;
-import org.example.enums.UnaryIntType;
-import org.example.enums.UnaryLongType;
+import org.example.enums.*;
 import org.example.interfaces.CalculationConsumer;
 import org.example.interfaces.ResultConsumer;
 import org.example.interfaces.SequenceConsumer;
@@ -32,7 +29,8 @@ public class Application {
                 new BinaryOperationModule(),
                 new SequenceModule(),
                 new SelectorModule(),
-                new CalculatorConsumerModule()
+                new CalculatorConsumerModule(),
+                new UnaryBigIntegerOperationModule()
         );
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
@@ -69,7 +67,7 @@ public class Application {
         System.out.println(calculator.runUnaryInt(UnaryIntType.CUBE, 5));
         System.out.println(calculator.runBinary(BinaryType.ADD, 10.0, 20.0));
         System.out.println(calculator.runUnaryBoolean(UnaryBooleanType.IS_PRIME, 17));
-        System.out.println(calculator.runUnaryLong(UnaryLongType.FIBONACCI, 17));
+        System.out.println(calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500));
 
 
     }

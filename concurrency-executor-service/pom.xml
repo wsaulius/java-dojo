@@ -81,7 +81,7 @@
                <artifactId>exec-maven-plugin</artifactId>
                <version>3.1.0</version>
                <configuration>
-                   <mainClass>org.example.ExecutorCalculationRunner</mainClass>
+                   <mainClass>org.example.ScheduledExecutorSinglePool</mainClass>
                </configuration>
            </plugin>
 

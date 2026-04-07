@@ -1,81 +1,92 @@
 package org.example;
 
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.RecursiveTask;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.*;
+import java.util.stream.IntStream;
 
 public class ForkJoinExample {
 
     private static final int TASK_COUNT = 100;
-    private static final int THRESHOLD = 10; // split tasks when size > 10
+    private static final int THRESHOLD = 10;
 
     public static void main(String[] args) {
 
-        // 1. Create a ForkJoinPool with 10 threads
+        // 🔹 Supplier → generate data using streams
+        Supplier<List<Integer>> supplier = () ->
+                IntStream.range(0, TASK_COUNT)
+                        .map(i -> ThreadLocalRandom.current().nextInt(1, 100))
+                        .boxed()
+                        .toList();
+
+        // 🔹 Function → processing logic
+        Function<Integer, Integer> processor = value -> value * value;
+
+        // 🔹 Consumer → logging
+        Consumer<String> logger = System.out::println;
+
+        List<Integer> numbers = supplier.get();
+
         ForkJoinPool pool = new ForkJoinPool(10);
 
-        // 2. Prepare list of "tasks" (random numbers)
-        List<Integer> numbers = new ArrayList<>();
-        for (int i = 0; i < TASK_COUNT; i++) {
-            numbers.add(ThreadLocalRandom.current().nextInt(1, 100));
-        }
+        int result = pool.invoke(
+                new FunctionalTask(numbers, 0, numbers.size(), processor, logger)
+        );
 
-        // 3. Create root ForkJoin task
-        SquareSumTask rootTask = new SquareSumTask(numbers, 0, numbers.size());
-
-        // 4. Execute task in the pool
-        int totalSum = pool.invoke(rootTask);
-
-        // 5. Shutdown pool
         pool.shutdown();
 
-        System.out.println("Total sum of squares = " + totalSum);
+        System.out.println("\nFinal sum = " + result);
     }
 
-    // 6. RecursiveTask to calculate sum of squares
-    static class SquareSumTask extends RecursiveTask<Integer> {
+    static class FunctionalTask extends RecursiveTask<Integer> {
 
-        private final List<Integer> numbers;
+        private final List<Integer> data;
         private final int start, end;
+        private final Function<Integer, Integer> processor;
+        private final Consumer<String> logger;
 
-        SquareSumTask(List<Integer> numbers, int start, int end) {
-            this.numbers = numbers;
+        FunctionalTask(List<Integer> data, int start, int end,
+                       Function<Integer, Integer> processor,
+                       Consumer<String> logger) {
+            this.data = data;
             this.start = start;
             this.end = end;
+            this.processor = processor;
+            this.logger = logger;
         }
 
         @Override
         protected Integer compute() {
+
             int length = end - start;
 
-            // Base case: small enough to compute directly
+            // 🔹 Base case → use STREAM here
             if (length <= THRESHOLD) {
-                int sum = 0;
-                for (int i = start; i < end; i++) {
-                    int value = numbers.get(i);
-                    int square = value * value;
-                    sum += square;
-                    System.out.println(Thread.currentThread().getName() +
-                            " computing index " + i + " | value=" + value + " | square=" + square);
-                }
-                return sum;
+
+                return IntStream.range(start, end)
+                        .map(i -> {
+                            int value = data.get(i);
+                            int result = processor.apply(value);
+
+                            logger.accept(Thread.currentThread().getName()
+                                    + " | index=" + i
+                                    + " | value=" + value
+                                    + " | result=" + result);
+
+                            return result;
+                        })
+                        .sum();
             }
 
-            // Recursive case: split into two halves
+            // 🔹 Recursive split (Fork/Join)
             int mid = start + length / 2;
-            SquareSumTask leftTask = new SquareSumTask(numbers, start, mid);
-            SquareSumTask rightTask = new SquareSumTask(numbers, mid, end);
 
-            // Fork left task (runs asynchronously)
-            leftTask.fork();
+            FunctionalTask left = new FunctionalTask(data, start, mid, processor, logger);
+            FunctionalTask right = new FunctionalTask(data, mid, end, processor, logger);
 
-            // Compute right task synchronously
-            int rightResult = rightTask.compute();
-
-            // Join left task result
-            int leftResult = leftTask.join();
+            left.fork();
+            int rightResult = right.compute();
+            int leftResult = left.join();
 
             return leftResult + rightResult;
         }

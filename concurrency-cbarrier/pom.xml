@@ -81,7 +81,7 @@
                <artifactId>exec-maven-plugin</artifactId>
                <version>3.1.0</version>
                <configuration>
-                   <mainClass>org.example.CyclicBarrierRunner</mainClass>
+                   <mainClass>org.example.MultiConsumerRunner</mainClass>
                </configuration>
            </plugin>
 

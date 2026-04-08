@@ -14,10 +14,14 @@
     </properties>
 
     <modules>
+
         <module>calculator-base</module>
         <module>fibonacci-binary</module>
         <module>fibonacci-collectors</module>
         <module>fibonacci-predicates</module>
+        <module>fibonacci-demo</module>
+        <module>fibonacci-dry-principle</module>
+
         <module>functional-interface</module>
         <module>multithread-counter</module>
         <module>concurrency-cbarrier</module>
@@ -25,7 +29,6 @@
         <module>concurrency-event-ledger</module>
         <module>concurrency-executor-service</module>
 
-        <module>fibonacci-demo</module>
     </modules>
 
 </project>

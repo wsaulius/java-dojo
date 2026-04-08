@@ -9,16 +9,12 @@ import org.example.factories.CalculationConsumerResolver;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.stream.IntStream;
-
 import static com.google.common.util.concurrent.Futures.getUnchecked;
-
 
 public class Application {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -57,7 +53,6 @@ public class Application {
         for (var future : futures) {
             resolver.unaryInt().accept(future.get());
         }
-
 
         // Concurrency using CompletableFuture (no batch)
         CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> cubeTask =

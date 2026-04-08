@@ -1,17 +1,12 @@
 package org.example.consumers;
 
 import org.example.interfaces.CalculationConsumer;
-import org.example.models.CalculationRecord;
+import org.example.interfaces.PrintableCalculation;
 
-public class CalculationPrinter implements CalculationConsumer<CalculationRecord> {
+public class CalculationPrinter<T extends PrintableCalculation> implements CalculationConsumer<T> {
 
     @Override
-    public void accept(CalculationRecord calculation) {
-        System.out.println(
-                calculation.left() + " " +
-                        calculation.operation() + " " +
-                        calculation.right() + " = " +
-                        calculation.result()
-        );
+    public void accept(T calculation) {
+        System.out.println(calculation.format());
     }
 }

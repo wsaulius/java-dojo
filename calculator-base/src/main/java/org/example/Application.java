@@ -9,6 +9,7 @@ import org.example.consumers.MatrixPrinter;
 import org.example.enums.*;
 import org.example.factories.CalculationConsumerResolver;
 import org.example.implementations.binary.MatrixAddOperation;
+import org.example.implementations.binary.MatrixDivideOperation;
 import org.example.implementations.binary.MatrixMultiplyOperation;
 import org.example.interfaces.ResultConsumer;
 import org.example.interfaces.SequenceConsumer;
@@ -100,14 +101,19 @@ public class Application {
         MatrixService matrixService = new MatrixService(4);
 
         // 🔹 ADD
-        Matrix add1 = matrixService.execute(A, B, new MatrixAddOperation(), "ADD");
+        Matrix add = matrixService.execute(A, B, new MatrixAddOperation(), "ADD");
         System.out.println("Addition:");
-        printer.accept(add1);
+        printer.accept(add);
 
         // 🔹 MULTIPLY
-        Matrix mul1 = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
+        Matrix mul = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
         System.out.println("Multiplication:");
-        printer.accept(mul1);
+        printer.accept(mul);
+
+        // 🔹 DIVIDE
+        Matrix divideM = matrixService.execute(A, B, new MatrixDivideOperation(), "DIVIDE");
+        System.out.println("Division:");
+        printer.accept(divideM);
 
         matrixService.shutdown();
 

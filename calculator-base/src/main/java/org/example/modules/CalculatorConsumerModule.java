@@ -37,13 +37,13 @@ public class CalculatorConsumerModule extends AbstractModule {
         );
 
         bindCalculationConsumer(
-                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Double, Double>>>() {},
-                new TypeLiteral<CalculationPrinter<UnaryCalculationRecord<UnaryDoubleType, Double, Double>>>() {}
+                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>>() {},
+                new TypeLiteral<CalculationPrinter<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>>() {}
         );
 
         bindCalculationConsumer(
-                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Long, Long>>>() {},
-                new TypeLiteral<CalculationPrinter<UnaryCalculationRecord<UnaryLongType, Long, Long>>>() {}
+                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Integer, Long>>>() {},
+                new TypeLiteral<CalculationPrinter<UnaryCalculationRecord<UnaryLongType, Integer, Long>>>() {}
         );
 
         bindCalculationConsumer(

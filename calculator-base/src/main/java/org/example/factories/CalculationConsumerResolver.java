@@ -32,15 +32,15 @@ public class CalculationConsumerResolver {
         ));
     }
 
-    public CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Double, Double>> unaryDouble() {
+    public CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> unaryDouble() {
         return injector.getInstance(Key.get(
-                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Double, Double>>>() {}
+                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>>() {}
         ));
     }
 
-    public CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Long, Long>> unaryLong() {
+    public CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Integer, Long>> unaryLong() {
         return injector.getInstance(Key.get(
-                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Long, Long>>>() {}
+                new TypeLiteral<CalculationConsumer<UnaryCalculationRecord<UnaryLongType, Integer, Long>>>() {}
         ));
     }
 

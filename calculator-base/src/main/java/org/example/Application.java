@@ -3,16 +3,25 @@ package org.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.enums.*;
+import org.example.execution.AsyncCalculationExecutor;
+import org.example.execution.ConcurrentCalculationExecutor;
 import org.example.factories.CalculationConsumerResolver;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
-import org.example.services.CalculatorService;
+
 import java.math.BigInteger;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.stream.IntStream;
+
+import static com.google.common.util.concurrent.Futures.getUnchecked;
 
 
 public class Application {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         Injector injector = Guice.createInjector(
                 new UnaryIntOperationModule(),
                 new UnaryDoubleOperationModule(),
@@ -22,22 +31,75 @@ public class Application {
                 new SequenceModule(),
                 new SelectorModule(),
                 new CalculatorConsumerModule(),
-                new UnaryBigIntegerOperationModule()
+                new UnaryBigIntegerOperationModule(),
+                new ExecutorModule()
         );
 
-        CalculatorService calculator = injector.getInstance(CalculatorService.class);
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
+        ConcurrentCalculationExecutor concurrentExecutor = injector.getInstance(ConcurrentCalculationExecutor.class);
+        AsyncCalculationExecutor asyncExecutor = injector.getInstance(AsyncCalculationExecutor.class);
 
-        int intResult = calculator.runUnaryInt(UnaryIntType.CUBE, 5);
-        resolver.unaryInt().accept(new UnaryCalculationRecord<>(UnaryIntType.CUBE, 5, intResult));
+        // Concurrency using Future (no batch)
+        List<Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> futureTasks =
+                java.util.stream.IntStream.rangeClosed(1, 20)
+                        .mapToObj(i -> concurrentExecutor.submitUnaryInt(UnaryIntType.CUBE, i))
+                        .toList();
 
-        double binaryResult = calculator.runBinary(BinaryType.ADD, 10.0, 20.0);
-        resolver.binary().accept(new BinaryCalculationRecord(BinaryType.ADD, 10.0, 20.0, binaryResult));
+        futureTasks.forEach(f ->
+                resolver.unaryInt().accept(getUnchecked(f))
+        );
 
-        boolean booleanResult = calculator.runUnaryBoolean(UnaryBooleanType.IS_PRIME, 17);
-        resolver.unaryBoolean().accept(new UnaryCalculationRecord<>(UnaryBooleanType.IS_PRIME, 17, booleanResult));
+        // Concurrency using Future with batch
+        List<Integer> inputs = List.of(2, 3, 4, 5);
 
-        BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
-        resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
+        var futures = concurrentExecutor.submitUnaryIntBatch(UnaryIntType.CUBE, inputs);
+
+        for (var future : futures) {
+            resolver.unaryInt().accept(future.get());
+        }
+
+
+        // Concurrency using CompletableFuture (no batch)
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> cubeTask =
+                asyncExecutor.submitUnaryInt(UnaryIntType.CUBE, 4);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> sqrtTask =
+                asyncExecutor.submitUnaryDouble(UnaryDoubleType.SQRT, 81);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryLongType, Integer, Long>> factorialTask =
+                asyncExecutor.submitUnaryLong(UnaryLongType.FACTORIAL, 10);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>> primeTask =
+                asyncExecutor.submitUnaryBoolean(UnaryBooleanType.IS_PRIME, 29);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> fibonacciTask =
+                asyncExecutor.submitUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 50);
+
+        CompletableFuture<BinaryCalculationRecord> addTask =
+                asyncExecutor.submitBinary(BinaryType.ADD, 10.0, 5.0);
+
+        CompletableFuture<BinaryCalculationRecord> divideTask =
+                asyncExecutor.submitBinary(BinaryType.DIVIDE, 100.0, 4.0);
+
+        CompletableFuture.allOf(
+                cubeTask,
+                sqrtTask,
+                factorialTask,
+                primeTask,
+                fibonacciTask,
+                addTask,
+                divideTask
+        ).join();
+
+        resolver.unaryInt().accept(cubeTask.join());
+        resolver.unaryDouble().accept(sqrtTask.join());
+        resolver.unaryLong().accept(factorialTask.join());
+        resolver.unaryBoolean().accept(primeTask.join());
+        resolver.unaryBigInteger().accept(fibonacciTask.join());
+        resolver.binary().accept(addTask.join());
+        resolver.binary().accept(divideTask.join());
+
+        concurrentExecutor.shutdown();
+        asyncExecutor.shutdown();
     }
 }

@@ -29,6 +29,7 @@
         <module>fibonacci-predicates</module>
         <module>fibonacci-demo</module>
         <module>fibonacci-dry-principle</module>
+        <module>fibonacci-solid-principles</module>
 
         <module>functional-interface</module>
         <module>multithread-counter</module>

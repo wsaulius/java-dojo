@@ -21,6 +21,5 @@ public class UnaryLongOperationModule extends AbstractModule {
                 );
 
         binder.addBinding(UnaryLongType.FACTORIAL).to(FactorialOperation.class);
-        binder.addBinding(UnaryLongType.FIBONACCI).to(FibonacciOperation.class);
     }
 }

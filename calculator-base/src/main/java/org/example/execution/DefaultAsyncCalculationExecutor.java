@@ -1,31 +1,31 @@
 package org.example.execution;
 
 import jakarta.inject.Inject;
-import org.example.enums.*;
-import org.example.models.BinaryCalculationRecord;
-import org.example.models.UnaryCalculationRecord;
-import org.example.services.CalculatorService;
-
-import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import org.example.enums.BinaryType;
 import org.example.enums.UnaryBigIntegerType;
 import org.example.enums.UnaryBooleanType;
 import org.example.enums.UnaryDoubleType;
 import org.example.enums.UnaryIntType;
 import org.example.enums.UnaryLongType;
+import org.example.interfaces.AsyncCalculationExecutor;
+import org.example.models.BinaryCalculationRecord;
+import org.example.models.UnaryCalculationRecord;
+import org.example.services.CalculatorService;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
-public final class ConcurrentCalculationExecutor {
+public final class DefaultAsyncCalculationExecutor implements AsyncCalculationExecutor {
+
     private final CalculatorService calculatorService;
     private final ExecutorService executorService;
 
     @Inject
-    public ConcurrentCalculationExecutor(
+    public DefaultAsyncCalculationExecutor(
             CalculatorService calculatorService,
             ExecutorService executorService
     ) {
@@ -33,7 +33,8 @@ public final class ConcurrentCalculationExecutor {
         this.executorService = executorService;
     }
 
-    public Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> submitUnaryInt(
+    @Override
+    public CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> submitUnaryInt(
             UnaryIntType type,
             Integer input
     ) {
@@ -44,7 +45,8 @@ public final class ConcurrentCalculationExecutor {
         );
     }
 
-    public Future<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> submitUnaryDouble(
+    @Override
+    public CompletableFuture<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> submitUnaryDouble(
             UnaryDoubleType type,
             Integer input
     ) {
@@ -55,7 +57,8 @@ public final class ConcurrentCalculationExecutor {
         );
     }
 
-    public Future<UnaryCalculationRecord<UnaryLongType, Integer, Long>> submitUnaryLong(
+    @Override
+    public CompletableFuture<UnaryCalculationRecord<UnaryLongType, Integer, Long>> submitUnaryLong(
             UnaryLongType type,
             Integer input
     ) {
@@ -66,7 +69,8 @@ public final class ConcurrentCalculationExecutor {
         );
     }
 
-    public Future<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>> submitUnaryBoolean(
+    @Override
+    public CompletableFuture<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>> submitUnaryBoolean(
             UnaryBooleanType type,
             Integer input
     ) {
@@ -77,7 +81,8 @@ public final class ConcurrentCalculationExecutor {
         );
     }
 
-    public Future<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> submitUnaryBigInteger(
+    @Override
+    public CompletableFuture<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> submitUnaryBigInteger(
             UnaryBigIntegerType type,
             Integer input
     ) {
@@ -88,7 +93,8 @@ public final class ConcurrentCalculationExecutor {
         );
     }
 
-    public List<Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> submitUnaryIntBatch(
+    @Override
+    public List<CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> submitUnaryIntBatch(
             UnaryIntType type,
             List<Integer> inputs
     ) {
@@ -97,7 +103,8 @@ public final class ConcurrentCalculationExecutor {
                 .toList();
     }
 
-    public List<Future<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>> submitUnaryDoubleBatch(
+    @Override
+    public List<CompletableFuture<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>> submitUnaryDoubleBatch(
             UnaryDoubleType type,
             List<Integer> inputs
     ) {
@@ -106,7 +113,8 @@ public final class ConcurrentCalculationExecutor {
                 .toList();
     }
 
-    public List<Future<UnaryCalculationRecord<UnaryLongType, Integer, Long>>> submitUnaryLongBatch(
+    @Override
+    public List<CompletableFuture<UnaryCalculationRecord<UnaryLongType, Integer, Long>>> submitUnaryLongBatch(
             UnaryLongType type,
             List<Integer> inputs
     ) {
@@ -115,7 +123,8 @@ public final class ConcurrentCalculationExecutor {
                 .toList();
     }
 
-    public List<Future<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>>> submitUnaryBooleanBatch(
+    @Override
+    public List<CompletableFuture<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>>> submitUnaryBooleanBatch(
             UnaryBooleanType type,
             List<Integer> inputs
     ) {
@@ -124,7 +133,8 @@ public final class ConcurrentCalculationExecutor {
                 .toList();
     }
 
-    public List<Future<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>>> submitUnaryBigIntegerBatch(
+    @Override
+    public List<CompletableFuture<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>>> submitUnaryBigIntegerBatch(
             UnaryBigIntegerType type,
             List<Integer> inputs
     ) {
@@ -133,12 +143,13 @@ public final class ConcurrentCalculationExecutor {
                 .toList();
     }
 
-    public Future<BinaryCalculationRecord> submitBinary(
+    @Override
+    public CompletableFuture<BinaryCalculationRecord> submitBinary(
             BinaryType type,
             Double left,
             Double right
     ) {
-        return executorService.submit(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             System.out.println("start " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
 
             BinaryCalculationRecord record =
@@ -151,15 +162,15 @@ public final class ConcurrentCalculationExecutor {
 
             System.out.println("done " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
             return record;
-        });
+        }, executorService);
     }
 
-    private <E extends Enum<E>, I, R> Future<UnaryCalculationRecord<E, I, R>> submitUnary(
+    private <E extends Enum<E>, I, R> CompletableFuture<UnaryCalculationRecord<E, I, R>> submitUnary(
             E type,
             I input,
             Supplier<R> calculation
     ) {
-        return executorService.submit(() -> {
+        return CompletableFuture.supplyAsync(() -> {
             System.out.println("start " + type + " " + input + " -> " + Thread.currentThread().getName());
 
             UnaryCalculationRecord<E, I, R> record =
@@ -171,9 +182,10 @@ public final class ConcurrentCalculationExecutor {
 
             System.out.println("done " + type + " " + input + " -> " + Thread.currentThread().getName());
             return record;
-        });
+        }, executorService);
     }
 
+    @Override
     public void shutdown() {
         executorService.shutdown();
         try {

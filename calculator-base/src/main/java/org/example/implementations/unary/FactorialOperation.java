@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.IntToLongFunction;
 
 @Singleton
-public class FactorialOperation implements IntToLongFunction {
+public final class FactorialOperation implements IntToLongFunction {
 
     @Override
     public long applyAsLong(int n) {

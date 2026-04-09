@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.IntUnaryOperator;
 
 @Singleton
-public class UnaryIntSelector {
+public final class UnaryIntSelector {
 
     private final Map<UnaryIntType, IntUnaryOperator> operations;
 

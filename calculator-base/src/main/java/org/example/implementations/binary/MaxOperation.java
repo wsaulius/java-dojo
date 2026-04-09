@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.DoubleBinaryOperator;
 
 @Singleton
-public class MaxOperation implements DoubleBinaryOperator {
+public final class MaxOperation implements DoubleBinaryOperator {
 
     @Override
     public double applyAsDouble(double left, double right) {

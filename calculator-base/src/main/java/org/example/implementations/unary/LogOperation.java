@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.IntToDoubleFunction;
 
 @Singleton
-public class LogOperation implements IntToDoubleFunction {
+public final class LogOperation implements IntToDoubleFunction {
     @Override
     public double applyAsDouble(int n) {
 

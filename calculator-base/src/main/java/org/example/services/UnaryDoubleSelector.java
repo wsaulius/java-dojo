@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.IntToDoubleFunction;
 
 @Singleton
-public class UnaryDoubleSelector {
+public final class UnaryDoubleSelector {
 
     private final Map<UnaryDoubleType, IntToDoubleFunction> operations;
 

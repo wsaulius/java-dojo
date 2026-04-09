@@ -7,7 +7,7 @@ import org.example.models.Matrix;
 import java.util.stream.IntStream;
 
 @Singleton
-public class MatrixDivideOperation implements MatrixOperation {
+public final class MatrixDivideOperation implements MatrixOperation {
 
     @Override
     public int apply(Matrix A, Matrix B, int row, int col) {

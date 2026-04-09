@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Singleton
-public class SequencePrinter<T> implements SequenceConsumer<T> {
+public final class SequencePrinter<T> implements SequenceConsumer<T> {
 
     @Override
     public void accept(List<T> sequence, Predicate<T> predicate) {

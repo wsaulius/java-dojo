@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.IntUnaryOperator;
 
 @Singleton
-public class NegateOperation implements IntUnaryOperator {
+public final class NegateOperation implements IntUnaryOperator {
 
     @Override
     public int applyAsInt(int n) {

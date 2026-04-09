@@ -13,7 +13,7 @@ import org.example.models.UnaryCalculationRecord;
 import java.math.BigInteger;
 
 @Singleton
-public class CalculationConsumerResolver {
+public final class CalculationConsumerResolver {
 
     private final Injector injector;
 

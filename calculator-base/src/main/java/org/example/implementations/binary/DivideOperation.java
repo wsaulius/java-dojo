@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.DoubleBinaryOperator;
 
 @Singleton
-public class DivideOperation implements DoubleBinaryOperator {
+public final class DivideOperation implements DoubleBinaryOperator {
 
     @Override
     public double applyAsDouble(double left, double right) {

@@ -7,7 +7,7 @@ import java.util.function.Function;
 import java.util.function.IntToLongFunction;
 
 @Singleton
-public class FibonacciOperation implements Function<Integer, BigInteger> {
+public final class FibonacciOperation implements Function<Integer, BigInteger> {
 
     @Override
     public BigInteger apply(Integer n) {

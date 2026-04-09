@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.DoubleBinaryOperator;
 
 @Singleton
-public class BinarySelector {
+public final class BinarySelector {
 
     private final Map<BinaryType, DoubleBinaryOperator> operations;
 

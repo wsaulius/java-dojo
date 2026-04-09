@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.IntStream;
 
 @Singleton
-public class MatrixMultiplyOperation implements MatrixOperation {
+public final class MatrixMultiplyOperation implements MatrixOperation {
     private final ConcurrentHashMap<String, Integer> cache;
 
     public MatrixMultiplyOperation(ConcurrentHashMap<String, Integer> cache) {

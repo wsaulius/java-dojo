@@ -8,7 +8,7 @@ import java.math.BigInteger;
 import java.util.function.Function;
 
 @Singleton
-public class UnaryBigIntegerSelector {
+public final class UnaryBigIntegerSelector {
 
     private final Map<UnaryBigIntegerType, Function<Integer, BigInteger>> operations;
 

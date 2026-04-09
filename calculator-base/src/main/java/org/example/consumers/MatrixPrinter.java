@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 @Singleton
-public class MatrixPrinter implements Consumer<Matrix> {
+public final class MatrixPrinter implements Consumer<Matrix> {
 
     @Override
     public void accept(Matrix matrix) {

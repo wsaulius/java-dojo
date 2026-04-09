@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.IntPredicate;
 
 @Singleton
-public class UnaryBooleanSelector {
+public final class UnaryBooleanSelector {
 
     private final Map<UnaryBooleanType, IntPredicate> operations;
 

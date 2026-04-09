@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.function.IntToLongFunction;
 
 @Singleton
-public class UnaryLongSelector {
+public final class UnaryLongSelector {
 
     private final Map<UnaryLongType, IntToLongFunction> operations;
 

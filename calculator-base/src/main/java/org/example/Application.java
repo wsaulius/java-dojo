@@ -22,17 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Application {
     public static void main(String[] args) {
-        Injector injector = Guice.createInjector(
-                new UnaryIntOperationModule(),
-                new UnaryDoubleOperationModule(),
-                new UnaryLongOperationModule(),
-                new UnaryBooleanOperationModule(),
-                new BinaryOperationModule(),
-                new SequenceModule(),
-                new SelectorModule(),
-                new CalculatorConsumerModule(),
-                new UnaryBigIntegerOperationModule()
-        );
+        Injector injector = Guice.createInjector(new CalculatorApplicationModule());
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);

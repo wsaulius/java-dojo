@@ -5,7 +5,7 @@ import jakarta.inject.Singleton;
 import java.util.function.IntPredicate;
 
 @Singleton
-public class PrimeCheckOperation implements IntPredicate {
+public final class PrimeCheckOperation implements IntPredicate {
 
     @Override
     public boolean test(int n) {

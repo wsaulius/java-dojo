@@ -4,7 +4,7 @@ import jakarta.inject.Singleton;
 import org.example.interfaces.ResultConsumer;
 
 @Singleton
-public class ResultPrinter<T> implements ResultConsumer<T> {
+public final class ResultPrinter<T> implements ResultConsumer<T> {
 
     @Override
     public void accept(T result) {

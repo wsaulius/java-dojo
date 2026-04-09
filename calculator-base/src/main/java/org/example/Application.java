@@ -3,40 +3,28 @@ package org.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.enums.*;
-import org.example.execution.AsyncCalculationExecutor;
-import org.example.execution.ConcurrentCalculationExecutor;
+import org.example.execution.DefaultAsyncCalculationExecutor;
+import org.example.execution.DefaultCalculationExecutor;
 import org.example.factories.CalculationConsumerResolver;
+import org.example.interfaces.AsyncCalculationExecutor;
+import org.example.interfaces.CalculationExecutor;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
-
 import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.stream.IntStream;
-
 import static com.google.common.util.concurrent.Futures.getUnchecked;
-
 
 public class Application {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        Injector injector = Guice.createInjector(
-                new UnaryIntOperationModule(),
-                new UnaryDoubleOperationModule(),
-                new UnaryLongOperationModule(),
-                new UnaryBooleanOperationModule(),
-                new BinaryOperationModule(),
-                new SequenceModule(),
-                new SelectorModule(),
-                new CalculatorConsumerModule(),
-                new UnaryBigIntegerOperationModule(),
-                new ExecutorModule()
-        );
+
+        Injector injector = Guice.createInjector(new CalculatorApplicationModule());
 
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
-        ConcurrentCalculationExecutor concurrentExecutor = injector.getInstance(ConcurrentCalculationExecutor.class);
+        CalculationExecutor concurrentExecutor = injector.getInstance(CalculationExecutor.class);
         AsyncCalculationExecutor asyncExecutor = injector.getInstance(AsyncCalculationExecutor.class);
 
         // Concurrency using Future (no batch)
@@ -58,7 +46,6 @@ public class Application {
             resolver.unaryInt().accept(future.get());
         }
 
-
         // Concurrency using CompletableFuture (no batch)
         CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> cubeTask =
                 asyncExecutor.submitUnaryInt(UnaryIntType.CUBE, 4);
@@ -73,7 +60,7 @@ public class Application {
                 asyncExecutor.submitUnaryBoolean(UnaryBooleanType.IS_PRIME, 29);
 
         CompletableFuture<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> fibonacciTask =
-                asyncExecutor.submitUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 50);
+                asyncExecutor.submitUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
 
         CompletableFuture<BinaryCalculationRecord> addTask =
                 asyncExecutor.submitBinary(BinaryType.ADD, 10.0, 5.0);

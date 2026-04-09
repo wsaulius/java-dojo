@@ -7,15 +7,17 @@ import org.example.services.MatrixService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixDivideOperationTest {
 
-    private Matrix A;
-    private Matrix B;
-    private MatrixDivideOperation operation;
+    static private Matrix A;
+    static private Matrix B;
+    static private MatrixDivideOperation operation;
+    static private MatrixService matrixService;
 
     @BeforeEach
     void setUp() {
@@ -32,8 +34,9 @@ class MatrixDivideOperationTest {
                 {8, 2, 4, 4},
                 {7, 1, 2, 7}
         });
-        MatrixService matrixService = new MatrixService(4);
-        ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
+        operation = new MatrixDivideOperation();
+        matrixService = new MatrixService(4);
+
     }
 
     @Test
@@ -45,8 +48,6 @@ class MatrixDivideOperationTest {
 
     @Test
     void testEntireMatrixDivision() {
-        operation = new MatrixDivideOperation();
-
         int[][] expected = {
                 {8, 11, 5, 4},
                 {12, 14, 5, 4},
@@ -65,9 +66,7 @@ class MatrixDivideOperationTest {
 
     @Test
     void testDivisionByZeroThrowsException() {
-        operation = new MatrixDivideOperation();
-
-        Matrix B_zero = new Matrix(new int[][]{
+        B = new Matrix(new int[][]{
                 {0, 3, 7, 7}, // <- zero here
                 {1, 4, 7, 3},
                 {8, 2, 4, 4},
@@ -75,14 +74,12 @@ class MatrixDivideOperationTest {
         });
 
         assertThrows(ArithmeticException.class, () -> {
-            operation.apply(A, B_zero, 0, 0);
+            operation.apply(A, B, 0, 0);
         });
     }
 
     @Test
     void testEntireMatrixMultiplication() {
-        MatrixService matrixService = new MatrixService(4);
-
         int[][] expected = {
                 {118, 61, 124, 124},
                 {106, 67, 131, 140},
@@ -91,6 +88,6 @@ class MatrixDivideOperationTest {
         };
 
         Matrix mul = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
-        assertEquals(expected, mul);
+        assertTrue(Arrays.deepEquals(expected, mul.data()), "Matrix multiplication result is incorrect");
     }
 }

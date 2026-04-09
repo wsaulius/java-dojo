@@ -13,5 +13,6 @@ public class SelectorModule extends AbstractModule {
         bind(UnaryLongSelector.class);
         bind(UnaryBooleanSelector.class);
         bind(BinarySelector.class);
+        bind(UnaryBigIntegerSelector.class);
     }
 }

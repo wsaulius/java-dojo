@@ -24,6 +24,7 @@ import org.example.suppliers.MatrixSupplier;
 
 import java.math.BigInteger;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -99,9 +100,11 @@ public class Application {
         printer.accept(B);
 
         MatrixService matrixService = new MatrixService(4);
+        ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
+
 
         // 🔹 ADD
-        Matrix add = matrixService.execute(A, B, new MatrixAddOperation(), "ADD");
+        Matrix add = matrixService.execute(A, B, new MatrixAddOperation(cache), "ADD");
         System.out.println("Addition:");
         printer.accept(add);
 

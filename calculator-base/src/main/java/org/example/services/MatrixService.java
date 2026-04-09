@@ -24,6 +24,11 @@ public class MatrixService {
 
         String key = generateKey(A, B, operationName);
 
+        Matrix cached = cache.get(key);
+        if (cached != null) {
+            return cached;
+        }
+
         int rows = A.rows();
         int cols = B.cols();
 

@@ -1,9 +1,13 @@
 package org.example.matrix;
 
 import org.example.implementations.binary.MatrixDivideOperation;
+import org.example.implementations.binary.MatrixMultiplyOperation;
 import org.example.models.Matrix;
+import org.example.services.MatrixService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,8 +32,8 @@ class MatrixDivideOperationTest {
                 {8, 2, 4, 4},
                 {7, 1, 2, 7}
         });
-
-        operation = new MatrixDivideOperation();
+        MatrixService matrixService = new MatrixService(4);
+        ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
     }
 
     @Test
@@ -41,6 +45,8 @@ class MatrixDivideOperationTest {
 
     @Test
     void testEntireMatrixDivision() {
+        operation = new MatrixDivideOperation();
+
         int[][] expected = {
                 {8, 11, 5, 4},
                 {12, 14, 5, 4},
@@ -59,6 +65,8 @@ class MatrixDivideOperationTest {
 
     @Test
     void testDivisionByZeroThrowsException() {
+        operation = new MatrixDivideOperation();
+
         Matrix B_zero = new Matrix(new int[][]{
                 {0, 3, 7, 7}, // <- zero here
                 {1, 4, 7, 3},
@@ -69,5 +77,20 @@ class MatrixDivideOperationTest {
         assertThrows(ArithmeticException.class, () -> {
             operation.apply(A, B_zero, 0, 0);
         });
+    }
+
+    @Test
+    void testEntireMatrixMultiplication() {
+        MatrixService matrixService = new MatrixService(4);
+
+        int[][] expected = {
+                {118, 61, 124, 124},
+                {106, 67, 131, 140},
+                {129, 60, 117, 139},
+                {117, 78, 157, 171}
+        };
+
+        Matrix mul = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
+        assertEquals(expected, mul);
     }
 }

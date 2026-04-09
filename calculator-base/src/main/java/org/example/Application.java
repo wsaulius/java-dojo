@@ -2,91 +2,84 @@ package org.example;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import org.example.consumers.MatrixPrinter;
 import org.example.enums.*;
-import org.example.execution.DefaultAsyncCalculationExecutor;
-import org.example.execution.DefaultCalculationExecutor;
 import org.example.factories.CalculationConsumerResolver;
-import org.example.interfaces.AsyncCalculationExecutor;
-import org.example.interfaces.CalculationExecutor;
+import org.example.implementations.binary.MatrixAddOperation;
+import org.example.implementations.binary.MatrixDivideOperation;
+import org.example.implementations.binary.MatrixMultiplyOperation;
 import org.example.models.BinaryCalculationRecord;
+import org.example.models.Matrix;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
+import org.example.services.CalculatorService;
+import org.example.services.MatrixService;
+import org.example.suppliers.MatrixSupplier;
+
 import java.math.BigInteger;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import static com.google.common.util.concurrent.Futures.getUnchecked;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Application {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-
-        Injector injector = Guice.createInjector(new CalculatorApplicationModule());
-
-        CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
-        CalculationExecutor concurrentExecutor = injector.getInstance(CalculationExecutor.class);
-        AsyncCalculationExecutor asyncExecutor = injector.getInstance(AsyncCalculationExecutor.class);
-
-        // Concurrency using Future (no batch)
-        List<Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> futureTasks =
-                java.util.stream.IntStream.rangeClosed(1, 20)
-                        .mapToObj(i -> concurrentExecutor.submitUnaryInt(UnaryIntType.CUBE, i))
-                        .toList();
-
-        futureTasks.forEach(f ->
-                resolver.unaryInt().accept(getUnchecked(f))
+    public static void main(String[] args) {
+        Injector injector = Guice.createInjector(
+                new UnaryIntOperationModule(),
+                new UnaryDoubleOperationModule(),
+                new UnaryLongOperationModule(),
+                new UnaryBooleanOperationModule(),
+                new BinaryOperationModule(),
+                new SequenceModule(),
+                new SelectorModule(),
+                new CalculatorConsumerModule(),
+                new UnaryBigIntegerOperationModule()
         );
 
-        // Concurrency using Future with batch
-        List<Integer> inputs = List.of(2, 3, 4, 5);
+        CalculatorService calculator = injector.getInstance(CalculatorService.class);
+        CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
 
-        var futures = concurrentExecutor.submitUnaryIntBatch(UnaryIntType.CUBE, inputs);
+        int intResult = calculator.runUnaryInt(UnaryIntType.CUBE, 5);
+        resolver.unaryInt().accept(new UnaryCalculationRecord<>(UnaryIntType.CUBE, 5, intResult));
 
-        for (var future : futures) {
-            resolver.unaryInt().accept(future.get());
-        }
+        double binaryResult = calculator.runBinary(BinaryType.ADD, 10.0, 20.0);
+        resolver.binary().accept(new BinaryCalculationRecord(BinaryType.ADD, 10.0, 20.0, binaryResult));
 
-        // Concurrency using CompletableFuture (no batch)
-        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> cubeTask =
-                asyncExecutor.submitUnaryInt(UnaryIntType.CUBE, 4);
+        boolean booleanResult = calculator.runUnaryBoolean(UnaryBooleanType.IS_PRIME, 17);
+        resolver.unaryBoolean().accept(new UnaryCalculationRecord<>(UnaryBooleanType.IS_PRIME, 17, booleanResult));
 
-        CompletableFuture<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> sqrtTask =
-                asyncExecutor.submitUnaryDouble(UnaryDoubleType.SQRT, 81);
+        BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
+        resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
 
-        CompletableFuture<UnaryCalculationRecord<UnaryLongType, Integer, Long>> factorialTask =
-                asyncExecutor.submitUnaryLong(UnaryLongType.FACTORIAL, 10);
+        MatrixSupplier matrixSupplier = new MatrixSupplier(4);
+        MatrixPrinter printer = new MatrixPrinter();
 
-        CompletableFuture<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>> primeTask =
-                asyncExecutor.submitUnaryBoolean(UnaryBooleanType.IS_PRIME, 29);
+        Matrix A = matrixSupplier.get();
+        Matrix B = matrixSupplier.get();
 
-        CompletableFuture<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> fibonacciTask =
-                asyncExecutor.submitUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
+        System.out.println("\nMatrix A:");
+        printer.accept(A);
 
-        CompletableFuture<BinaryCalculationRecord> addTask =
-                asyncExecutor.submitBinary(BinaryType.ADD, 10.0, 5.0);
+        System.out.println("Matrix B:");
+        printer.accept(B);
 
-        CompletableFuture<BinaryCalculationRecord> divideTask =
-                asyncExecutor.submitBinary(BinaryType.DIVIDE, 100.0, 4.0);
+        MatrixService matrixService = new MatrixService(4);
+        ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
 
-        CompletableFuture.allOf(
-                cubeTask,
-                sqrtTask,
-                factorialTask,
-                primeTask,
-                fibonacciTask,
-                addTask,
-                divideTask
-        ).join();
 
-        resolver.unaryInt().accept(cubeTask.join());
-        resolver.unaryDouble().accept(sqrtTask.join());
-        resolver.unaryLong().accept(factorialTask.join());
-        resolver.unaryBoolean().accept(primeTask.join());
-        resolver.unaryBigInteger().accept(fibonacciTask.join());
-        resolver.binary().accept(addTask.join());
-        resolver.binary().accept(divideTask.join());
+        // 🔹 ADD
+        Matrix add = matrixService.execute(A, B, new MatrixAddOperation(cache), "ADD");
+        System.out.println("Addition:");
+        printer.accept(add);
 
-        concurrentExecutor.shutdown();
-        asyncExecutor.shutdown();
+        // 🔹 MULTIPLY
+        Matrix mul = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
+        System.out.println("Multiplication:");
+        printer.accept(mul);
+
+        // 🔹 DIVIDE
+        Matrix divideM = matrixService.execute(A, B, new MatrixDivideOperation(), "DIVIDE");
+        System.out.println("Division:");
+        printer.accept(divideM);
+
+        matrixService.shutdown();
     }
 }

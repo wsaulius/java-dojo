@@ -1,8 +1,11 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.IntToLongFunction;
 
-public class FactorialOperation implements IntToLongFunction {
+@Singleton
+public final class FactorialOperation implements IntToLongFunction {
 
     @Override
     public long applyAsLong(int n) {

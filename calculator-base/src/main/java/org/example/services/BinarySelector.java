@@ -1,14 +1,14 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.BinaryType;
 
 import java.util.Map;
 import java.util.function.DoubleBinaryOperator;
 
-// BinarySelector
-
-public class BinarySelector {
+@Singleton
+public final class BinarySelector {
 
     private final Map<BinaryType, DoubleBinaryOperator> operations;
 

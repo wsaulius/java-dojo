@@ -1,6 +1,7 @@
 package org.example.execution;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.enums.BinaryType;
 import org.example.enums.UnaryBigIntegerType;
 import org.example.enums.UnaryBooleanType;
@@ -19,6 +20,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+@Singleton
 public final class DefaultCalculationExecutor implements CalculationExecutor {
 
     private final CalculatorService calculatorService;

@@ -1,10 +1,12 @@
 package org.example.services;
 
+import com.google.inject.Singleton;
 import jakarta.inject.Inject;
 import org.example.enums.*;
 
 import java.math.BigInteger;
 
+@Singleton
 public class CalculatorService {
 
     private final UnaryIntSelector unaryIntSelector;

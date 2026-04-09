@@ -1,8 +1,11 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.IntUnaryOperator;
 
-public class CubeOperation implements IntUnaryOperator {
+@Singleton
+public final class CubeOperation implements IntUnaryOperator {
 
     @Override
     public int applyAsInt(int n) {

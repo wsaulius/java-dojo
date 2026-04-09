@@ -7,7 +7,7 @@ import java.util.concurrent.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
-public class MatrixService {
+public final class MatrixService {
 
     private final ExecutorService pool;
 

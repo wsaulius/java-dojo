@@ -4,7 +4,6 @@ import jakarta.inject.Singleton;
 
 import java.math.BigInteger;
 import java.util.function.Function;
-import java.util.function.IntToLongFunction;
 
 @Singleton
 public final class FibonacciOperation implements Function<Integer, BigInteger> {

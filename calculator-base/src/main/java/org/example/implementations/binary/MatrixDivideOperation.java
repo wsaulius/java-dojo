@@ -1,10 +1,12 @@
 package org.example.implementations.binary;
 
+import jakarta.inject.Singleton;
 import org.example.interfaces.MatrixOperation;
 import org.example.models.Matrix;
 
 import java.util.stream.IntStream;
 
+@Singleton
 public class MatrixDivideOperation implements MatrixOperation {
 
     @Override

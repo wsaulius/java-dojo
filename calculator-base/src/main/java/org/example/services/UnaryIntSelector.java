@@ -1,11 +1,13 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.UnaryIntType;
 
 import java.util.Map;
 import java.util.function.IntUnaryOperator;
 
+@Singleton
 public class UnaryIntSelector {
 
     private final Map<UnaryIntType, IntUnaryOperator> operations;

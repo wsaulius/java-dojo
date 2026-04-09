@@ -1,10 +1,12 @@
 package org.example.consumers;
 
+import jakarta.inject.Singleton;
 import org.example.models.Matrix;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+@Singleton
 public class MatrixPrinter implements Consumer<Matrix> {
 
     @Override

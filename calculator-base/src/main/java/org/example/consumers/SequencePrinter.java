@@ -1,10 +1,12 @@
 package org.example.consumers;
 
+import jakarta.inject.Singleton;
 import org.example.interfaces.SequenceConsumer;
 
 import java.util.List;
 import java.util.function.Predicate;
 
+@Singleton
 public class SequencePrinter<T> implements SequenceConsumer<T> {
 
     @Override

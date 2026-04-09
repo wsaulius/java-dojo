@@ -1,9 +1,12 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.math.BigInteger;
 import java.util.function.Function;
 import java.util.function.IntToLongFunction;
 
+@Singleton
 public class FibonacciOperation implements Function<Integer, BigInteger> {
 
     @Override

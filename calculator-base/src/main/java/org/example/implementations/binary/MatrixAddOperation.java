@@ -1,10 +1,12 @@
 package org.example.implementations.binary;
 
+import jakarta.inject.Singleton;
 import org.example.interfaces.MatrixOperation;
 import org.example.models.Matrix;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Singleton
 public class MatrixAddOperation implements MatrixOperation {
 
     private final ConcurrentHashMap<String, Integer> cache;

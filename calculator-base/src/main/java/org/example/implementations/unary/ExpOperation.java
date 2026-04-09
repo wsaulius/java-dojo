@@ -1,7 +1,10 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.IntToDoubleFunction;
 
+@Singleton
 public class ExpOperation implements IntToDoubleFunction {
 
     @Override

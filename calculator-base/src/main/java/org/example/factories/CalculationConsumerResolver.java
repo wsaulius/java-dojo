@@ -4,6 +4,7 @@ import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.*;
 import org.example.interfaces.CalculationConsumer;
 import org.example.models.BinaryCalculationRecord;
@@ -11,6 +12,7 @@ import org.example.models.UnaryCalculationRecord;
 
 import java.math.BigInteger;
 
+@Singleton
 public class CalculationConsumerResolver {
 
     private final Injector injector;

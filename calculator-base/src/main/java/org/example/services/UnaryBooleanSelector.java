@@ -1,11 +1,13 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.UnaryBooleanType;
 
 import java.util.Map;
 import java.util.function.IntPredicate;
 
+@Singleton
 public class UnaryBooleanSelector {
 
     private final Map<UnaryBooleanType, IntPredicate> operations;

@@ -1,8 +1,11 @@
 package org.example.implementations.binary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.DoubleBinaryOperator;
 
-public class MinOperation implements DoubleBinaryOperator {
+@Singleton
+public final class MinOperation implements DoubleBinaryOperator {
 
     @Override
     public double applyAsDouble(double left, double right) {

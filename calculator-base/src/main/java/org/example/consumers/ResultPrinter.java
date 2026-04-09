@@ -1,8 +1,10 @@
 package org.example.consumers;
 
+import jakarta.inject.Singleton;
 import org.example.interfaces.ResultConsumer;
 
-public class ResultPrinter<T> implements ResultConsumer<T> {
+@Singleton
+public final class ResultPrinter<T> implements ResultConsumer<T> {
 
     @Override
     public void accept(T result) {

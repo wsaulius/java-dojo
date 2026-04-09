@@ -1,12 +1,14 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.UnaryLongType;
 
 import java.util.Map;
 import java.util.function.IntToLongFunction;
 
-public class UnaryLongSelector {
+@Singleton
+public final class UnaryLongSelector {
 
     private final Map<UnaryLongType, IntToLongFunction> operations;
 

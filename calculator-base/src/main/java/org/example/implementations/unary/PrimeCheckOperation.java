@@ -1,8 +1,11 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.IntPredicate;
 
-public class PrimeCheckOperation implements IntPredicate {
+@Singleton
+public final class PrimeCheckOperation implements IntPredicate {
 
     @Override
     public boolean test(int n) {

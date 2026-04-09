@@ -4,32 +4,22 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.consumers.MatrixPrinter;
 import org.example.enums.*;
+import org.example.execution.MatrixExecutor;
 import org.example.factories.CalculationConsumerResolver;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.Matrix;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
 import org.example.services.CalculatorService;
-import org.example.execution.MatrixExecutor;
 import org.example.suppliers.MatrixSupplier;
 
 import java.math.BigInteger;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Application {
     public static void main(String[] args) {
-
-        Injector injector = Guice.createInjector(
-                new UnaryIntOperationModule(),
-                new UnaryDoubleOperationModule(),
-                new UnaryLongOperationModule(),
-                new UnaryBooleanOperationModule(),
-                new BinaryOperationModule(),
-                new SequenceModule(),
-                new SelectorModule(),
-                new CalculatorConsumerModule(),
-                new UnaryBigIntegerOperationModule(),
-                new ExecutorModule()
-        );
+        Injector injector = Guice.createInjector(new CalculatorApplicationModule());
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
@@ -47,31 +37,30 @@ public class Application {
         BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
         resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
 
-        // Matrix setup
-        MatrixSupplier matrixSupplier = new MatrixSupplier(4);
-        MatrixPrinter printer = new MatrixPrinter();
+            MatrixSupplier matrixSupplier = new MatrixSupplier(4);
+            MatrixPrinter printer = new MatrixPrinter();
 
-        Matrix A = matrixSupplier.get();
-        Matrix B = matrixSupplier.get();
+            Matrix A = matrixSupplier.get();
+            Matrix B = matrixSupplier.get();
 
-        System.out.println("\nMatrix A:");
-        printer.accept(A);
+            System.out.println("\nMatrix A:");
+            printer.accept(A);
 
-        System.out.println("Matrix B:");
-        printer.accept(B);
+            System.out.println("Matrix B:");
+            printer.accept(B);
 
-        Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
-        System.out.println("Addition:");
-        printer.accept(add);
+            Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
+            System.out.println("Addition:");
+            printer.accept(add);
 
-        Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
-        System.out.println("Multiplication:");
-        printer.accept(mul);
+            Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
+            System.out.println("Multiplication:");
+            printer.accept(mul);
 
-        Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
-        System.out.println("Subtraction:");
-        printer.accept(sub);
+            Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
+            System.out.println("Subtraction:");
+            printer.accept(sub);
 
-        matrixExecutor.shutdown();
+            matrixExecutor.shutdown();
     }
 }

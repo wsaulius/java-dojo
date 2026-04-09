@@ -1,12 +1,14 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.UnaryDoubleType;
 
 import java.util.Map;
 import java.util.function.IntToDoubleFunction;
 
-public class UnaryDoubleSelector {
+@Singleton
+public final class UnaryDoubleSelector {
 
     private final Map<UnaryDoubleType, IntToDoubleFunction> operations;
 

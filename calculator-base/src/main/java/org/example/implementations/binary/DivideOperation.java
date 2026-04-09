@@ -1,8 +1,11 @@
 package org.example.implementations.binary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.DoubleBinaryOperator;
 
-public class DivideOperation implements DoubleBinaryOperator {
+@Singleton
+public final class DivideOperation implements DoubleBinaryOperator {
 
     @Override
     public double applyAsDouble(double left, double right) {

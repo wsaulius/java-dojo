@@ -1,12 +1,14 @@
 package org.example.services;
 
 import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.example.enums.UnaryBigIntegerType;
 import java.util.Map;
 import java.math.BigInteger;
 import java.util.function.Function;
 
-public class UnaryBigIntegerSelector {
+@Singleton
+public final class UnaryBigIntegerSelector {
 
     private final Map<UnaryBigIntegerType, Function<Integer, BigInteger>> operations;
 

@@ -1,8 +1,11 @@
 package org.example.implementations.unary;
 
+import jakarta.inject.Singleton;
+
 import java.util.function.IntToDoubleFunction;
 
-public class SqrtOperation implements IntToDoubleFunction {
+@Singleton
+public final class SqrtOperation implements IntToDoubleFunction {
 
     @Override
     public double applyAsDouble(int n) {

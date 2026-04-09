@@ -33,15 +33,12 @@ public class MatrixService {
                 IntStream.range(0, rows)
                         .mapToObj(row ->
                                 CompletableFuture.runAsync(() -> {
-
                                     for (int col = 0; col < cols; col++) {
                                         int value = operation.apply(A, B, row, col);
                                         result.set(row, col, value);
                                     }
-
                                     System.out.println("Row " + row +
                                             " computed by " + Thread.currentThread().getName());
-
                                 }, pool)
                         )
                         .toList();

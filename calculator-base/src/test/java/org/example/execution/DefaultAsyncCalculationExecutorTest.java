@@ -7,11 +7,11 @@ import org.example.services.CalculatorService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -24,6 +24,177 @@ class DefaultAsyncCalculationExecutorTest {
         if (executorService != null) {
             executorService.shutdownNow();
         }
+    }
+
+    @Test
+    void shouldExecuteMultipleTasksConcurrently() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newFixedThreadPool(3);
+
+        CountDownLatch startedLatch = new CountDownLatch(3);
+        CountDownLatch releaseLatch = new CountDownLatch(1);
+        AtomicInteger running = new AtomicInteger();
+        AtomicInteger maxRunning = new AtomicInteger();
+
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+            int current = running.incrementAndGet();
+            maxRunning.updateAndGet(previous -> Math.max(previous, current));
+            startedLatch.countDown();
+
+            try {
+                assertTrue(releaseLatch.await(2, TimeUnit.SECONDS));
+                Integer input = invocation.getArgument(1);
+                return input * input;
+            } finally {
+                running.decrementAndGet();
+            }
+        });
+
+        DefaultAsyncCalculationExecutor executor = new DefaultAsyncCalculationExecutor(calculatorService, executorService);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> first = executor.submitUnaryInt(UnaryIntType.SQUARE, 2);
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> second = executor.submitUnaryInt(UnaryIntType.SQUARE, 3);
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> third = executor.submitUnaryInt(UnaryIntType.SQUARE, 4);
+
+        assertTrue(startedLatch.await(1, TimeUnit.SECONDS));
+        assertTrue(maxRunning.get() >= 2);
+        assertFalse(first.isDone());
+        assertFalse(second.isDone());
+        assertFalse(third.isDone());
+
+        releaseLatch.countDown();
+
+        assertEquals(4, first.get(1, TimeUnit.SECONDS).result());
+        assertEquals(9, second.get(1, TimeUnit.SECONDS).result());
+        assertEquals(16, third.get(1, TimeUnit.SECONDS).result());
+    }
+
+    @Test
+    void shouldCompleteOtherTasksWhenOneFails() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newFixedThreadPool(3);
+
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 1)).thenThrow(new IllegalStateException("boom"));
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 2)).thenReturn(4);
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 3)).thenReturn(9);
+
+        DefaultAsyncCalculationExecutor executor = new DefaultAsyncCalculationExecutor(calculatorService, executorService);
+
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> failingFuture = executor.submitUnaryInt(UnaryIntType.SQUARE, 1);
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> secondFuture = executor.submitUnaryInt(UnaryIntType.SQUARE, 2);
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> thirdFuture = executor.submitUnaryInt(UnaryIntType.SQUARE, 3);
+
+        ExecutionException executionException = assertThrows(
+                ExecutionException.class,
+                () -> failingFuture.get(1, TimeUnit.SECONDS)
+        );
+
+        assertInstanceOf(IllegalStateException.class, executionException.getCause());
+        assertEquals("boom", executionException.getCause().getMessage());
+        assertEquals(4, secondFuture.get(1, TimeUnit.SECONDS).result());
+        assertEquals(9, thirdFuture.get(1, TimeUnit.SECONDS).result());
+
+        verify(calculatorService).runUnaryInt(UnaryIntType.SQUARE, 1);
+        verify(calculatorService).runUnaryInt(UnaryIntType.SQUARE, 2);
+        verify(calculatorService).runUnaryInt(UnaryIntType.SQUARE, 3);
+    }
+
+    @Test
+    void shouldPreserveCorrectResultsAcrossConcurrentTasks() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newFixedThreadPool(4);
+
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+            Integer input = invocation.getArgument(1);
+            Thread.sleep((10 - input) * 5L);
+            return input * input;
+        });
+
+        DefaultAsyncCalculationExecutor executor = new DefaultAsyncCalculationExecutor(calculatorService, executorService);
+
+        List<Integer> inputs = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+        List<CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> futures = new ArrayList<>();
+
+        for (Integer input : inputs) {
+            futures.add(executor.submitUnaryInt(UnaryIntType.SQUARE, input));
+        }
+
+        for (int i = 0; i < inputs.size(); i++) {
+            int expectedInput = inputs.get(i);
+            UnaryCalculationRecord<UnaryIntType, Integer, Integer> record = futures.get(i).get(1, TimeUnit.SECONDS);
+            assertEquals(UnaryIntType.SQUARE, record.operation());
+            assertEquals(expectedInput, record.input());
+            assertEquals(expectedInput * expectedInput, record.result());
+        }
+    }
+
+    @Test
+    void shouldHandleBatchExecutionConcurrently() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newFixedThreadPool(4);
+
+        CountDownLatch startedLatch = new CountDownLatch(4);
+        CountDownLatch releaseLatch = new CountDownLatch(1);
+
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+            startedLatch.countDown();
+            assertTrue(releaseLatch.await(2, TimeUnit.SECONDS));
+            Integer input = invocation.getArgument(1);
+            return input * input;
+        });
+
+        DefaultAsyncCalculationExecutor executor = new DefaultAsyncCalculationExecutor(calculatorService, executorService);
+
+        List<Integer> inputs = List.of(2, 3, 4, 5);
+        List<CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> futures =
+                executor.submitUnaryIntBatch(UnaryIntType.SQUARE, inputs);
+
+        assertEquals(inputs.size(), futures.size());
+        assertTrue(startedLatch.await(1, TimeUnit.SECONDS));
+        assertTrue(futures.stream().noneMatch(CompletableFuture::isDone));
+
+        releaseLatch.countDown();
+
+        for (int i = 0; i < inputs.size(); i++) {
+            UnaryCalculationRecord<UnaryIntType, Integer, Integer> record = futures.get(i).get(1, TimeUnit.SECONDS);
+            int input = inputs.get(i);
+            assertEquals(UnaryIntType.SQUARE, record.operation());
+            assertEquals(input, record.input());
+            assertEquals(input * input, record.result());
+        }
+    }
+
+    @Test
+    void shouldReturnCompletableFutureImmediately() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newSingleThreadExecutor();
+
+        CountDownLatch enteredCalculation = new CountDownLatch(1);
+        CountDownLatch releaseLatch = new CountDownLatch(1);
+
+        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 7)).thenAnswer(invocation -> {
+            enteredCalculation.countDown();
+            assertTrue(releaseLatch.await(2, TimeUnit.SECONDS));
+            return 49;
+        });
+
+        DefaultAsyncCalculationExecutor executor = new DefaultAsyncCalculationExecutor(calculatorService, executorService);
+
+        long startNanos = System.nanoTime();
+        CompletableFuture<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> future =
+                executor.submitUnaryInt(UnaryIntType.SQUARE, 7);
+        long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNanos);
+
+        assertNotNull(future);
+        assertTrue(elapsedMillis < 100);
+        assertTrue(enteredCalculation.await(1, TimeUnit.SECONDS));
+        assertFalse(future.isDone());
+
+        releaseLatch.countDown();
+
+        UnaryCalculationRecord<UnaryIntType, Integer, Integer> record = future.get(1, TimeUnit.SECONDS);
+        assertEquals(7, record.input());
+        assertEquals(49, record.result());
     }
 
     @Test

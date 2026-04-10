@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.consumers.MatrixPrinter;
 import org.example.enums.*;
-import org.example.execution.MatrixExecutor;
+import org.example.execution.DefaultMatrixExecutor;
 import org.example.factories.CalculationConsumerResolver;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.Matrix;
@@ -14,7 +14,6 @@ import org.example.services.CalculatorService;
 import org.example.suppliers.MatrixSupplier;
 
 import java.math.BigInteger;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 public class Application {
@@ -23,7 +22,7 @@ public class Application {
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
-        MatrixExecutor matrixExecutor = injector.getInstance(MatrixExecutor.class);
+        DefaultMatrixExecutor matrixExecutor = injector.getInstance(DefaultMatrixExecutor.class);
 
         int intResult = calculator.runUnaryInt(UnaryIntType.CUBE, 5);
         resolver.unaryInt().accept(new UnaryCalculationRecord<>(UnaryIntType.CUBE, 5, intResult));

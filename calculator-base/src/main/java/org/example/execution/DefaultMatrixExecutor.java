@@ -2,28 +2,26 @@ package org.example.execution;
 
 import com.google.inject.Inject;
 import org.example.enums.BinaryType;
-import org.example.interfaces.CalculationExecutor;
 import org.example.models.Matrix;
+import org.example.modules.MatrixPool;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
-public final class MatrixExecutor {
+public final class DefaultMatrixExecutor {
 
     private final ExecutorService pool;
-    private final ExecutorService calcPool;
-    private final CalculationExecutor executor;
+    private final DefaultAsyncCalculationExecutor executor;
     private final ConcurrentHashMap<String, Matrix> cache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Integer> operationCache = new ConcurrentHashMap<>();
 
     @Inject
-    public MatrixExecutor(ExecutorService pool, CalculationExecutor executor) {
+    public DefaultMatrixExecutor(@MatrixPool ExecutorService pool,
+                                 DefaultAsyncCalculationExecutor executor) {
         this.pool = pool;
-        this.calcPool = Executors.newCachedThreadPool();
         this.executor = executor;
     }
 
@@ -76,7 +74,7 @@ public final class MatrixExecutor {
                             throw new RuntimeException(e);
                         }
                     });
-                }, calcPool))
+                }, pool))
                 .toList();
 
         CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
@@ -99,14 +97,6 @@ public final class MatrixExecutor {
             pool.shutdownNow();
             Thread.currentThread().interrupt();
         }
-        calcPool.shutdown();
-        try {
-            if (!calcPool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)) {
-                calcPool.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            calcPool.shutdownNow();
-            Thread.currentThread().interrupt();
-        }
+        executor.shutdown();
     }
 }

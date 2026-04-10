@@ -4,7 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.enums.BinaryType;
 import org.example.models.Matrix;
-import org.example.execution.MatrixExecutor;
+import org.example.execution.DefaultMatrixExecutor;
 import org.example.modules.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ class MatrixBinaryOperationTest {
 
     private Matrix A;
     private Matrix B;
-    private MatrixExecutor matrixExecutor;
+    private DefaultMatrixExecutor matrixExecutor;
 
     @BeforeEach
     void setUp() {
@@ -37,7 +37,7 @@ class MatrixBinaryOperationTest {
         });
 
         Injector injector = Guice.createInjector(new CalculatorApplicationModule());
-        matrixExecutor = injector.getInstance(MatrixExecutor.class);
+        matrixExecutor = injector.getInstance(DefaultMatrixExecutor.class);
     }
 
 

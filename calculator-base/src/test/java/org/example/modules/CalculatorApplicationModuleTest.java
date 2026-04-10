@@ -60,7 +60,12 @@ class CalculatorApplicationModuleTest {
     void shouldResolveExecutionLayer() {
         assertNotNull(injector.getInstance(CalculationExecutor.class));
         assertNotNull(injector.getInstance(AsyncCalculationExecutor.class));
-        assertNotNull(injector.getInstance(ExecutorService.class));
+        assertNotNull(injector.getInstance(
+                Key.get(ExecutorService.class, MatrixPool.class)
+        ));
+        assertNotNull(injector.getInstance(
+                Key.get(ExecutorService.class, CalcPool.class)
+        ));
     }
 
     @Test

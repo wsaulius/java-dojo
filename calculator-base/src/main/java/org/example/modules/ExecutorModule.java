@@ -18,9 +18,23 @@ public class ExecutorModule extends AbstractModule {
         bind(AsyncCalculationExecutor.class).to(DefaultAsyncCalculationExecutor.class);
     }
 
+    /**
+     * Executor for MatrixExecutor (row + cell parallelism)
+     */
     @Provides
     @Singleton
-    ExecutorService provideExecutorService() {
-        return Executors.newFixedThreadPool(10);
+    @MatrixPool
+    ExecutorService provideMatrixExecutor() {
+        return Executors.newFixedThreadPool(8);
+    }
+
+    /**
+     * Executor for CalculationExecutor (binary operations)
+     */
+    @Provides
+    @Singleton
+    @CalcPool
+    ExecutorService provideCalculationExecutor() {
+        return Executors.newCachedThreadPool();
     }
 }

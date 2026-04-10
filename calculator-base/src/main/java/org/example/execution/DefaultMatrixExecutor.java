@@ -2,6 +2,7 @@ package org.example.execution;
 
 import com.google.inject.Inject;
 import org.example.enums.BinaryType;
+import org.example.interfaces.MatrixExecutor;
 import org.example.models.Matrix;
 import org.example.modules.MatrixPool;
 
@@ -11,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.IntStream;
 
-public final class DefaultMatrixExecutor {
+public final class DefaultMatrixExecutor implements MatrixExecutor {
 
     private final ExecutorService pool;
     private final DefaultAsyncCalculationExecutor executor;

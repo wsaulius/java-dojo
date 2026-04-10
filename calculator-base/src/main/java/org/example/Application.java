@@ -15,6 +15,9 @@ import org.example.suppliers.MatrixSupplier;
 
 import java.math.BigInteger;
 
+/**
+ * Calculators main class
+ */
 
 public class Application {
     public static void main(String[] args) {

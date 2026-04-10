@@ -49,11 +49,11 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
                                         .map(k -> {
                                             int left = A.get(row, k);
                                             int right = B.get(k, col);
-                                            String opKey = left + ":" + BinaryType.MULTIPLY + ":" + right;
+                                            String opKey = left + ":" + type + ":" + right;
                                             return operationCache.computeIfAbsent(opKey, kk -> {
                                                 try {
                                                     return (int) executor.submitBinary(
-                                                            BinaryType.MULTIPLY,
+                                                            type,
                                                             (double) left,
                                                             (double) right
                                                     ).get().result();

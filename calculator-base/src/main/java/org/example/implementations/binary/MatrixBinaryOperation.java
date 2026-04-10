@@ -23,8 +23,6 @@ public class MatrixBinaryOperation implements MatrixOperation {
         int left = A.get(row, col);
         int right = B.get(row, col);
         String key = left + type.name() + right;
-
-        // Cache per-cell result
         return cache.computeIfAbsent(key, k -> calculatorService.runBinary(type, left * 1.0, right * 1.0).intValue());
     }
 }

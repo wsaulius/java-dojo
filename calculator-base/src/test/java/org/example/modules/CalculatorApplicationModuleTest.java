@@ -1,10 +1,9 @@
 package org.example.modules;
 
-import com.google.inject.*;
 import org.example.enums.*;
-import org.example.interfaces.AsyncCalculationExecutor;
-import org.example.interfaces.CalculationConsumer;
-import org.example.interfaces.CalculationExecutor;
+import org.example.interfaces.*;
+import org.example.interfaces.annotations.CalcPool;
+import org.example.interfaces.annotations.MatrixPool;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
 import org.example.services.BinarySelector;
@@ -23,9 +22,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
-import org.example.services.*;
+
 import java.util.concurrent.ExecutorService;
-import org.example.services.*;
 
 class CalculatorApplicationModuleTest {
 

@@ -8,8 +8,15 @@ import org.example.implementations.unary.*;
 
 import java.util.function.IntUnaryOperator;
 
+/**
+ * Guice module that binds each {@link UnaryIntType} to its corresponding
+ * {@link IntUnaryOperator} implementation.
+ */
 public class UnaryIntOperationModule extends AbstractModule {
 
+    /**
+     * Configures unary integer operation bindings.
+     */
     @Override
     protected void configure() {
         MapBinder<UnaryIntType, IntUnaryOperator> binder =

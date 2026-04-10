@@ -5,9 +5,13 @@ import jakarta.inject.Singleton;
 import java.math.BigInteger;
 import java.util.function.Function;
 
+/**
+ * Computes Fibonacci value for the given input.
+ */
 @Singleton
 public final class FibonacciOperation implements Function<Integer, BigInteger> {
 
+    /** {@inheritDoc} */
     @Override
     public BigInteger apply(Integer n) {
         return compute(n);

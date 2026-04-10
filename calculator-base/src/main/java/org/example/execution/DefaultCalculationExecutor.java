@@ -11,7 +11,7 @@ import org.example.enums.UnaryLongType;
 import org.example.interfaces.CalculationExecutor;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
-import org.example.modules.CalcPool;
+import org.example.interfaces.annotations.CalcPool;
 import org.example.services.CalculatorService;
 
 import java.math.BigInteger;
@@ -21,12 +21,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
+/**
+ * Default implementation of CalculationExecutor using Future and ExecutorService.
+ */
 @Singleton
 public final class DefaultCalculationExecutor implements CalculationExecutor {
 
     private final CalculatorService calculatorService;
     private final ExecutorService executorService;
 
+    /**
+     * Creates executor with required dependencies.
+     */
     @Inject
     public DefaultCalculationExecutor(
             CalculatorService calculatorService,
@@ -36,6 +42,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         this.executorService = executorService;
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>> submitUnaryInt(
             UnaryIntType type,
@@ -48,6 +55,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>> submitUnaryDouble(
             UnaryDoubleType type,
@@ -60,6 +68,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<UnaryCalculationRecord<UnaryLongType, Integer, Long>> submitUnaryLong(
             UnaryLongType type,
@@ -72,6 +81,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>> submitUnaryBoolean(
             UnaryBooleanType type,
@@ -84,6 +94,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>> submitUnaryBigInteger(
             UnaryBigIntegerType type,
@@ -96,6 +107,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         );
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Future<UnaryCalculationRecord<UnaryIntType, Integer, Integer>>> submitUnaryIntBatch(
             UnaryIntType type,
@@ -106,6 +118,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                 .toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Future<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>> submitUnaryDoubleBatch(
             UnaryDoubleType type,
@@ -116,6 +129,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                 .toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Future<UnaryCalculationRecord<UnaryLongType, Integer, Long>>> submitUnaryLongBatch(
             UnaryLongType type,
@@ -126,6 +140,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                 .toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Future<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>>> submitUnaryBooleanBatch(
             UnaryBooleanType type,
@@ -136,6 +151,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                 .toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public List<Future<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>>> submitUnaryBigIntegerBatch(
             UnaryBigIntegerType type,
@@ -146,6 +162,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                 .toList();
     }
 
+    /** {@inheritDoc} */
     @Override
     public Future<BinaryCalculationRecord> submitBinary(
             BinaryType type,
@@ -188,6 +205,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
         });
     }
 
+    /** {@inheritDoc} */
     @Override
     public void shutdown() {
         executorService.shutdown();

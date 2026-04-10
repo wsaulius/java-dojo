@@ -4,9 +4,13 @@ import jakarta.inject.Singleton;
 
 import java.util.function.IntPredicate;
 
+/**
+ * Unary prime check operation.
+ */
 @Singleton
 public final class PrimeCheckOperation implements IntPredicate {
 
+    /** {@inheritDoc} */
     @Override
     public boolean test(int n) {
 

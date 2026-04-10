@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import org.example.enums.BinaryType;
 import org.example.interfaces.MatrixExecutor;
 import org.example.models.Matrix;
-import org.example.modules.MatrixPool;
+import org.example.interfaces.annotations.MatrixPool;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -12,6 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.IntStream;
 
+/**
+ * Executes matrix operations using an ExecutorService.
+ */
 public final class DefaultMatrixExecutor implements MatrixExecutor {
 
     private final ExecutorService pool;
@@ -19,6 +22,9 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
     private final ConcurrentHashMap<String, Matrix> cache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Integer> operationCache = new ConcurrentHashMap<>();
 
+    /**
+     * Creates executor with required dependencies.
+     */
     @Inject
     public DefaultMatrixExecutor(@MatrixPool ExecutorService pool,
                                  DefaultAsyncCalculationExecutor executor) {
@@ -26,6 +32,8 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
         this.executor = executor;
     }
 
+    /** {@inheritDoc} */
+    @Override
     public Matrix execute(Matrix A, Matrix B, BinaryType type, String operationName) {
 
         String key = generateKey(A, B, operationName);
@@ -84,10 +92,15 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
         return result;
     }
 
+    /**
+     * Generates a cache key for matrix operations based on identity and operation name.
+     */
     private String generateKey(Matrix A, Matrix B, String operationName) {
         return operationName + ":" + System.identityHashCode(A) + ":" + System.identityHashCode(B);
     }
 
+    /** {@inheritDoc} */
+    @Override
     public void shutdown() {
         pool.shutdown();
         try {

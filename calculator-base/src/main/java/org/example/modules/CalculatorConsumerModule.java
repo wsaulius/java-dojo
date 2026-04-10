@@ -17,8 +17,15 @@ import org.example.models.UnaryCalculationRecord;
 
 import java.math.BigInteger;
 
+/**
+ * Guice module that binds typed result and calculation consumers
+ * to their printer implementations.
+ */
 public class CalculatorConsumerModule extends AbstractModule {
 
+    /**
+     * Configures typed consumer bindings.
+     */
     @Override
     protected void configure() {
         bindResultConsumer(new TypeLiteral<ResultConsumer<Integer>>() {}, new TypeLiteral<ResultPrinter<Integer>>() {});
@@ -57,6 +64,13 @@ public class CalculatorConsumerModule extends AbstractModule {
         );
     }
 
+    /**
+     * Binds a typed {@link ResultConsumer} to its implementation.
+     *
+     * @param consumerType consumer type literal
+     * @param implementationType implementation type literal
+     * @param <T> result type
+     */
     private <T> void bindResultConsumer(
             TypeLiteral<ResultConsumer<T>> consumerType,
             TypeLiteral<? extends ResultConsumer<T>> implementationType
@@ -64,6 +78,13 @@ public class CalculatorConsumerModule extends AbstractModule {
         bind(consumerType).to(implementationType);
     }
 
+    /**
+     * Binds a typed {@link CalculationConsumer} to its implementation.
+     *
+     * @param consumerType consumer type literal
+     * @param implementationType implementation type literal
+     * @param <T> calculation type
+     */
     private <T> void bindCalculationConsumer(
             TypeLiteral<CalculationConsumer<T>> consumerType,
             TypeLiteral<? extends CalculationConsumer<T>> implementationType

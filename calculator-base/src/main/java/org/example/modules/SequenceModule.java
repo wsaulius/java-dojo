@@ -8,8 +8,14 @@ import org.example.predicates.sequence.EvenPredicate;
 
 import java.util.function.Predicate;
 
+/**
+ * Guice module that binds sequence-related consumers and predicates.
+ */
 public class SequenceModule extends AbstractModule {
 
+    /**
+     * Configures sequence bindings.
+     */
     @Override
     protected void configure() {
         bind(new TypeLiteral<SequenceConsumer<Long>>() {})

@@ -2,7 +2,14 @@ package org.example.modules;
 
 import com.google.inject.AbstractModule;
 
+/**
+ * Root Guice module that installs all calculator application modules.
+ */
 public class CalculatorApplicationModule extends AbstractModule {
+
+    /**
+     * Configures and installs all application submodules.
+     */
     @Override
     protected void configure() {
         install(new UnaryIntOperationModule());

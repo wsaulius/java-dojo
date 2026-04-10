@@ -6,9 +6,13 @@ import org.example.models.Matrix;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+/**
+ * Prints matrix content.
+ */
 @Singleton
 public final class MatrixPrinter implements Consumer<Matrix> {
 
+    /** {@inheritDoc} */
     @Override
     public void accept(Matrix matrix) {
 

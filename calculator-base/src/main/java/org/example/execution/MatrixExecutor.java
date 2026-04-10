@@ -76,7 +76,7 @@ public final class MatrixExecutor {
                             throw new RuntimeException(e);
                         }
                     });
-                }, pool))
+                }, calcPool))
                 .toList();
 
         CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
@@ -97,6 +97,15 @@ public final class MatrixExecutor {
             }
         } catch (InterruptedException e) {
             pool.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+        calcPool.shutdown();
+        try {
+            if (!calcPool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)) {
+                calcPool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            calcPool.shutdownNow();
             Thread.currentThread().interrupt();
         }
     }

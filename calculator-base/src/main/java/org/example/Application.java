@@ -37,7 +37,7 @@ public class Application {
         BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
         resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
 
-        MatrixSupplier matrixSupplier = new MatrixSupplier(4);
+        MatrixSupplier matrixSupplier = new MatrixSupplier(10);
         MatrixPrinter printer = new MatrixPrinter();
 
         Matrix A = matrixSupplier.get();

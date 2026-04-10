@@ -1,4 +1,4 @@
-package org.example.matrix;
+package org.example.services;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -36,19 +36,7 @@ class MatrixBinaryOperationTest {
                 {7, 1, 2, 7}
         });
 
-        Injector injector = Guice.createInjector(
-                new UnaryIntOperationModule(),
-                new UnaryDoubleOperationModule(),
-                new UnaryLongOperationModule(),
-                new UnaryBooleanOperationModule(),
-                new BinaryOperationModule(),
-                new SequenceModule(),
-                new SelectorModule(),
-                new CalculatorConsumerModule(),
-                new UnaryBigIntegerOperationModule(),
-                new ExecutorModule()
-        );
-
+        Injector injector = Guice.createInjector(new CalculatorApplicationModule());
         matrixExecutor = injector.getInstance(MatrixExecutor.class);
     }
 

@@ -37,30 +37,30 @@ public class Application {
         BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
         resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
 
-            MatrixSupplier matrixSupplier = new MatrixSupplier(4);
-            MatrixPrinter printer = new MatrixPrinter();
+        MatrixSupplier matrixSupplier = new MatrixSupplier(4);
+        MatrixPrinter printer = new MatrixPrinter();
 
-            Matrix A = matrixSupplier.get();
-            Matrix B = matrixSupplier.get();
+        Matrix A = matrixSupplier.get();
+        Matrix B = matrixSupplier.get();
 
-            System.out.println("\nMatrix A:");
-            printer.accept(A);
+        System.out.println("\nMatrix A:");
+        printer.accept(A);
 
-            System.out.println("Matrix B:");
-            printer.accept(B);
+        System.out.println("Matrix B:");
+        printer.accept(B);
 
-            Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
-            System.out.println("Addition:");
-            printer.accept(add);
+        Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
+        System.out.println("Addition:");
+        printer.accept(add);
 
-            Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
-            System.out.println("Multiplication:");
-            printer.accept(mul);
+        Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
+        System.out.println("Multiplication:");
+        printer.accept(mul);
 
-            Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
-            System.out.println("Subtraction:");
-            printer.accept(sub);
+        Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
+        System.out.println("Subtraction:");
+        printer.accept(sub);
 
-            matrixExecutor.shutdown();
+        matrixExecutor.shutdown();
     }
 }

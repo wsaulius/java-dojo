@@ -3,6 +3,7 @@ package org.example.modules;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import org.example.interfaces.AsyncCalculationExecutor;
 import org.example.interfaces.CalculationExecutor;
 import org.example.services.CalculatorService;
@@ -40,13 +41,16 @@ class ExecutorModuleTest {
     void shouldResolveExecutionLayer() {
         assertNotNull(injector.getInstance(CalculationExecutor.class));
         assertNotNull(injector.getInstance(AsyncCalculationExecutor.class));
-        assertNotNull(injector.getInstance(ExecutorService.class));
+        assertNotNull(injector.getInstance(Key.get(ExecutorService.class, CalcPool.class)));
+        assertNotNull(injector.getInstance(Key.get(ExecutorService.class, MatrixPool.class)));
     }
 
     @Test
     void shouldProvideSingletonExecutorService() {
-        ExecutorService first = injector.getInstance(ExecutorService.class);
-        ExecutorService second = injector.getInstance(ExecutorService.class);
+        ExecutorService first = injector.getInstance(
+                Key.get(ExecutorService.class, CalcPool.class));
+        ExecutorService second = injector.getInstance(
+                Key.get(ExecutorService.class, CalcPool.class));
 
         assertSame(first, second);
     }

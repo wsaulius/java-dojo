@@ -11,6 +11,7 @@ import org.example.enums.UnaryLongType;
 import org.example.interfaces.CalculationExecutor;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
+import org.example.modules.CalcPool;
 import org.example.services.CalculatorService;
 
 import java.math.BigInteger;
@@ -29,7 +30,7 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
     @Inject
     public DefaultCalculationExecutor(
             CalculatorService calculatorService,
-            ExecutorService executorService
+            @CalcPool ExecutorService executorService
     ) {
         this.calculatorService = calculatorService;
         this.executorService = executorService;

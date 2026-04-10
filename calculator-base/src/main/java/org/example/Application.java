@@ -4,21 +4,20 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.consumers.MatrixPrinter;
 import org.example.enums.*;
+import org.example.execution.DefaultMatrixExecutor;
 import org.example.factories.CalculationConsumerResolver;
-import org.example.implementations.binary.MatrixAddOperation;
-import org.example.implementations.binary.MatrixDivideOperation;
-import org.example.implementations.binary.MatrixMultiplyOperation;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.Matrix;
 import org.example.models.UnaryCalculationRecord;
 import org.example.modules.*;
 import org.example.services.CalculatorService;
-import org.example.services.MatrixService;
 import org.example.suppliers.MatrixSupplier;
 
 import java.math.BigInteger;
-import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Calculators main class
+ */
 
 public class Application {
     public static void main(String[] args) {
@@ -26,6 +25,7 @@ public class Application {
 
         CalculatorService calculator = injector.getInstance(CalculatorService.class);
         CalculationConsumerResolver resolver = injector.getInstance(CalculationConsumerResolver.class);
+        DefaultMatrixExecutor matrixExecutor = injector.getInstance(DefaultMatrixExecutor.class);
 
         int intResult = calculator.runUnaryInt(UnaryIntType.CUBE, 5);
         resolver.unaryInt().accept(new UnaryCalculationRecord<>(UnaryIntType.CUBE, 5, intResult));
@@ -39,7 +39,7 @@ public class Application {
         BigInteger bigIntegerResult = calculator.runUnaryBigInteger(UnaryBigIntegerType.FIBONACCI, 500);
         resolver.unaryBigInteger().accept(new UnaryCalculationRecord<>(UnaryBigIntegerType.FIBONACCI, 500, bigIntegerResult));
 
-        MatrixSupplier matrixSupplier = new MatrixSupplier(4);
+        MatrixSupplier matrixSupplier = new MatrixSupplier(10);
         MatrixPrinter printer = new MatrixPrinter();
 
         Matrix A = matrixSupplier.get();
@@ -51,25 +51,18 @@ public class Application {
         System.out.println("Matrix B:");
         printer.accept(B);
 
-        MatrixService matrixService = new MatrixService(4);
-        ConcurrentHashMap<String, Integer> cache = new ConcurrentHashMap<>();
-
-
-        // 🔹 ADD
-        Matrix add = matrixService.execute(A, B, new MatrixAddOperation(cache), "ADD");
+        Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
         System.out.println("Addition:");
         printer.accept(add);
 
-        // 🔹 MULTIPLY
-        Matrix mul = matrixService.execute(A, B, new MatrixMultiplyOperation(), "MULTIPLY");
+        Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
         System.out.println("Multiplication:");
         printer.accept(mul);
 
-        // 🔹 DIVIDE
-        Matrix divideM = matrixService.execute(A, B, new MatrixDivideOperation(), "DIVIDE");
-        System.out.println("Division:");
-        printer.accept(divideM);
+        Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
+        System.out.println("Subtraction:");
+        printer.accept(sub);
 
-        matrixService.shutdown();
+        matrixExecutor.shutdown();
     }
 }

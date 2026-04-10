@@ -4,9 +4,13 @@ import jakarta.inject.Singleton;
 
 import java.util.function.IntToDoubleFunction;
 
+/**
+ * Unary square root operation.
+ */
 @Singleton
 public final class SqrtOperation implements IntToDoubleFunction {
 
+    /** {@inheritDoc} */
     @Override
     public double applyAsDouble(int n) {
 

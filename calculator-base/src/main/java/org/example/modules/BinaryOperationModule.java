@@ -5,11 +5,18 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.MapBinder;
 import org.example.enums.BinaryType;
 import org.example.implementations.binary.*;
-
 import java.util.function.DoubleBinaryOperator;
+import org.example.implementations.binary.*;
 
+/**
+ * Guice module that binds each {@link BinaryType} to its corresponding
+ * {@link DoubleBinaryOperator} implementation.
+ */
 public class BinaryOperationModule extends AbstractModule {
 
+    /**
+     * Configures binary operation bindings.
+     */
     @Override
     protected void configure() {
         MapBinder<BinaryType, DoubleBinaryOperator> binder =

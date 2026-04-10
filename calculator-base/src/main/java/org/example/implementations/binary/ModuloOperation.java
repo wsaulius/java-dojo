@@ -4,9 +4,13 @@ import jakarta.inject.Singleton;
 
 import java.util.function.DoubleBinaryOperator;
 
+/**
+ * Binary modulo operation.
+ */
 @Singleton
 public final class ModuloOperation implements DoubleBinaryOperator {
 
+    /** {@inheritDoc} */
     @Override
     public double applyAsDouble(double left, double right) {
         if (right == 0) {

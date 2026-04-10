@@ -9,8 +9,15 @@ import org.example.implementations.unary.FibonacciOperation;
 
 import java.util.function.IntToLongFunction;
 
+/**
+ * Guice module that binds each {@link UnaryLongType} to its corresponding
+ * {@link IntToLongFunction} implementation.
+ */
 public class UnaryLongOperationModule extends AbstractModule {
 
+    /**
+     * Configures unary long operation bindings.
+     */
     @Override
     protected void configure() {
         MapBinder<UnaryLongType, IntToLongFunction> binder =

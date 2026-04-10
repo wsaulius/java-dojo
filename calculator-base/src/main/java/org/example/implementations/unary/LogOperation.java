@@ -4,8 +4,13 @@ import jakarta.inject.Singleton;
 
 import java.util.function.IntToDoubleFunction;
 
+/**
+ * Unary logarithm operation.
+ */
 @Singleton
 public final class LogOperation implements IntToDoubleFunction {
+
+    /** {@inheritDoc} */
     @Override
     public double applyAsDouble(int n) {
 

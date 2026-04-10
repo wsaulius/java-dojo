@@ -4,8 +4,15 @@ import com.google.inject.AbstractModule;
 
 import org.example.services.*;
 
+/**
+ * Guice module that binds selector services used to resolve
+ * operation implementations by type.
+ */
 public class SelectorModule extends AbstractModule {
 
+    /**
+     * Configures selector bindings.
+     */
     @Override
     protected void configure() {
         bind(UnaryIntSelector.class);

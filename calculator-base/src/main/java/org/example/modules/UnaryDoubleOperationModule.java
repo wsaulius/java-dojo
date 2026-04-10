@@ -10,8 +10,15 @@ import org.example.implementations.unary.SqrtOperation;
 
 import java.util.function.IntToDoubleFunction;
 
+/**
+ * Guice module that binds each {@link UnaryDoubleType} to its corresponding
+ * {@link IntToDoubleFunction} implementation.
+ */
 public class UnaryDoubleOperationModule extends AbstractModule {
 
+    /**
+     * Configures unary double operation bindings.
+     */
     @Override
     protected void configure() {
         MapBinder<UnaryDoubleType, IntToDoubleFunction> binder =

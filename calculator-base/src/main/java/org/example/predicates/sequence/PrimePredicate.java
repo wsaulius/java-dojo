@@ -2,8 +2,17 @@ package org.example.predicates.sequence;
 
 import java.util.function.Predicate;
 
-//TO BE IMPLEMENTED
+/**
+ * Predicate that checks whether a {@link Long} value is prime.
+ */
 public class PrimePredicate implements Predicate<Long> {
+
+    /**
+     * Evaluates whether the given value is a prime number.
+     *
+     * @param n value to evaluate
+     * @return {@code true} if the value is prime, otherwise {@code false}
+     */
     @Override
     public boolean test(Long n) {
         if (n == null || n < 2) return false;

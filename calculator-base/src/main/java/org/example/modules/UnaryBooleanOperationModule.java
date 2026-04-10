@@ -8,8 +8,15 @@ import org.example.implementations.unary.PrimeCheckOperation;
 
 import java.util.function.IntPredicate;
 
+/**
+ * Guice module that binds each {@link UnaryBooleanType} to its corresponding
+ * {@link IntPredicate} implementation.
+ */
 public class UnaryBooleanOperationModule extends AbstractModule {
 
+    /**
+     * Configures unary boolean operation bindings.
+     */
     @Override
     protected void configure() {
         MapBinder<UnaryBooleanType, IntPredicate> binder =

@@ -36,7 +36,7 @@ class DefaultCalculationExecutorTest {
         AtomicInteger running = new AtomicInteger();
         AtomicInteger maxRunning = new AtomicInteger();
 
-        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+        when(calculatorService.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(invocation -> {
             int current = running.incrementAndGet();
             maxRunning.updateAndGet(previous -> Math.max(previous, current));
             startedLatch.countDown();
@@ -104,7 +104,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newFixedThreadPool(4);
 
-        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+        when(calculatorService.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(invocation -> {
             Integer input = invocation.getArgument(1);
             Thread.sleep((10 - input) * 5L);
             return input * input;
@@ -136,7 +136,7 @@ class DefaultCalculationExecutorTest {
         CountDownLatch startedLatch = new CountDownLatch(4);
         CountDownLatch releaseLatch = new CountDownLatch(1);
 
-        when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, anyInt())).thenAnswer(invocation -> {
+        when(calculatorService.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(invocation -> {
             startedLatch.countDown();
             assertTrue(releaseLatch.await(2, TimeUnit.SECONDS));
             Integer input = invocation.getArgument(1);

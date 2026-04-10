@@ -32,7 +32,7 @@ class BinaryOperationModuleTest {
 
     @Test
     void shouldResolveAllBinaryOperations() {
-        assertEquals(8, operations.size());
+        assertEquals(BinaryType.values().length, operations.size());
         assertNotNull(operations.get(BinaryType.ADD));
         assertNotNull(operations.get(BinaryType.SUBTRACT));
         assertNotNull(operations.get(BinaryType.MULTIPLY));

@@ -6,7 +6,9 @@ import org.example.interfaces.MatrixExecutor;
 import org.example.interfaces.annotations.MatrixPool;
 import org.example.models.Matrix;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -26,8 +28,10 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
      * Creates executor with required dependencies.
      */
     @Inject
-    public DefaultMatrixExecutor(@MatrixPool ExecutorService pool,
-                                 DefaultCalculationExecutor executor) {
+    public DefaultMatrixExecutor(
+            @MatrixPool ExecutorService pool,
+            DefaultCalculationExecutor executor
+    ) {
         this.pool = pool;
         this.executor = executor;
     }
@@ -36,72 +40,81 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
      * {@inheritDoc}
      */
     @Override
-    public Future<Matrix> execute(Matrix a, Matrix b, BinaryType type, String operationName) {
-        return pool.submit(() -> {
-            String key = generateKey(a, b, operationName);
+    public Future<Matrix> execute(
+            Matrix a,
+            Matrix b,
+            BinaryType type,
+            String operationName
+    ) {
+        String key = generateKey(a, b, operationName);
 
-            Matrix cached = cache.get(key);
-            if (cached != null) {
-                return cached;
-            }
+        Matrix cached = cache.get(key);
+        if (cached != null) {
+            return CompletableFuture.completedFuture(cached);
+        }
 
-            int rows = a.rows();
-            int cols = b.cols();
-            Matrix result = new Matrix(new int[rows][cols]);
+        int rows = a.rows();
+        int cols = b.cols();
+        Matrix result = new Matrix(new int[rows][cols]);
+        CompletableFuture<Matrix> matrixFuture = new CompletableFuture<>();
 
-            List<? extends Future<?>> tasks = IntStream.range(0, rows)
-                    .mapToObj(row -> pool.submit(() -> {
-                        for (int col = 0; col < cols; col++) {
-                            try {
-                                int value;
-                                if (type == BinaryType.MULTIPLY) {
-                                    final int currentCol = col;
-                                    value = IntStream.range(0, a.cols())
-                                            .map(k -> {
-                                                int left = a.get(row, k);
-                                                int right = b.get(k, currentCol);
-                                                String opKey = left + ":" + type + ":" + right;
-
-                                                return operationCache.computeIfAbsent(opKey, kk -> {
-                                                    try {
-                                                        return (int) executor.submitBinary(
-                                                                type,
-                                                                (double) left,
-                                                                (double) right
-                                                        ).get().result();
-                                                    } catch (Exception e) {
-                                                        throw new RuntimeException(e);
-                                                    }
-                                                });
-                                            })
-                                            .sum();
-                                } else {
-                                    value = (int) executor.submitBinary(
-                                            type,
-                                            (double) a.get(row, col),
-                                            (double) b.get(row, col)
-                                    ).get().result();
-                                }
-
-                                result.set(row, col, value);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }))
-                    .toList();
-
-            for (Future<?> task : tasks) {
-                try {
-                    task.get();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
+        if (rows == 0) {
             cache.put(key, result);
-            return result;
-        });
+            matrixFuture.complete(result);
+            return matrixFuture;
+        }
+
+        AtomicInteger remainingRows = new AtomicInteger(rows);
+
+        List<?> ignored = IntStream.range(0, rows)
+                .mapToObj(row -> pool.submit(() -> {
+                    try {
+                        for (int col = 0; col < cols; col++) {
+                            int value;
+
+                            if (type == BinaryType.MULTIPLY) {
+                                final int currentCol = col;
+                                value = IntStream.range(0, a.cols())
+                                        .map(k -> {
+                                            int left = a.get(row, k);
+                                            int right = b.get(k, currentCol);
+                                            String opKey = left + ":" + type + ":" + right;
+
+                                            return operationCache.computeIfAbsent(opKey, kk -> {
+                                                try {
+                                                    return (int) executor.submitBinary(
+                                                            type,
+                                                            (double) left,
+                                                            (double) right
+                                                    ).get().result();
+                                                } catch (Exception e) {
+                                                    throw new RuntimeException(e);
+                                                }
+                                            });
+                                        })
+                                        .sum();
+                            } else {
+                                value = (int) executor.submitBinary(
+                                        type,
+                                        (double) a.get(row, col),
+                                        (double) b.get(row, col)
+                                ).get().result();
+                            }
+
+                            result.set(row, col, value);
+                        }
+
+                        if (remainingRows.decrementAndGet() == 0) {
+                            cache.put(key, result);
+                            matrixFuture.complete(result);
+                        }
+                    } catch (Exception e) {
+                        matrixFuture.completeExceptionally(e);
+                    }
+                }))
+                .toList();
+
+        return matrixFuture;
     }
 
     /**

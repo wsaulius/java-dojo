@@ -2,23 +2,22 @@ package org.example.execution;
 
 import com.google.inject.Inject;
 import org.example.enums.BinaryType;
-import org.example.interfaces.MatrixExecutor;
-import org.example.interfaces.annotations.MatrixPool;
+import org.example.interfaces.AsyncMatrixExecutor;
 import org.example.models.Matrix;
-
+import org.example.interfaces.annotations.MatrixPool;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 /**
- * Executes matrix operations using an ExecutorService.
+ * Executes Async matrix operations using an ExecutorService.
  */
-public final class DefaultMatrixExecutor implements MatrixExecutor {
+public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
 
     private final ExecutorService pool;
-    private final DefaultCalculationExecutor executor;
+    private final DefaultAsyncCalculationExecutor executor;
     private final ConcurrentHashMap<String, Matrix> cache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Integer> operationCache = new ConcurrentHashMap<>();
 
@@ -26,40 +25,37 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
      * Creates executor with required dependencies.
      */
     @Inject
-    public DefaultMatrixExecutor(@MatrixPool ExecutorService pool,
-                                 DefaultCalculationExecutor executor) {
+    public DefaultAsyncMatrixExecutor(@MatrixPool ExecutorService pool,
+                                      DefaultAsyncCalculationExecutor executor) {
         this.pool = pool;
         this.executor = executor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
-    public Future<Matrix> execute(Matrix a, Matrix b, BinaryType type, String operationName) {
-        return pool.submit(() -> {
-            String key = generateKey(a, b, operationName);
+    public CompletableFuture<Matrix> submit(Matrix a, Matrix b, BinaryType type, String operationName) {
+        String key = generateKey(a, b, operationName);
 
-            Matrix cached = cache.get(key);
-            if (cached != null) {
-                return cached;
-            }
+        Matrix cached = cache.get(key);
+        if (cached != null) {
+            return CompletableFuture.completedFuture(cached);
+        }
 
+        return CompletableFuture.supplyAsync(() -> {
             int rows = a.rows();
             int cols = b.cols();
             Matrix result = new Matrix(new int[rows][cols]);
 
-            List<? extends Future<?>> tasks = IntStream.range(0, rows)
-                    .mapToObj(row -> pool.submit(() -> {
-                        for (int col = 0; col < cols; col++) {
+            List<CompletableFuture<Void>> tasks = IntStream.range(0, rows)
+                    .mapToObj(row -> CompletableFuture.runAsync(() -> {
+                        IntStream.range(0, cols).forEach(col -> {
                             try {
                                 int value;
                                 if (type == BinaryType.MULTIPLY) {
-                                    final int currentCol = col;
                                     value = IntStream.range(0, a.cols())
                                             .map(k -> {
                                                 int left = a.get(row, k);
-                                                int right = b.get(k, currentCol);
+                                                int right = b.get(k, col);
                                                 String opKey = left + ":" + type + ":" + right;
 
                                                 return operationCache.computeIfAbsent(opKey, kk -> {
@@ -68,7 +64,7 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
                                                                 type,
                                                                 (double) left,
                                                                 (double) right
-                                                        ).get().result();
+                                                        ).join().result();
                                                     } catch (Exception e) {
                                                         throw new RuntimeException(e);
                                                     }
@@ -80,28 +76,21 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
                                             type,
                                             (double) a.get(row, col),
                                             (double) b.get(row, col)
-                                    ).get().result();
+                                    ).join().result();
                                 }
 
                                 result.set(row, col, value);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
-                        }
-                    }))
+                        });
+                    }, pool))
                     .toList();
 
-            for (Future<?> task : tasks) {
-                try {
-                    task.get();
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
+            CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
             cache.put(key, result);
             return result;
-        });
+        }, pool);
     }
 
     /**
@@ -111,8 +100,6 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
         return operationName + ":" + System.identityHashCode(a) + ":" + System.identityHashCode(b);
     }
 
-    /** {@inheritDoc} */
-    @Override
     public void shutdown() {
         pool.shutdown();
         try {

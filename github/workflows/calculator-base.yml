@@ -1,0 +1,30 @@
+name: GutHub Action Calculator-base
+
+on:
+  push:
+    paths:
+    - 'calculator-base/**'
+  pull_request:
+    paths:
+      - 'calculator-base/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'azul'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: Run tests
+        run: mvn -f calculator-base/pom.xml clean test

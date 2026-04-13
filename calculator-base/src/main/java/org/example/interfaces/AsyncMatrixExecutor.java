@@ -20,4 +20,9 @@ public interface AsyncMatrixExecutor {
      * @return a CompletableFuture that will contain the resulting matrix once computation completes
      */
     CompletableFuture<Matrix> submit(Matrix a, Matrix b, BinaryType type, String operationName);
+
+    /**
+     * Shuts down the underlying execution resources.
+     */
+    void shutdown();
 }

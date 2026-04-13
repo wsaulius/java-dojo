@@ -205,7 +205,6 @@ public final class DefaultAsyncCalculationExecutor implements AsyncCalculationEx
         }, executorService);
     }
 
-    /** {@inheritDoc} */
     @Override
     public void shutdown() {
         executorService.shutdown();

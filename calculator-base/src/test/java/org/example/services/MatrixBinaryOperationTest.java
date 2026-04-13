@@ -3,33 +3,33 @@ package org.example.services;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import org.example.enums.BinaryType;
-import org.example.models.Matrix;
 import org.example.execution.DefaultMatrixExecutor;
-import org.example.modules.*;
-
+import org.example.models.Matrix;
+import org.example.modules.CalculatorApplicationModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.concurrent.Future;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatrixBinaryOperationTest {
 
-    private Matrix A;
-    private Matrix B;
+    private Matrix a;
+    private Matrix b;
     private DefaultMatrixExecutor matrixExecutor;
 
     @BeforeEach
     void setUp() {
-        A = new Matrix(new int[][]{
+        a = new Matrix(new int[][]{
                 {7, 5, 8, 4},
                 {6, 9, 2, 9},
                 {4, 7, 5, 10},
                 {10, 9, 1, 10}
         });
 
-        B = new Matrix(new int[][]{
+        b = new Matrix(new int[][]{
                 {3, 3, 7, 7},
                 {1, 4, 7, 3},
                 {8, 2, 4, 4},
@@ -40,9 +40,8 @@ class MatrixBinaryOperationTest {
         matrixExecutor = injector.getInstance(DefaultMatrixExecutor.class);
     }
 
-
     @Test
-    void testEntireMatrixAddition() {
+    void testEntireMatrixAddition() throws Exception {
         int[][] expected = {
                 {10, 8, 15, 11},
                 {7, 13, 9, 12},
@@ -50,12 +49,14 @@ class MatrixBinaryOperationTest {
                 {17, 10, 3, 17}
         };
 
-        Matrix add = matrixExecutor.execute(A, B, BinaryType.ADD, "ADD");
+        Future<Matrix> future = matrixExecutor.execute(a, b, BinaryType.ADD, "ADD");
+        Matrix add = future.get();
+
         assertTrue(Arrays.deepEquals(expected, add.data()), "Matrix addition result is incorrect");
     }
 
     @Test
-    void testEntireMatrixMultiplication() {
+    void testEntireMatrixMultiplication() throws Exception {
         int[][] expected = {
                 {118, 61, 124, 124},
                 {106, 67, 131, 140},
@@ -63,19 +64,24 @@ class MatrixBinaryOperationTest {
                 {117, 78, 157, 171}
         };
 
-        Matrix mul = matrixExecutor.execute(A, B, BinaryType.MULTIPLY, "MULTIPLY");
+        Future<Matrix> future = matrixExecutor.execute(a, b, BinaryType.MULTIPLY, "MULTIPLY");
+        Matrix mul = future.get();
+
         assertTrue(Arrays.deepEquals(expected, mul.data()), "Matrix multiplication result is incorrect");
     }
 
     @Test
-    void testEntireMatrixSubtraction() {
+    void testEntireMatrixSubtraction() throws Exception {
         int[][] expected = {
                 {4, 2, 1, -3},
                 {5, 5, -5, 6},
                 {-4, 5, 1, 6},
                 {3, 8, -1, 3}
         };
-        Matrix sub = matrixExecutor.execute(A, B, BinaryType.SUBTRACT, "SUBTRACT");
+
+        Future<Matrix> future = matrixExecutor.execute(a, b, BinaryType.SUBTRACT, "SUBTRACT");
+        Matrix sub = future.get();
+
         assertTrue(Arrays.deepEquals(expected, sub.data()), "Matrix subtraction result is incorrect");
     }
 }

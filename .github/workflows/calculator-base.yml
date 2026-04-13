@@ -1,4 +1,4 @@
-name: GutHub Action Calculator-base
+name: GitHub Action Calculator-base
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           distribution: 'azul'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn -f calculator-base/pom.xml clean install
 
       - name: Run tests
         run: mvn -f calculator-base/pom.xml clean test

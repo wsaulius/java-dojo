@@ -5,20 +5,19 @@ import org.example.execution.DefaultCalculationExecutor;
 import org.example.execution.DefaultMatrixExecutor;
 import org.example.models.Matrix;
 import org.example.services.CalculatorService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.*;
 
 import java.time.LocalTime;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class DefaultMatrixExecutorDemoTest {
 
@@ -46,9 +45,13 @@ class DefaultMatrixExecutorDemoTest {
 
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
                 .thenAnswer(inv -> {
-                    System.out.println(now() + " calc on " + Thread.currentThread().getName());
+                    System.out.println(now() + " [CALC] started on " + Thread.currentThread().getName());
                     Thread.sleep(300);
-                    return (double) inv.getArgument(1) + (double) inv.getArgument(2);
+                    double left = inv.getArgument(1);
+                    double right = inv.getArgument(2);
+                    double result = left + right;
+                    System.out.println(now() + " [CALC] finished: " + left + " + " + right + " = " + result);
+                    return result;
                 });
 
         DefaultCalculationExecutor calcExecutor =
@@ -60,13 +63,20 @@ class DefaultMatrixExecutorDemoTest {
         Matrix a = new Matrix(new int[][]{{1,2},{3,4}});
         Matrix b = new Matrix(new int[][]{{5,6},{7,8}});
 
+        System.out.println(now() + " [MAIN] submitting matrix task");
+
         Future<Matrix> future = executor.execute(a, b, BinaryType.ADD, "add");
 
-        System.out.println(now() + " submitted matrix task");
+        System.out.println(now() + " [MAIN] submitted matrix task");
+        System.out.println(now() + " [MAIN] waiting for result");
 
         Matrix result = future.get();
 
-        System.out.println(now() + " completed");
+        System.out.println(now() + " [MAIN] completed");
+        System.out.println(now() + " [MAIN] result[0,0] = " + result.get(0,0));
+        System.out.println(now() + " [MAIN] result[0,1] = " + result.get(0,1));
+        System.out.println(now() + " [MAIN] result[1,0] = " + result.get(1,0));
+        System.out.println(now() + " [MAIN] result[1,1] = " + result.get(1,1));
 
         assertEquals(6, result.get(0,0));
         assertEquals(8, result.get(0,1));
@@ -84,8 +94,13 @@ class DefaultMatrixExecutorDemoTest {
 
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
                 .thenAnswer(inv -> {
+                    System.out.println(now() + " [CALC] started delayed calculation on " + Thread.currentThread().getName());
                     Thread.sleep(500);
-                    return (double) inv.getArgument(1) + (double) inv.getArgument(2);
+                    double left = inv.getArgument(1);
+                    double right = inv.getArgument(2);
+                    double result = left + right;
+                    System.out.println(now() + " [CALC] finished delayed calculation = " + result);
+                    return result;
                 });
 
         DefaultCalculationExecutor calcExecutor =
@@ -99,11 +114,14 @@ class DefaultMatrixExecutorDemoTest {
 
         long start = System.currentTimeMillis();
 
+        System.out.println(now() + " [MAIN] calling execute().get()");
+
         Matrix result = executor.execute(a, b, BinaryType.ADD, "add").get();
 
         long duration = System.currentTimeMillis() - start;
 
-        System.out.println(now() + " duration = " + duration);
+        System.out.println(now() + " [MAIN] duration = " + duration);
+        System.out.println(now() + " [MAIN] result = " + result.get(0,0));
 
         assertTrue(duration >= 500);
         assertEquals(3, result.get(0,0));
@@ -121,8 +139,15 @@ class DefaultMatrixExecutorDemoTest {
 
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
                 .thenAnswer(inv -> {
-                    calls.incrementAndGet();
-                    return (double) inv.getArgument(1) + (double) inv.getArgument(2);
+                    int count = calls.incrementAndGet();
+                    double left = inv.getArgument(1);
+                    double right = inv.getArgument(2);
+                    double result = left + right;
+
+                    System.out.println(now() + " [CALC] REAL EXECUTION #" + count);
+                    System.out.println(now() + " [CALC] " + left + " + " + right + " = " + result);
+
+                    return result;
                 });
 
         DefaultCalculationExecutor calcExecutor =
@@ -134,10 +159,15 @@ class DefaultMatrixExecutorDemoTest {
         Matrix a = new Matrix(new int[][]{{1}});
         Matrix b = new Matrix(new int[][]{{2}});
 
-        executor.execute(a, b, BinaryType.ADD, "add").get();
-        executor.execute(a, b, BinaryType.ADD, "add").get();
+        System.out.println(now() + " [MAIN] first execution");
+        Matrix first = executor.execute(a, b, BinaryType.ADD, "add").get();
+        System.out.println(now() + " [MAIN] first result = " + first.get(0,0));
 
-        System.out.println("calls = " + calls.get());
+        System.out.println(now() + " [MAIN] second execution");
+        Matrix second = executor.execute(a, b, BinaryType.ADD, "add").get();
+        System.out.println(now() + " [MAIN] second result = " + second.get(0,0));
+
+        System.out.println(now() + " [MAIN] total real calls = " + calls.get());
 
         assertEquals(1, calls.get());
     }
@@ -156,7 +186,12 @@ class DefaultMatrixExecutorDemoTest {
         DefaultMatrixExecutor executor =
                 new DefaultMatrixExecutor(matrixPool, calcExecutor);
 
+        System.out.println(now() + " [MAIN] shutting down executor");
+
         executor.shutdown();
+
+        System.out.println(now() + " [MAIN] matrixPool shutdown = " + matrixPool.isShutdown());
+        System.out.println(now() + " [MAIN] calcPool shutdown = " + calcPool.isShutdown());
 
         assertTrue(matrixPool.isShutdown());
     }

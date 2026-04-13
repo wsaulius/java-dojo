@@ -170,7 +170,6 @@ public final class DefaultAsyncCalculationExecutor implements AsyncCalculationEx
             Double right
     ) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println("start " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
 
             BinaryCalculationRecord record =
                     new BinaryCalculationRecord(
@@ -180,7 +179,6 @@ public final class DefaultAsyncCalculationExecutor implements AsyncCalculationEx
                             calculatorService.runBinary(type, left, right)
                     );
 
-            System.out.println("done " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
             return record;
         }, executorService);
     }
@@ -191,7 +189,6 @@ public final class DefaultAsyncCalculationExecutor implements AsyncCalculationEx
             Supplier<R> calculation
     ) {
         return CompletableFuture.supplyAsync(() -> {
-            System.out.println("start " + type + " " + input + " -> " + Thread.currentThread().getName());
 
             UnaryCalculationRecord<E, I, R> record =
                     new UnaryCalculationRecord<>(
@@ -200,7 +197,6 @@ public final class DefaultAsyncCalculationExecutor implements AsyncCalculationEx
                             calculation.get()
                     );
 
-            System.out.println("done " + type + " " + input + " -> " + Thread.currentThread().getName());
             return record;
         }, executorService);
     }

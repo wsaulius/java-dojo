@@ -170,7 +170,6 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
             Double right
     ) {
         return executorService.submit(() -> {
-            System.out.println("start " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
 
             BinaryCalculationRecord record =
                     new BinaryCalculationRecord(
@@ -180,7 +179,6 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                             calculatorService.runBinary(type, left, right)
                     );
 
-            System.out.println("done " + type + " " + left + ", " + right + " -> " + Thread.currentThread().getName());
             return record;
         });
     }
@@ -191,7 +189,6 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
             Supplier<R> calculation
     ) {
         return executorService.submit(() -> {
-            System.out.println("start " + type + " " + input + " -> " + Thread.currentThread().getName());
 
             UnaryCalculationRecord<E, I, R> record =
                     new UnaryCalculationRecord<>(
@@ -200,7 +197,6 @@ public final class DefaultCalculationExecutor implements CalculationExecutor {
                             calculation.get()
                     );
 
-            System.out.println("done " + type + " " + input + " -> " + Thread.currentThread().getName());
             return record;
         });
     }

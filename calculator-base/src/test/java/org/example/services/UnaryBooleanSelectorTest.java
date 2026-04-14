@@ -42,6 +42,21 @@ class UnaryBooleanSelectorTest {
     }
 
     @Test
+    void shouldThrowWhenNoMappingExists() {
+        UnaryBooleanSelector selector = new UnaryBooleanSelector(Map.of());
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(UnaryBooleanType.IS_PRIME)
+        );
+
+        assertEquals(
+                "No unary boolean operation registered for: IS_PRIME",
+                ex.getMessage()
+        );
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

@@ -43,6 +43,21 @@ class UnaryLongSelectorTest {
     }
 
     @Test
+    void shouldThrowWhenNoMappingExists() {
+        UnaryLongSelector selector = new UnaryLongSelector(Map.of());
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(UnaryLongType.FACTORIAL)
+        );
+
+        assertEquals(
+                "No unary long operation registered for: FACTORIAL",
+                ex.getMessage()
+        );
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

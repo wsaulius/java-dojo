@@ -53,6 +53,20 @@ class BinarySelectorTest {
     }
 
     @Test
+    void shouldThrowForUnregisteredBinaryType() {
+        BinarySelector selector = new BinarySelector(Map.of(
+                BinaryType.ADD, new AddOperation()
+        ));
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(BinaryType.SUBTRACT)
+        );
+
+        assertEquals("No binary operation registered for: SUBTRACT", exception.getMessage());
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

@@ -169,7 +169,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryIntType type = UnaryIntType.values()[0];
+        UnaryIntType type = UnaryIntType.SQUARE;
         when(calculatorService.runUnaryInt(type, 5)).thenReturn(25);
 
         DefaultCalculationExecutor executor =
@@ -192,7 +192,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryDoubleType type = UnaryDoubleType.values()[0];
+        UnaryDoubleType type = UnaryDoubleType.SQRT;
         when(calculatorService.runUnaryDouble(type, 4)).thenReturn(2.5);
 
         DefaultCalculationExecutor executor =
@@ -215,7 +215,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryLongType type = UnaryLongType.values()[0];
+        UnaryLongType type = UnaryLongType.FACTORIAL;
         when(calculatorService.runUnaryLong(type, 6)).thenReturn(720L);
 
         DefaultCalculationExecutor executor =
@@ -238,7 +238,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryBooleanType type = UnaryBooleanType.values()[0];
+        UnaryBooleanType type = UnaryBooleanType.IS_PRIME;
         when(calculatorService.runUnaryBoolean(type, 8)).thenReturn(true);
 
         DefaultCalculationExecutor executor =
@@ -261,7 +261,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryBigIntegerType type = UnaryBigIntegerType.values()[0];
+        UnaryBigIntegerType type = UnaryBigIntegerType.FIBONACCI;
         when(calculatorService.runUnaryBigInteger(type, 10)).thenReturn(BigInteger.valueOf(55));
 
         DefaultCalculationExecutor executor =
@@ -284,7 +284,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        UnaryIntType type = UnaryIntType.values()[0];
+        UnaryIntType type = UnaryIntType.SQUARE;
         when(calculatorService.runUnaryInt(type, 1)).thenReturn(1);
         when(calculatorService.runUnaryInt(type, 2)).thenReturn(4);
         when(calculatorService.runUnaryInt(type, 3)).thenReturn(9);
@@ -310,7 +310,7 @@ class DefaultCalculationExecutorTest {
         CalculatorService calculatorService = mock(CalculatorService.class);
         executorService = Executors.newSingleThreadExecutor();
 
-        BinaryType type = BinaryType.values()[0];
+        BinaryType type = BinaryType.ADD;
         when(calculatorService.runBinary(type, 10.0, 5.0)).thenReturn(15.0);
 
         DefaultCalculationExecutor executor =
@@ -380,5 +380,109 @@ class DefaultCalculationExecutorTest {
         verify(executorService).shutdownNow();
         assertTrue(Thread.currentThread().isInterrupted());
         assertTrue(Thread.interrupted());
+    }
+
+    @Test
+    void shouldSubmitUnaryDoubleBatch() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newSingleThreadExecutor();
+
+        UnaryDoubleType type = UnaryDoubleType.SQRT;
+        when(calculatorService.runUnaryDouble(type, 2)).thenReturn(1.5);
+        when(calculatorService.runUnaryDouble(type, 4)).thenReturn(2.5);
+        when(calculatorService.runUnaryDouble(type, 6)).thenReturn(3.5);
+
+        DefaultCalculationExecutor executor =
+                new DefaultCalculationExecutor(calculatorService, executorService);
+
+        List<Future<UnaryCalculationRecord<UnaryDoubleType, Integer, Double>>> futures =
+                executor.submitUnaryDoubleBatch(type, List.of(2, 4, 6));
+
+        assertEquals(3, futures.size());
+        assertEquals(1.5, futures.get(0).get().result());
+        assertEquals(2.5, futures.get(1).get().result());
+        assertEquals(3.5, futures.get(2).get().result());
+
+        verify(calculatorService).runUnaryDouble(type, 2);
+        verify(calculatorService).runUnaryDouble(type, 4);
+        verify(calculatorService).runUnaryDouble(type, 6);
+    }
+
+    @Test
+    void shouldSubmitUnaryLongBatch() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newSingleThreadExecutor();
+
+        UnaryLongType type = UnaryLongType.FACTORIAL;
+        when(calculatorService.runUnaryLong(type, 3)).thenReturn(6L);
+        when(calculatorService.runUnaryLong(type, 4)).thenReturn(24L);
+        when(calculatorService.runUnaryLong(type, 5)).thenReturn(120L);
+
+        DefaultCalculationExecutor executor =
+                new DefaultCalculationExecutor(calculatorService, executorService);
+
+        List<Future<UnaryCalculationRecord<UnaryLongType, Integer, Long>>> futures =
+                executor.submitUnaryLongBatch(type, List.of(3, 4, 5));
+
+        assertEquals(3, futures.size());
+        assertEquals(6L, futures.get(0).get().result());
+        assertEquals(24L, futures.get(1).get().result());
+        assertEquals(120L, futures.get(2).get().result());
+
+        verify(calculatorService).runUnaryLong(type, 3);
+        verify(calculatorService).runUnaryLong(type, 4);
+        verify(calculatorService).runUnaryLong(type, 5);
+    }
+
+    @Test
+    void shouldSubmitUnaryBooleanBatch() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newSingleThreadExecutor();
+
+        UnaryBooleanType type = UnaryBooleanType.IS_PRIME;
+        when(calculatorService.runUnaryBoolean(type, 2)).thenReturn(true);
+        when(calculatorService.runUnaryBoolean(type, 3)).thenReturn(false);
+        when(calculatorService.runUnaryBoolean(type, 4)).thenReturn(true);
+
+        DefaultCalculationExecutor executor =
+                new DefaultCalculationExecutor(calculatorService, executorService);
+
+        List<Future<UnaryCalculationRecord<UnaryBooleanType, Integer, Boolean>>> futures =
+                executor.submitUnaryBooleanBatch(type, List.of(2, 3, 4));
+
+        assertEquals(3, futures.size());
+        assertTrue(futures.get(0).get().result());
+        assertFalse(futures.get(1).get().result());
+        assertTrue(futures.get(2).get().result());
+
+        verify(calculatorService).runUnaryBoolean(type, 2);
+        verify(calculatorService).runUnaryBoolean(type, 3);
+        verify(calculatorService).runUnaryBoolean(type, 4);
+    }
+
+    @Test
+    void shouldSubmitUnaryBigIntegerBatch() throws Exception {
+        CalculatorService calculatorService = mock(CalculatorService.class);
+        executorService = Executors.newSingleThreadExecutor();
+
+        UnaryBigIntegerType type = UnaryBigIntegerType.FIBONACCI;
+        when(calculatorService.runUnaryBigInteger(type, 5)).thenReturn(BigInteger.valueOf(5));
+        when(calculatorService.runUnaryBigInteger(type, 6)).thenReturn(BigInteger.valueOf(8));
+        when(calculatorService.runUnaryBigInteger(type, 7)).thenReturn(BigInteger.valueOf(13));
+
+        DefaultCalculationExecutor executor =
+                new DefaultCalculationExecutor(calculatorService, executorService);
+
+        List<Future<UnaryCalculationRecord<UnaryBigIntegerType, Integer, BigInteger>>> futures =
+                executor.submitUnaryBigIntegerBatch(type, List.of(5, 6, 7));
+
+        assertEquals(3, futures.size());
+        assertEquals(BigInteger.valueOf(5), futures.get(0).get().result());
+        assertEquals(BigInteger.valueOf(8), futures.get(1).get().result());
+        assertEquals(BigInteger.valueOf(13), futures.get(2).get().result());
+
+        verify(calculatorService).runUnaryBigInteger(type, 5);
+        verify(calculatorService).runUnaryBigInteger(type, 6);
+        verify(calculatorService).runUnaryBigInteger(type, 7);
     }
 }

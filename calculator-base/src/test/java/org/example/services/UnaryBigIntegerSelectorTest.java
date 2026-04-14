@@ -43,6 +43,21 @@ class UnaryBigIntegerSelectorTest {
     }
 
     @Test
+    void shouldThrowWhenNoMappingExists() {
+        UnaryBigIntegerSelector selector = new UnaryBigIntegerSelector(Map.of());
+
+        IllegalArgumentException ex = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(UnaryBigIntegerType.FIBONACCI)
+        );
+
+        assertEquals(
+                "No unary BigInteger operation registered for: FIBONACCI",
+                ex.getMessage()
+        );
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

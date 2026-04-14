@@ -48,6 +48,20 @@ class UnaryDoubleSelectorTest {
     }
 
     @Test
+    void shouldThrowForUnregisteredUnaryDoubleType() {
+        UnaryDoubleSelector selector = new UnaryDoubleSelector(Map.of(
+                UnaryDoubleType.SQRT, new SqrtOperation()
+        ));
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(UnaryDoubleType.LOG)
+        );
+
+        assertEquals("No unary double operation registered for: LOG", exception.getMessage());
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

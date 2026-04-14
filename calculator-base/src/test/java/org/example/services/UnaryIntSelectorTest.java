@@ -46,6 +46,20 @@ class UnaryIntSelectorTest {
     }
 
     @Test
+    void shouldThrowForUnregisteredUnaryIntType() {
+        UnaryIntSelector selector = new UnaryIntSelector(Map.of(
+                UnaryIntType.ABS, new AbsOperation()
+        ));
+
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> selector.get(UnaryIntType.NEGATE)
+        );
+
+        assertEquals("No unary int operation registered for: NEGATE", exception.getMessage());
+    }
+
+    @Test
     void shouldThrowForNullType() {
         assertThrows(NullPointerException.class, () -> selector.get(null));
     }

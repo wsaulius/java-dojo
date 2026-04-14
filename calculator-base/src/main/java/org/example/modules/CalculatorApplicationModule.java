@@ -1,6 +1,7 @@
 package org.example.modules;
 
 import com.google.inject.AbstractModule;
+import org.jline.terminal.Terminal;
 
 /**
  * Root Guice module that installs all calculator application modules.
@@ -22,5 +23,6 @@ public class CalculatorApplicationModule extends AbstractModule {
         install(new SelectorModule());
         install(new CalculatorConsumerModule());
         install(new ExecutorModule());
-    }
+        install(new CommandModule());
+        install(new UiModule());}
 }

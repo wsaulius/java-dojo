@@ -3,6 +3,7 @@ package org.example.execution;
 import org.example.enums.BinaryType;
 import org.example.models.BinaryCalculationRecord;
 import org.example.models.Matrix;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
@@ -12,9 +13,23 @@ import static org.mockito.Mockito.*;
 
 class DefaultMatrixExecutorTest {
 
+    private ThreadPoolExecutor executorService;
+
+    @BeforeEach
+    void setUp() {
+        executorService = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
+    }
+
+
     @Test
     void shouldExecuteElementWiseOperation() throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
@@ -27,7 +42,7 @@ class DefaultMatrixExecutorTest {
             when(calculationExecutor.submitBinary(BinaryType.ADD, 4.0, 8.0))
                     .thenReturn(CompletableFuture.completedFuture(new BinaryCalculationRecord(BinaryType.ADD, 4.0, 8.0, 12.0)));
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1, 2},
@@ -50,13 +65,13 @@ class DefaultMatrixExecutorTest {
             verify(calculationExecutor).submitBinary(BinaryType.ADD, 3.0, 7.0);
             verify(calculationExecutor).submitBinary(BinaryType.ADD, 4.0, 8.0);
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldExecuteMultiplyUsingDotProduct() throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
@@ -77,7 +92,7 @@ class DefaultMatrixExecutorTest {
             when(calculationExecutor.submitBinary(BinaryType.MULTIPLY, 4.0, 8.0))
                     .thenReturn(CompletableFuture.completedFuture(new BinaryCalculationRecord(BinaryType.MULTIPLY, 4.0, 8.0, 32.0)));
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1, 2},
@@ -95,13 +110,13 @@ class DefaultMatrixExecutorTest {
             assertEquals(43, result.get(1, 0));
             assertEquals(50, result.get(1, 1));
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldReuseCachedMatrixResult() throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
@@ -114,7 +129,7 @@ class DefaultMatrixExecutorTest {
             when(calculationExecutor.submitBinary(BinaryType.ADD, 4.0, 8.0))
                     .thenReturn(CompletableFuture.completedFuture(new BinaryCalculationRecord(BinaryType.ADD, 4.0, 8.0, 12.0)));
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1, 2},
@@ -131,17 +146,17 @@ class DefaultMatrixExecutorTest {
             assertSame(first, second);
             verify(calculationExecutor, times(4)).submitBinary(any(), anyDouble(), anyDouble());
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldReturnEmptyResultWhenLeftMatrixHasZeroRows() throws Exception {
-        ExecutorService pool = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[0][0]);
             Matrix b = new Matrix(new int[][]{
@@ -153,20 +168,20 @@ class DefaultMatrixExecutorTest {
             assertEquals(0, result.data().length);
             verifyNoInteractions(calculationExecutor);
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldReuseCachedMultiplyOperations() throws Exception {
-        ExecutorService pool = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
             when(calculationExecutor.submitBinary(BinaryType.MULTIPLY, 1.0, 2.0))
                     .thenReturn(CompletableFuture.completedFuture(new BinaryCalculationRecord(BinaryType.MULTIPLY, 1.0, 2.0, 2.0)));
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1, 1},
@@ -186,13 +201,13 @@ class DefaultMatrixExecutorTest {
 
             verify(calculationExecutor, times(1)).submitBinary(BinaryType.MULTIPLY, 1.0, 2.0);
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldCompleteExceptionallyWhenBinaryExecutionFails() {
-        ExecutorService pool = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(2);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
@@ -201,7 +216,7 @@ class DefaultMatrixExecutorTest {
 
             when(calculationExecutor.submitBinary(BinaryType.ADD, 1.0, 3.0)).thenReturn(failed);
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1}
@@ -217,13 +232,13 @@ class DefaultMatrixExecutorTest {
 
             assertNotNull(exception.getCause());
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 
     @Test
     void shouldShutdownBothPools() throws Exception {
-        ExecutorService pool = mock(ExecutorService.class);
+        ThreadPoolExecutor pool = mock(ThreadPoolExecutor.class);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         when(pool.awaitTermination(anyLong(), any())).thenReturn(true);
@@ -240,7 +255,7 @@ class DefaultMatrixExecutorTest {
 
     @Test
     void shouldForceShutdownPoolWhenInterrupted() throws Exception {
-        ExecutorService pool = mock(ExecutorService.class);
+        ThreadPoolExecutor pool = mock(ThreadPoolExecutor.class);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         when(pool.awaitTermination(anyLong(), any())).thenThrow(new InterruptedException());
@@ -256,9 +271,10 @@ class DefaultMatrixExecutorTest {
         assertTrue(Thread.interrupted());
     }
 
+
     @Test
     void shouldForceShutdownPoolWhenItDoesNotTerminate() throws Exception {
-        ExecutorService pool = mock(ExecutorService.class);
+        ThreadPoolExecutor pool = mock(ThreadPoolExecutor.class);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         when(pool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS))
@@ -276,7 +292,7 @@ class DefaultMatrixExecutorTest {
 
     @Test
     void shouldCompleteExceptionallyWhenMultiplyOperationFailsInsideCache() {
-        ExecutorService pool = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
         DefaultCalculationExecutor calculationExecutor = mock(DefaultCalculationExecutor.class);
 
         try {
@@ -286,7 +302,7 @@ class DefaultMatrixExecutorTest {
             when(calculationExecutor.submitBinary(BinaryType.MULTIPLY, 1.0, 2.0))
                     .thenReturn(failed);
 
-            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(pool, calculationExecutor);
+            DefaultMatrixExecutor executor = new DefaultMatrixExecutor(executorService, calculationExecutor);
 
             Matrix a = new Matrix(new int[][]{
                     {1}
@@ -302,7 +318,7 @@ class DefaultMatrixExecutorTest {
 
             assertNotNull(exception.getCause());
         } finally {
-            pool.shutdownNow();
+            executorService.shutdownNow();
         }
     }
 }

@@ -24,6 +24,7 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 class CalculatorApplicationModuleTest {
 
@@ -59,10 +60,10 @@ class CalculatorApplicationModuleTest {
         assertNotNull(injector.getInstance(CalculationExecutor.class));
         assertNotNull(injector.getInstance(AsyncCalculationExecutor.class));
         assertNotNull(injector.getInstance(
-                Key.get(ExecutorService.class, MatrixPool.class)
+                Key.get(ThreadPoolExecutor.class, MatrixPool.class)
         ));
         assertNotNull(injector.getInstance(
-                Key.get(ExecutorService.class, CalcPool.class)
+                Key.get(ThreadPoolExecutor.class, CalcPool.class)
         ));
     }
 

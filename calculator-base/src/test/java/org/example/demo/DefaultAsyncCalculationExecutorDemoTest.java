@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 
 class DefaultAsyncCalculationExecutorDemoTest {
 
-    private ExecutorService executorService;
+    private ThreadPoolExecutor executorService;
 
     @AfterEach
     void tearDown() {
@@ -38,11 +38,22 @@ class DefaultAsyncCalculationExecutorDemoTest {
         System.out.println("========================================");
     }
 
+    @BeforeEach
+    void setUp() {
+        executorService = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
+    }
+
     @Test
     @DisplayName("Demo 1 - CompletableFuture is non-blocking and runs asynchronously")
     void demo_asyncNonBlocking() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(1);
+        executorService.setCorePoolSize(1);
 
         when(service.runUnaryInt(UnaryIntType.SQUARE, 5)).thenAnswer(inv -> {
             System.out.println(now() + " worker started: " + Thread.currentThread().getName());
@@ -77,14 +88,14 @@ class DefaultAsyncCalculationExecutorDemoTest {
     @DisplayName("Demo 2 - multiple async tasks run in parallel")
     void demo_parallelAsync() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
 
         CountDownLatch latch = new CountDownLatch(1);
 
         when(service.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(inv -> {
             Integer input = inv.getArgument(1);
             System.out.println(now() + " task " + input + " started on " + Thread.currentThread().getName());
-            latch.await(2, TimeUnit.SECONDS);
+            latch.await();
             System.out.println(now() + " task " + input + " finishing");
             return input * input;
         });
@@ -110,7 +121,7 @@ class DefaultAsyncCalculationExecutorDemoTest {
     @DisplayName("Demo 3 - async failure propagates through CompletableFuture")
     void demo_failurePropagation() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
 
         when(service.runUnaryInt(UnaryIntType.SQUARE, 1))
                 .thenThrow(new IllegalStateException("boom"));
@@ -132,7 +143,7 @@ class DefaultAsyncCalculationExecutorDemoTest {
     @DisplayName("Demo 4 - CompletableFuture chaining (thenApply)")
     void demo_composition() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(1);
+        executorService.setCorePoolSize(2);
 
         when(service.runBinary(BinaryType.ADD, 10.0, 5.0)).thenReturn(15.0);
 

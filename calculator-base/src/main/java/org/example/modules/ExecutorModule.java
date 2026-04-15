@@ -10,8 +10,7 @@ import org.example.interfaces.annotations.CalcPool;
 import org.example.interfaces.CalculationExecutor;
 import org.example.interfaces.annotations.MatrixPool;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Guice module that binds calculation executors and provides
@@ -36,9 +35,16 @@ public class ExecutorModule extends AbstractModule {
     @Provides
     @Singleton
     @MatrixPool
-    ExecutorService provideMatrixExecutor() {
-        return Executors.newFixedThreadPool(8);
+    ThreadPoolExecutor provideMatrixExecutor() {
+        return new ThreadPoolExecutor(
+                8,                  // corePoolSize
+                8,                  // maximumPoolSize
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>()
+        );
     }
+
 
     /**
      * Provides the executor service used by calculation execution logic.
@@ -48,7 +54,13 @@ public class ExecutorModule extends AbstractModule {
     @Provides
     @Singleton
     @CalcPool
-    ExecutorService provideCalculationExecutor() {
-        return Executors.newCachedThreadPool();
+    ThreadPoolExecutor provideCalculationExecutor() {
+        return new ThreadPoolExecutor(
+                2,                  // corePoolSize
+                32,                 // maximumPoolSize
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
     }
 }

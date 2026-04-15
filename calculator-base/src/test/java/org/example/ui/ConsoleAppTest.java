@@ -1,9 +1,6 @@
 package org.example.ui;
 
-import org.example.ui.screens.BinaryScreen;
-import org.example.ui.screens.MainMenuScreen;
-import org.example.ui.screens.MatrixScreen;
-import org.example.ui.screens.UnaryScreen;
+import org.example.ui.screens.*;
 import org.example.ui.state.UiState;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
@@ -26,8 +23,9 @@ class ConsoleAppTest {
         UnaryScreen unaryScreen = mock(UnaryScreen.class);
         BinaryScreen binaryScreen = mock(BinaryScreen.class);
         MatrixScreen matrixScreen = mock(MatrixScreen.class);
+        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
 
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen);
+        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
 
         app.dispatchCurrentScreen();
 
@@ -44,8 +42,10 @@ class ConsoleAppTest {
         UnaryScreen unaryScreen = mock(UnaryScreen.class);
         BinaryScreen binaryScreen = mock(BinaryScreen.class);
         MatrixScreen matrixScreen = mock(MatrixScreen.class);
+        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
 
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen);
+
+        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
 
         app.dispatchCurrentScreen();
 
@@ -62,8 +62,10 @@ class ConsoleAppTest {
         UnaryScreen unaryScreen = mock(UnaryScreen.class);
         BinaryScreen binaryScreen = mock(BinaryScreen.class);
         MatrixScreen matrixScreen = mock(MatrixScreen.class);
+        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
 
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen);
+
+        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
 
         app.dispatchCurrentScreen();
 
@@ -80,8 +82,10 @@ class ConsoleAppTest {
         UnaryScreen unaryScreen = mock(UnaryScreen.class);
         BinaryScreen binaryScreen = mock(BinaryScreen.class);
         MatrixScreen matrixScreen = mock(MatrixScreen.class);
+        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
 
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen);
+
+        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
 
         app.dispatchCurrentScreen();
 
@@ -98,6 +102,8 @@ class ConsoleAppTest {
         UnaryScreen unaryScreen = mock(UnaryScreen.class);
         BinaryScreen binaryScreen = mock(BinaryScreen.class);
         MatrixScreen matrixScreen = mock(MatrixScreen.class);
+        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
+
 
         doNothing()
                 .doThrow(new IOException("stop loop"))
@@ -110,7 +116,7 @@ class ConsoleAppTest {
         try (MockedStatic<TerminalBuilder> terminalBuilderMock = mockStatic(TerminalBuilder.class)) {
             terminalBuilderMock.when(TerminalBuilder::builder).thenReturn(builder);
 
-            ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen);
+            ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
 
             assertThrows(IOException.class, app::start);
 

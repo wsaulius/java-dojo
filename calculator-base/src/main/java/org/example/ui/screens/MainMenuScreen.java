@@ -13,13 +13,11 @@ public class MainMenuScreen {
 
     private final LineReader reader;
     private final Terminal terminal;
-    private final ExitHandler exitHandler;
 
     @Inject
-    public MainMenuScreen(LineReader reader, Terminal terminal, ExitHandler exitHandler) {
+    public MainMenuScreen(LineReader reader, Terminal terminal) {
         this.reader = reader;
         this.terminal = terminal;
-        this.exitHandler = exitHandler;
     }
 
     public void show(UiState state) throws IOException {
@@ -29,7 +27,8 @@ public class MainMenuScreen {
         terminal.writer().println("2. Binary");
         terminal.writer().println("3. Matrix");
         terminal.writer().println("4. Toggle Mode");
-        terminal.writer().println("5. Exit");
+        terminal.writer().println("5. Thread Pool");
+        terminal.writer().println("6. Exit");
         terminal.flush();
 
         String choice = reader.readLine("Select: ");
@@ -39,10 +38,9 @@ public class MainMenuScreen {
             case "1" -> state.setScreen(UiState.Screen.UNARY);
             case "2" -> state.setScreen(UiState.Screen.BINARY);
             case "3" -> state.setScreen(UiState.Screen.MATRIX);
-
             case "4" -> state.toggleMode();
-
-            case "5" -> exitHandler.exit(0);
+            case "5" -> state.setScreen(UiState.Screen.THREADPOOL);
+            case "6" -> System.exit(0);
             default -> terminal.writer().println("Invalid choice");
         }
     }

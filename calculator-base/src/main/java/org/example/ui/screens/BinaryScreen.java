@@ -30,12 +30,52 @@ public class BinaryScreen {
 
     public void show(UiState state) {
         try {
-            BinaryType type = BinaryType.valueOf(
-                    reader.readLine("Operation (ADD, SUBTRACT...): ").toUpperCase()
-            );
+            BinaryType type = null;
+            terminal.writer().println("Binary Operations List");
+            terminal.writer().println("1.ADD");
+            terminal.writer().println("2.SUBTRACT");
+            terminal.writer().println("3.MULTIPLY");
+            terminal.writer().println("4.DIVIDE");
+            terminal.writer().println("5.MODULO");
+            terminal.writer().println("6.POWER");
+            terminal.writer().println("7.MAX");
+            terminal.writer().println("8.MIN");
+            terminal.flush();
+            String select = reader.readLine("Select: ");
+            switch (select) {
+                case "1" :
+                    type = BinaryType.valueOf("ADD");
+                    break;
+                case "2" :
+                    type = BinaryType.valueOf("SUBTRACT");
+                    break;
+                case "3" :
+                    type = BinaryType.valueOf("MULTIPLY");
+                    break;
+                case "4" :
+                    type = BinaryType.valueOf("DIVIDE");
+                    break;
+                case "5" :
+                    type = BinaryType.valueOf("MODULO");
+                    break;
+                case "6" :
+                    type = BinaryType.valueOf("POWER");
+                    break;
+                case "7" :
+                    type = BinaryType.valueOf("MAX");
+                    break;
+                case "8" :
+                    type = BinaryType.valueOf("MIN");
+                    break;
+                default:
+                    terminal.writer().println("Invalid Input");
+                    terminal.flush();
+                    state.setScreen(UiState.Screen.MAIN);
+                    select = reader.readLine("Select: ");
+            }
 
-            double a = Double.parseDouble(reader.readLine("Left: "));
-            double b = Double.parseDouble(reader.readLine("Right: "));
+            double a = Double.parseDouble(reader.readLine("1st number: "));
+            double b = Double.parseDouble(reader.readLine("2nd number: "));
             long start = System.nanoTime();
 
             if (state.isAsyncMode()) {

@@ -19,6 +19,7 @@ public class ConsoleApp {
     private final UnaryScreen unaryScreen;
     private final BinaryScreen binaryScreen;
     private final MatrixScreen matrixScreen;
+    private final ThreadPoolScreen threadPoolScreen;
 
     @Inject
     public ConsoleApp(
@@ -26,13 +27,15 @@ public class ConsoleApp {
             MainMenuScreen mainMenu,
             UnaryScreen unaryScreen,
             BinaryScreen binaryScreen,
-            MatrixScreen matrixScreen
+            MatrixScreen matrixScreen,
+            ThreadPoolScreen threadPoolScreen
     ) {
         this.uiState = uiState;
         this.mainMenu = mainMenu;
         this.unaryScreen = unaryScreen;
         this.binaryScreen = binaryScreen;
         this.matrixScreen = matrixScreen;
+        this.threadPoolScreen = threadPoolScreen;
     }
 
     public void start() throws IOException {
@@ -41,13 +44,13 @@ public class ConsoleApp {
             dispatchCurrentScreen();
         }
     }
-
     void dispatchCurrentScreen() throws IOException {
         switch (uiState.getScreen()) {
             case MAIN -> mainMenu.show(uiState);
             case UNARY -> unaryScreen.show(uiState);
             case BINARY -> binaryScreen.show(uiState);
             case MATRIX -> matrixScreen.show(uiState);
+            case THREADPOOL -> threadPoolScreen.show(uiState);
         }
     }
 

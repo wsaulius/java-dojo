@@ -49,12 +49,10 @@ public class MatrixScreen {
             long start = System.nanoTime();
 
             if (state.isAsyncMode()) {
-
-                CompletableFuture<Matrix> future =
-                        asyncMatrixExecutor.submit(A, B, type, type.name());
-
                 terminal.writer().println("Calculating async...");
                 terminal.flush();
+                CompletableFuture<Matrix> future =
+                        asyncMatrixExecutor.submit(A, B, type, type.name());
 
                 result = future.join();
 

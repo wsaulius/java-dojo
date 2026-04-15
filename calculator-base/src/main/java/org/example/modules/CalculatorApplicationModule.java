@@ -23,6 +23,5 @@ public class CalculatorApplicationModule extends AbstractModule {
         install(new SelectorModule());
         install(new CalculatorConsumerModule());
         install(new ExecutorModule());
-        install(new CommandModule());
         install(new UiModule());}
 }

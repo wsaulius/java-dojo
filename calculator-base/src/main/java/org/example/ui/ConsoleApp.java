@@ -5,10 +5,6 @@ import org.example.execution.*;
 import org.example.services.CalculatorService;
 import org.example.ui.screens.*;
 import org.example.ui.state.UiState;
-import org.jline.reader.LineReader;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
-
 import java.io.IOException;
 
 public class ConsoleApp {
@@ -36,7 +32,6 @@ public class ConsoleApp {
     }
 
     public void start() throws IOException {
-        Terminal terminal = TerminalBuilder.builder().build();
         while (true) {
 
             switch (uiState.getScreen()) {

@@ -36,7 +36,7 @@ public class ThreadPoolScreen {
         terminal.writer().println("3. Change both pool.");
         terminal.writer().println("4. Change none");
         terminal.flush();
-        String c = reader.readLine("Enter pool size: ");
+        String c = reader.readLine("Select: ");
         switch (c) {
             case "1":
                 threadChange(pool);

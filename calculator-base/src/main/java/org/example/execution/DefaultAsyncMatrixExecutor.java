@@ -91,10 +91,10 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
                 .toList();
 
         return CompletableFuture.allOf(rowTasks.toArray(new CompletableFuture[0]))
-                .thenApplyAsync(ignored -> {
+                .thenApply(ignored -> {
                     cache.put(key, result);
                     return result;
-                }, pool);
+                });
     }
 
     /**
@@ -114,14 +114,24 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
             Matrix result,
             int row
     ) {
-        int cols = b.cols();
+        return CompletableFuture.runAsync(() -> {
+            int cols = b.cols();
 
-        List<CompletableFuture<Void>> cellTasks = IntStream.range(0, cols)
-                .mapToObj(col -> buildCellFuture(a, b, type, row, col)
-                        .thenAccept(value -> result.set(row, col, value)))
-                .toList();
+            for (int col = 0; col < cols; col++) {
+                int value;
 
-        return CompletableFuture.allOf(cellTasks.toArray(new CompletableFuture[0]));
+                if (type == BinaryType.MULTIPLY) {
+                    value = 0;
+                    for (int k = 0; k < a.cols(); k++) {
+                        value += resolveOperation(type, a.get(row, k), b.get(k, col)).join();
+                    }
+                } else {
+                    value = resolveOperation(type, a.get(row, col), b.get(row, col)).join();
+                }
+
+                result.set(row, col, value);
+            }
+        }, pool);
     }
 
     /**
@@ -150,9 +160,9 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
                     .toList();
 
             return CompletableFuture.allOf(parts.toArray(new CompletableFuture[0]))
-                    .thenApplyAsync(ignored -> parts.stream()
+                    .thenApply(ignored -> parts.stream()
                             .mapToInt(CompletableFuture::join)
-                            .sum(), pool);
+                            .sum());
         }
 
         return resolveOperation(type, a.get(row, col), b.get(row, col));
@@ -175,7 +185,7 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
 
         return operationCache.computeIfAbsent(opKey, key ->
                 executor.submitBinary(type, (double) left, (double) right)
-                        .thenApplyAsync(record -> (int) record.result(),pool)
+                        .thenApply(record -> (int) record.result())
         );
     }
 

@@ -1,6 +1,7 @@
 package org.example.ui.screens;
 
 import com.google.inject.Inject;
+import org.example.interfaces.ExitHandler;
 import org.example.ui.state.UiState;
 import org.jline.reader.LineReader;
 import org.jline.terminal.Terminal;
@@ -37,11 +38,9 @@ public class MainMenuScreen {
             case "1" -> state.setScreen(UiState.Screen.UNARY);
             case "2" -> state.setScreen(UiState.Screen.BINARY);
             case "3" -> state.setScreen(UiState.Screen.MATRIX);
-
             case "4" -> state.toggleMode();
             case "5" -> state.setScreen(UiState.Screen.THREADPOOL);
             case "6" -> System.exit(0);
-
             default -> terminal.writer().println("Invalid choice");
         }
     }

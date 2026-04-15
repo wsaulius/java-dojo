@@ -5,8 +5,11 @@ import org.example.execution.*;
 import org.example.services.CalculatorService;
 import org.example.ui.screens.*;
 import org.example.ui.state.UiState;
+import org.jline.reader.LineReader;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+
 import java.io.IOException;
-import java.util.concurrent.ThreadPoolExecutor;
 
 public class ConsoleApp {
 
@@ -36,16 +39,19 @@ public class ConsoleApp {
     }
 
     public void start() throws IOException {
+        TerminalBuilder.builder().build();
         while (true) {
-
-            switch (uiState.getScreen()) {
-
-                case MAIN -> mainMenu.show(uiState);
-                case UNARY -> unaryScreen.show(uiState);
-                case BINARY -> binaryScreen.show(uiState);
-                case MATRIX -> matrixScreen.show(uiState);
-                case THREADPOOL -> threadPoolScreen.show(uiState);
-            }
+            dispatchCurrentScreen();
         }
     }
+    void dispatchCurrentScreen() throws IOException {
+        switch (uiState.getScreen()) {
+            case MAIN -> mainMenu.show(uiState);
+            case UNARY -> unaryScreen.show(uiState);
+            case BINARY -> binaryScreen.show(uiState);
+            case MATRIX -> matrixScreen.show(uiState);
+            case THREADPOOL -> threadPoolScreen.show(uiState);
+        }
+    }
+
 }

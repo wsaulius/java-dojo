@@ -1,6 +1,7 @@
 package org.example.ui.screens;
 
 import com.google.inject.Inject;
+import org.example.interfaces.ExitHandler;
 import org.example.ui.state.UiState;
 import org.jline.reader.LineReader;
 import org.jline.terminal.Terminal;
@@ -12,11 +13,13 @@ public class MainMenuScreen {
 
     private final LineReader reader;
     private final Terminal terminal;
+    private final ExitHandler exitHandler;
 
     @Inject
-    public MainMenuScreen(LineReader reader, Terminal terminal) {
+    public MainMenuScreen(LineReader reader, Terminal terminal, ExitHandler exitHandler) {
         this.reader = reader;
         this.terminal = terminal;
+        this.exitHandler = exitHandler;
     }
 
     public void show(UiState state) throws IOException {
@@ -39,8 +42,7 @@ public class MainMenuScreen {
 
             case "4" -> state.toggleMode();
 
-            case "5" -> System.exit(0);
-
+            case "5" -> exitHandler.exit(0);
             default -> terminal.writer().println("Invalid choice");
         }
     }

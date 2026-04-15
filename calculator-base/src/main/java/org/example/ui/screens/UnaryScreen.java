@@ -43,7 +43,7 @@ public class UnaryScreen {
 
                 terminal.writer().println("Result: " + future.join().result());
                 long end = System.nanoTime();
-                terminal.writer().println("\u001B[31mBinary took " +
+                terminal.writer().println("\u001B[31mUnary took " +
                         (end - start) / 1_000_000.0 + " ms\u001B[0m");
                 terminal.flush();
             } else {
@@ -53,7 +53,7 @@ public class UnaryScreen {
 
                 terminal.writer().println("Result: " + future.get().result());
                 long end = System.nanoTime();
-                terminal.writer().println("\u001B[31mBinary took " +
+                terminal.writer().println("\u001B[31mUnary took " +
                         (end - start) / 1_000_000.0 + " ms\u001B[0m");
                 terminal.flush();
             }

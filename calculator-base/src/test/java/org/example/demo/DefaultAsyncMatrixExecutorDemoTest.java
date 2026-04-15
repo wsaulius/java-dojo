@@ -16,11 +16,22 @@ import static org.mockito.Mockito.*;
 
 class DefaultAsyncMatrixExecutorDemoTest {
 
-    private ExecutorService pool;
+    private ThreadPoolExecutor pool;
 
     @BeforeEach
     void print(TestInfo info) {
         System.out.println("\n==== " + info.getDisplayName() + " ====");
+    }
+
+    @BeforeEach
+    void setUp() {
+        pool = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
     }
 
     @AfterEach
@@ -36,7 +47,7 @@ class DefaultAsyncMatrixExecutorDemoTest {
     @DisplayName("Demo 1 - async non-blocking execution")
     void demo_asyncNonBlocking() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        pool = Executors.newFixedThreadPool(2);
+        pool.setCorePoolSize(2);
 
         // Mock: simulate delayed async execution (500ms)
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
@@ -80,7 +91,7 @@ class DefaultAsyncMatrixExecutorDemoTest {
     @DisplayName("Demo 2 - parallel cell execution")
     void demo_parallelCells() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        pool = Executors.newFixedThreadPool(4);
+        pool.setCorePoolSize(4);
 
         // Each cell logs thread → shows parallel execution
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
@@ -114,7 +125,7 @@ class DefaultAsyncMatrixExecutorDemoTest {
     @DisplayName("Demo 3 - cache prevents recomputation")
     void demo_cache() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        pool = Executors.newFixedThreadPool(2);
+        pool.setCorePoolSize(2);
 
         AtomicInteger calls = new AtomicInteger();
 
@@ -151,7 +162,7 @@ class DefaultAsyncMatrixExecutorDemoTest {
     @DisplayName("Demo 4 - CompletableFuture composition (with detailed logging)")
     void demo_composition() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-        pool = Executors.newFixedThreadPool(2);
+        pool.setCorePoolSize(2);
 
         // Log when service is actually invoked
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))

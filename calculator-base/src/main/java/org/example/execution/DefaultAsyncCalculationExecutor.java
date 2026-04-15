@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
@@ -28,15 +29,17 @@ import java.util.function.Supplier;
 public final class DefaultAsyncCalculationExecutor implements AsyncCalculationExecutor {
 
     private final CalculatorService calculatorService;
-    private final ExecutorService executorService;
+    private final ThreadPoolExecutor executorService;
 
     /**
      * Creates executor with required dependencies.
      */
+
+
     @Inject
     public DefaultAsyncCalculationExecutor(
             CalculatorService calculatorService,
-            @CalcPool ExecutorService executorService
+            @CalcPool ThreadPoolExecutor executorService
     ) {
         this.calculatorService = calculatorService;
         this.executorService = executorService;

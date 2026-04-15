@@ -36,16 +36,19 @@ public class ConsoleApp {
     }
 
     public void start() throws IOException {
-        Terminal terminal = TerminalBuilder.builder().build();
+        TerminalBuilder.builder().build();
         while (true) {
-
-            switch (uiState.getScreen()) {
-
-                case MAIN -> mainMenu.show(uiState);
-                case UNARY -> unaryScreen.show(uiState);
-                case BINARY -> binaryScreen.show(uiState);
-                case MATRIX -> matrixScreen.show(uiState);
-            }
+            dispatchCurrentScreen();
         }
     }
+
+    void dispatchCurrentScreen() throws IOException {
+        switch (uiState.getScreen()) {
+            case MAIN -> mainMenu.show(uiState);
+            case UNARY -> unaryScreen.show(uiState);
+            case BINARY -> binaryScreen.show(uiState);
+            case MATRIX -> matrixScreen.show(uiState);
+        }
+    }
+
 }

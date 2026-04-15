@@ -10,7 +10,8 @@ public class UiState {
         MAIN,
         UNARY,
         BINARY,
-        MATRIX
+        MATRIX,
+        THREADPOOL
     }
 
     @Setter

@@ -1,12 +1,15 @@
 package org.example.execution;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.enums.BinaryType;
 import org.example.interfaces.AsyncMatrixExecutor;
+import org.example.interfaces.annotations.MatrixPool;
 import org.example.models.Matrix;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.IntStream;
 
 /**
@@ -31,9 +34,11 @@ import java.util.stream.IntStream;
  * <p>This executor does not block internally; it returns a {@link CompletableFuture}
  * that completes when the full matrix computation is finished.
  */
+@Singleton
 public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
 
     private final DefaultAsyncCalculationExecutor executor;
+    private final ThreadPoolExecutor pool;
     private final ConcurrentHashMap<String, Matrix> cache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, CompletableFuture<Integer>> operationCache = new ConcurrentHashMap<>();
 
@@ -43,8 +48,12 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
      * @param executor async calculation executor used for binary operations
      */
     @Inject
-    public DefaultAsyncMatrixExecutor(DefaultAsyncCalculationExecutor executor) {
+    public DefaultAsyncMatrixExecutor(
+            DefaultAsyncCalculationExecutor executor,
+            @MatrixPool ThreadPoolExecutor pool
+    ) {
         this.executor = executor;
+        this.pool = pool;
     }
 
     /**
@@ -82,10 +91,10 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
                 .toList();
 
         return CompletableFuture.allOf(rowTasks.toArray(new CompletableFuture[0]))
-                .thenApply(ignored -> {
+                .thenApplyAsync(ignored -> {
                     cache.put(key, result);
                     return result;
-                });
+                }, pool);
     }
 
     /**
@@ -141,9 +150,9 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
                     .toList();
 
             return CompletableFuture.allOf(parts.toArray(new CompletableFuture[0]))
-                    .thenApply(ignored -> parts.stream()
+                    .thenApplyAsync(ignored -> parts.stream()
                             .mapToInt(CompletableFuture::join)
-                            .sum());
+                            .sum(), pool);
         }
 
         return resolveOperation(type, a.get(row, col), b.get(row, col));
@@ -166,7 +175,7 @@ public final class DefaultAsyncMatrixExecutor implements AsyncMatrixExecutor {
 
         return operationCache.computeIfAbsent(opKey, key ->
                 executor.submitBinary(type, (double) left, (double) right)
-                        .thenApply(record -> (int) record.result())
+                        .thenApplyAsync(record -> (int) record.result(),pool)
         );
     }
 

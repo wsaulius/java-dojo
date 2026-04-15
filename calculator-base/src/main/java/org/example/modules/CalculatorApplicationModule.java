@@ -3,6 +3,8 @@ package org.example.modules;
 import com.google.inject.AbstractModule;
 import org.jline.terminal.Terminal;
 
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * Root Guice module that installs all calculator application modules.
  */
@@ -23,5 +25,6 @@ public class CalculatorApplicationModule extends AbstractModule {
         install(new SelectorModule());
         install(new CalculatorConsumerModule());
         install(new ExecutorModule());
-        install(new UiModule());}
+        install(new UiModule());
+    }
 }

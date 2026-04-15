@@ -1,6 +1,7 @@
 package org.example.execution;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.example.enums.BinaryType;
 import org.example.interfaces.MatrixExecutor;
 import org.example.interfaces.annotations.MatrixPool;
@@ -14,6 +15,7 @@ import java.util.stream.IntStream;
 /**
  * Executes matrix operations using an ExecutorService.
  */
+@Singleton
 public final class DefaultMatrixExecutor implements MatrixExecutor {
 
     private final ThreadPoolExecutor pool;

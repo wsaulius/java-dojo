@@ -6,12 +6,9 @@ import org.example.interfaces.MatrixExecutor;
 import org.example.interfaces.annotations.MatrixPool;
 import org.example.models.Matrix;
 
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.stream.IntStream;
 
 /**
@@ -19,7 +16,7 @@ import java.util.stream.IntStream;
  */
 public final class DefaultMatrixExecutor implements MatrixExecutor {
 
-    private final ExecutorService pool;
+    private final ThreadPoolExecutor pool;
     private final DefaultCalculationExecutor executor;
     private final ConcurrentHashMap<String, Matrix> cache = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Integer> operationCache = new ConcurrentHashMap<>();
@@ -29,7 +26,7 @@ public final class DefaultMatrixExecutor implements MatrixExecutor {
      */
     @Inject
     public DefaultMatrixExecutor(
-            @MatrixPool ExecutorService pool,
+            @MatrixPool ThreadPoolExecutor pool,
             DefaultCalculationExecutor executor
     ) {
         this.pool = pool;

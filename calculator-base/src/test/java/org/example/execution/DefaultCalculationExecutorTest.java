@@ -5,6 +5,7 @@ import org.example.models.BinaryCalculationRecord;
 import org.example.models.UnaryCalculationRecord;
 import org.example.services.CalculatorService;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import static org.mockito.Mockito.*;
 
 class DefaultCalculationExecutorTest {
 
-    private ExecutorService executorService;
+    private ThreadPoolExecutor executorService;
 
     @AfterEach
     void tearDown() {
@@ -26,10 +27,21 @@ class DefaultCalculationExecutorTest {
         }
     }
 
+    @BeforeEach
+    void setUp() {
+        executorService = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
+    }
+
     @Test
     void shouldExecuteMultipleTasksConcurrently() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(3);
+        executorService.setCorePoolSize(3);
 
         CountDownLatch startedLatch = new CountDownLatch(3);
         CountDownLatch releaseLatch = new CountDownLatch(1);
@@ -72,7 +84,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldCompleteOtherTasksWhenOneFails() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(3);
+        executorService.setCorePoolSize(3);
 
         when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 1)).thenThrow(new IllegalStateException("boom"));
         when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 2)).thenReturn(4);
@@ -102,7 +114,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldPreserveCorrectResultsAcrossConcurrentTasks() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(4);
+        executorService.setCorePoolSize(4);
 
         when(calculatorService.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(invocation -> {
             Integer input = invocation.getArgument(1);
@@ -131,7 +143,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldHandleBatchExecutionConcurrently() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(4);
+        executorService.setCorePoolSize(4);
 
         CountDownLatch startedLatch = new CountDownLatch(4);
         CountDownLatch releaseLatch = new CountDownLatch(1);
@@ -167,7 +179,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryInt() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryIntType type = UnaryIntType.SQUARE;
         when(calculatorService.runUnaryInt(type, 5)).thenReturn(25);
@@ -190,7 +202,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryDouble() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryDoubleType type = UnaryDoubleType.SQRT;
         when(calculatorService.runUnaryDouble(type, 4)).thenReturn(2.5);
@@ -213,7 +225,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryLong() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryLongType type = UnaryLongType.FACTORIAL;
         when(calculatorService.runUnaryLong(type, 6)).thenReturn(720L);
@@ -236,7 +248,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryBoolean() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryBooleanType type = UnaryBooleanType.IS_PRIME;
         when(calculatorService.runUnaryBoolean(type, 8)).thenReturn(true);
@@ -259,7 +271,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryBigInteger() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryBigIntegerType type = UnaryBigIntegerType.FIBONACCI;
         when(calculatorService.runUnaryBigInteger(type, 10)).thenReturn(BigInteger.valueOf(55));
@@ -282,7 +294,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryIntBatch() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryIntType type = UnaryIntType.SQUARE;
         when(calculatorService.runUnaryInt(type, 1)).thenReturn(1);
@@ -308,7 +320,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitBinary() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         BinaryType type = BinaryType.ADD;
         when(calculatorService.runBinary(type, 10.0, 5.0)).thenReturn(15.0);
@@ -332,7 +344,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldShutdownExecutorService() throws InterruptedException {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        ExecutorService executorService = mock(ExecutorService.class);
+        ThreadPoolExecutor executorService = mock(ThreadPoolExecutor.class);
 
         when(executorService.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS))
                 .thenReturn(true);
@@ -350,7 +362,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldForceShutdownWhenExecutorDoesNotTerminate() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        ExecutorService executorService = mock(ExecutorService.class);
+        ThreadPoolExecutor executorService = mock(ThreadPoolExecutor.class);
         when(executorService.awaitTermination(10, TimeUnit.SECONDS)).thenReturn(false);
 
         DefaultCalculationExecutor executor =
@@ -366,7 +378,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldForceShutdownWhenInterrupted() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        ExecutorService executorService = mock(ExecutorService.class);
+        ThreadPoolExecutor executorService = mock(ThreadPoolExecutor.class);
         when(executorService.awaitTermination(10, TimeUnit.SECONDS))
                 .thenThrow(new InterruptedException());
 
@@ -385,7 +397,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryDoubleBatch() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryDoubleType type = UnaryDoubleType.SQRT;
         when(calculatorService.runUnaryDouble(type, 2)).thenReturn(1.5);
@@ -411,7 +423,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryLongBatch() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryLongType type = UnaryLongType.FACTORIAL;
         when(calculatorService.runUnaryLong(type, 3)).thenReturn(6L);
@@ -437,7 +449,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryBooleanBatch() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryBooleanType type = UnaryBooleanType.IS_PRIME;
         when(calculatorService.runUnaryBoolean(type, 2)).thenReturn(true);
@@ -463,7 +475,7 @@ class DefaultCalculationExecutorTest {
     @Test
     void shouldSubmitUnaryBigIntegerBatch() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService.setCorePoolSize(1);
 
         UnaryBigIntegerType type = UnaryBigIntegerType.FIBONACCI;
         when(calculatorService.runUnaryBigInteger(type, 5)).thenReturn(BigInteger.valueOf(5));

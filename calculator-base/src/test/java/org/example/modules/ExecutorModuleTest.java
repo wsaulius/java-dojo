@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -43,16 +44,16 @@ class ExecutorModuleTest {
     void shouldResolveExecutionLayer() {
         assertNotNull(injector.getInstance(CalculationExecutor.class));
         assertNotNull(injector.getInstance(AsyncCalculationExecutor.class));
-        assertNotNull(injector.getInstance(Key.get(ExecutorService.class, CalcPool.class)));
-        assertNotNull(injector.getInstance(Key.get(ExecutorService.class, MatrixPool.class)));
+        assertNotNull(injector.getInstance(Key.get(ThreadPoolExecutor.class, CalcPool.class)));
+        assertNotNull(injector.getInstance(Key.get(ThreadPoolExecutor.class, MatrixPool.class)));
     }
 
     @Test
     void shouldProvideSingletonExecutorService() {
         ExecutorService first = injector.getInstance(
-                Key.get(ExecutorService.class, CalcPool.class));
+                Key.get(ThreadPoolExecutor.class, CalcPool.class));
         ExecutorService second = injector.getInstance(
-                Key.get(ExecutorService.class, CalcPool.class));
+                Key.get(ThreadPoolExecutor.class, CalcPool.class));
 
         assertSame(first, second);
     }

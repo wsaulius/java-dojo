@@ -8,9 +8,7 @@ import org.example.services.CalculatorService;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalTime;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,12 +19,28 @@ import static org.mockito.Mockito.when;
 
 class DefaultMatrixExecutorDemoTest {
 
-    private ExecutorService matrixPool;
-    private ExecutorService calcPool;
+    private ThreadPoolExecutor matrixPool;
+    private ThreadPoolExecutor calcPool;
 
     @BeforeEach
-    void print(TestInfo info) {
+    void setUp(TestInfo info) {
         System.out.println("\n==== " + info.getDisplayName() + " ====");
+
+        calcPool = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
+
+        matrixPool = new ThreadPoolExecutor(
+                2,
+                8,
+                60L,
+                TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>()
+        );
     }
 
     @AfterEach
@@ -39,9 +53,8 @@ class DefaultMatrixExecutorDemoTest {
     @DisplayName("Demo 1 - row-level parallel execution")
     void demo_parallelRows() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
-
-        calcPool = Executors.newFixedThreadPool(2);
-        matrixPool = Executors.newFixedThreadPool(2);
+        calcPool.setCorePoolSize(2);
+        matrixPool.setCorePoolSize(2);
 
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
                 .thenAnswer(inv -> {
@@ -89,8 +102,8 @@ class DefaultMatrixExecutorDemoTest {
     void demo_blockingGet() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
 
-        calcPool = Executors.newFixedThreadPool(1);
-        matrixPool = Executors.newFixedThreadPool(1);
+        calcPool.setCorePoolSize(1);
+        matrixPool.setCorePoolSize(1);
 
         when(service.runBinary(eq(BinaryType.ADD), anyDouble(), anyDouble()))
                 .thenAnswer(inv -> {
@@ -132,8 +145,8 @@ class DefaultMatrixExecutorDemoTest {
     void demo_cache() throws Exception {
         CalculatorService service = mock(CalculatorService.class);
 
-        calcPool = Executors.newFixedThreadPool(1);
-        matrixPool = Executors.newFixedThreadPool(1);
+        calcPool.setCorePoolSize(2);
+        matrixPool.setCorePoolSize(2);
 
         AtomicInteger calls = new AtomicInteger();
 
@@ -177,8 +190,8 @@ class DefaultMatrixExecutorDemoTest {
     void demo_shutdown() {
         CalculatorService service = mock(CalculatorService.class);
 
-        calcPool = Executors.newFixedThreadPool(1);
-        matrixPool = Executors.newFixedThreadPool(1);
+        calcPool.setCorePoolSize(2);
+        matrixPool.setCorePoolSize(2);
 
         DefaultCalculationExecutor calcExecutor =
                 new DefaultCalculationExecutor(service, calcPool);

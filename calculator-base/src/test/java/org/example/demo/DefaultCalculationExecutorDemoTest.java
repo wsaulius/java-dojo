@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 class DefaultCalculationExecutorDemoTest {
 
-    private ExecutorService executorService;
+    private ThreadPoolExecutor executorService;
 
     @BeforeEach
     void printTestName(TestInfo testInfo) {
@@ -25,6 +25,17 @@ class DefaultCalculationExecutorDemoTest {
         System.out.println("========================================");
         System.out.println("RUNNING: " + testInfo.getDisplayName());
         System.out.println("========================================");
+    }
+
+    @BeforeEach
+    void setUp() {
+        executorService = new ThreadPoolExecutor(
+                2,
+                32,
+                60L,
+                TimeUnit.SECONDS,
+                new SynchronousQueue<>()
+        );
     }
 
     @AfterEach
@@ -38,7 +49,7 @@ class DefaultCalculationExecutorDemoTest {
     @DisplayName("Demo 1 - Future.get blocks until calculation finishes")
     void demo_blockingGet() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(1);
+        executorService.setCorePoolSize(1);
 
         when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 5)).thenAnswer(invocation -> {
             System.out.println(now() + " worker started: " + Thread.currentThread().getName());
@@ -75,14 +86,14 @@ class DefaultCalculationExecutorDemoTest {
     @DisplayName("Demo 2 - independent tasks run in parallel")
     void demo_parallelExecution() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
 
         CountDownLatch releaseLatch = new CountDownLatch(1);
 
         when(calculatorService.runUnaryInt(eq(UnaryIntType.SQUARE), anyInt())).thenAnswer(invocation -> {
             Integer input = invocation.getArgument(1);
             System.out.println(now() + " task " + input + " started on " + Thread.currentThread().getName());
-            releaseLatch.await(2, TimeUnit.SECONDS);
+            releaseLatch.await();
             System.out.println(now() + " task " + input + " finishing on " + Thread.currentThread().getName());
             return input * input;
         });
@@ -117,7 +128,7 @@ class DefaultCalculationExecutorDemoTest {
     @DisplayName("Demo 3 - one failed task does not stop another")
     void demo_failureIsolation() throws Exception {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(2);
+        executorService.setCorePoolSize(2);
 
         when(calculatorService.runUnaryInt(UnaryIntType.SQUARE, 1)).thenAnswer(invocation -> {
             System.out.println(now() + " failing task started on " + Thread.currentThread().getName());
@@ -156,7 +167,7 @@ class DefaultCalculationExecutorDemoTest {
     @DisplayName("Demo 4 - shutdown rejects new submissions")
     void demo_shutdownStopsNewSubmissions() {
         CalculatorService calculatorService = mock(CalculatorService.class);
-        executorService = Executors.newFixedThreadPool(1);
+        executorService.setCorePoolSize(1);
 
         DefaultCalculationExecutor executor =
                 new DefaultCalculationExecutor(calculatorService, executorService);

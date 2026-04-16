@@ -30,13 +30,13 @@
         <module>fibonacci-demo</module>
         <module>fibonacci-dry-principle</module>
         <module>fibonacci-solid-principles</module>
-
         <module>functional-interface</module>
         <module>multithread-counter</module>
         <module>concurrency-cbarrier</module>
         <module>concurrency-blocking-queue</module>
         <module>concurrency-event-ledger</module>
         <module>concurrency-executor-service</module>
+        <module>multithread-deadlock</module>
 
     </modules>
 

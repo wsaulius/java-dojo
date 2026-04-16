@@ -2,13 +2,8 @@ package org.example.ui;
 
 import com.google.inject.Inject;
 import org.example.execution.*;
-import org.example.services.CalculatorService;
 import org.example.ui.screens.*;
 import org.example.ui.state.UiState;
-import org.jline.reader.LineReader;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
-
 import java.io.IOException;
 
 public class ConsoleApp {
@@ -39,18 +34,33 @@ public class ConsoleApp {
     }
 
     public void start() throws IOException {
-        TerminalBuilder.builder().build();
-        while (true) {
+        while (uiState.getScreen() != null) {
             dispatchCurrentScreen();
         }
     }
     void dispatchCurrentScreen() throws IOException {
-        switch (uiState.getScreen()) {
-            case MAIN -> mainMenu.show(uiState);
-            case UNARY -> unaryScreen.show(uiState);
-            case BINARY -> binaryScreen.show(uiState);
-            case MATRIX -> matrixScreen.show(uiState);
-            case THREADPOOL -> threadPoolScreen.show(uiState);
+        UiState.Screen screen = uiState.getScreen();
+
+        if (screen == null) {
+            throw new IllegalStateException("Screen is null");
+        }
+
+        switch (screen) {
+            case MAIN:
+                mainMenu.show(uiState);
+                return;
+            case UNARY:
+                unaryScreen.show(uiState);
+                return;
+            case BINARY:
+                binaryScreen.show(uiState);
+                return;
+            case MATRIX:
+                matrixScreen.show(uiState);
+                return;
+            case THREADPOOL:
+                threadPoolScreen.show(uiState);
+                return;
         }
     }
 

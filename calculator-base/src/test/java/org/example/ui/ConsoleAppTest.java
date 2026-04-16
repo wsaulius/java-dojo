@@ -1,11 +1,13 @@
 package org.example.ui;
 
-import org.example.ui.screens.*;
+import org.example.ui.screens.BinaryScreen;
+import org.example.ui.screens.MainMenuScreen;
+import org.example.ui.screens.MatrixScreen;
+import org.example.ui.screens.ThreadPoolScreen;
+import org.example.ui.screens.UnaryScreen;
 import org.example.ui.state.UiState;
-import org.jline.terminal.Terminal;
-import org.jline.terminal.TerminalBuilder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockedStatic;
 
 import java.io.IOException;
 
@@ -14,119 +16,112 @@ import static org.mockito.Mockito.*;
 
 class ConsoleAppTest {
 
+    private UiState state;
+    private MainMenuScreen mainMenu;
+    private UnaryScreen unaryScreen;
+    private BinaryScreen binaryScreen;
+    private MatrixScreen matrixScreen;
+    private ThreadPoolScreen threadPoolScreen;
+    private ConsoleApp app;
+
+    @BeforeEach
+    void setUp() {
+        state = mock(UiState.class);
+        mainMenu = mock(MainMenuScreen.class);
+        unaryScreen = mock(UnaryScreen.class);
+        binaryScreen = mock(BinaryScreen.class);
+        matrixScreen = mock(MatrixScreen.class);
+        threadPoolScreen = mock(ThreadPoolScreen.class);
+
+        app = new ConsoleApp(
+                state,
+                mainMenu,
+                unaryScreen,
+                binaryScreen,
+                matrixScreen,
+                threadPoolScreen
+        );
+    }
+
     @Test
-    void shouldDispatchMainScreen() throws IOException {
-        UiState uiState = mock(UiState.class);
-        when(uiState.getScreen()).thenReturn(UiState.Screen.MAIN);
-
-        MainMenuScreen mainMenu = mock(MainMenuScreen.class);
-        UnaryScreen unaryScreen = mock(UnaryScreen.class);
-        BinaryScreen binaryScreen = mock(BinaryScreen.class);
-        MatrixScreen matrixScreen = mock(MatrixScreen.class);
-        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
-
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
+    void dispatchCurrentScreen_shouldShowMainMenu_whenScreenIsMain() throws IOException {
+        when(state.getScreen()).thenReturn(UiState.Screen.MAIN);
 
         app.dispatchCurrentScreen();
 
-        verify(mainMenu).show(uiState);
-        verifyNoInteractions(unaryScreen, binaryScreen, matrixScreen);
+        verify(mainMenu).show(state);
+        verifyNoInteractions(unaryScreen, binaryScreen, matrixScreen, threadPoolScreen);
     }
 
     @Test
-    void shouldDispatchUnaryScreen() throws IOException {
-        UiState uiState = mock(UiState.class);
-        when(uiState.getScreen()).thenReturn(UiState.Screen.UNARY);
-
-        MainMenuScreen mainMenu = mock(MainMenuScreen.class);
-        UnaryScreen unaryScreen = mock(UnaryScreen.class);
-        BinaryScreen binaryScreen = mock(BinaryScreen.class);
-        MatrixScreen matrixScreen = mock(MatrixScreen.class);
-        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
-
-
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
+    void dispatchCurrentScreen_shouldShowUnary_whenScreenIsUnary() throws IOException {
+        when(state.getScreen()).thenReturn(UiState.Screen.UNARY);
 
         app.dispatchCurrentScreen();
 
-        verify(unaryScreen).show(uiState);
-        verifyNoInteractions(mainMenu, binaryScreen, matrixScreen);
+        verify(unaryScreen).show(state);
+        verifyNoInteractions(mainMenu, binaryScreen, matrixScreen, threadPoolScreen);
     }
 
     @Test
-    void shouldDispatchBinaryScreen() throws IOException {
-        UiState uiState = mock(UiState.class);
-        when(uiState.getScreen()).thenReturn(UiState.Screen.BINARY);
-
-        MainMenuScreen mainMenu = mock(MainMenuScreen.class);
-        UnaryScreen unaryScreen = mock(UnaryScreen.class);
-        BinaryScreen binaryScreen = mock(BinaryScreen.class);
-        MatrixScreen matrixScreen = mock(MatrixScreen.class);
-        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
-
-
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
+    void dispatchCurrentScreen_shouldShowBinary_whenScreenIsBinary() throws IOException {
+        when(state.getScreen()).thenReturn(UiState.Screen.BINARY);
 
         app.dispatchCurrentScreen();
 
-        verify(binaryScreen).show(uiState);
-        verifyNoInteractions(mainMenu, unaryScreen, matrixScreen);
+        verify(binaryScreen).show(state);
+        verifyNoInteractions(mainMenu, unaryScreen, matrixScreen, threadPoolScreen);
     }
 
     @Test
-    void shouldDispatchMatrixScreen() throws IOException {
-        UiState uiState = mock(UiState.class);
-        when(uiState.getScreen()).thenReturn(UiState.Screen.MATRIX);
-
-        MainMenuScreen mainMenu = mock(MainMenuScreen.class);
-        UnaryScreen unaryScreen = mock(UnaryScreen.class);
-        BinaryScreen binaryScreen = mock(BinaryScreen.class);
-        MatrixScreen matrixScreen = mock(MatrixScreen.class);
-        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
-
-
-        ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
+    void dispatchCurrentScreen_shouldShowMatrix_whenScreenIsMatrix() throws IOException {
+        when(state.getScreen()).thenReturn(UiState.Screen.MATRIX);
 
         app.dispatchCurrentScreen();
 
-        verify(matrixScreen).show(uiState);
-        verifyNoInteractions(mainMenu, unaryScreen, binaryScreen);
+        verify(matrixScreen).show(state);
+        verifyNoInteractions(mainMenu, unaryScreen, binaryScreen, threadPoolScreen);
     }
 
     @Test
-    void shouldBuildTerminalAndLoopUntilScreenThrows() throws Exception {
-        UiState uiState = mock(UiState.class);
-        when(uiState.getScreen()).thenReturn(UiState.Screen.MAIN);
+    void dispatchCurrentScreen_shouldShowThreadPool_whenScreenIsThreadPool() throws IOException {
+        when(state.getScreen()).thenReturn(UiState.Screen.THREADPOOL);
 
-        MainMenuScreen mainMenu = mock(MainMenuScreen.class);
-        UnaryScreen unaryScreen = mock(UnaryScreen.class);
-        BinaryScreen binaryScreen = mock(BinaryScreen.class);
-        MatrixScreen matrixScreen = mock(MatrixScreen.class);
-        ThreadPoolScreen threadPoolScreen = mock(ThreadPoolScreen.class);
+        app.dispatchCurrentScreen();
 
-
-        doNothing()
-                .doThrow(new IOException("stop loop"))
-                .when(mainMenu).show(uiState);
-
-        TerminalBuilder builder = mock(TerminalBuilder.class);
-        Terminal terminal = mock(Terminal.class);
-        when(builder.build()).thenReturn(terminal);
-
-        try (MockedStatic<TerminalBuilder> terminalBuilderMock = mockStatic(TerminalBuilder.class)) {
-            terminalBuilderMock.when(TerminalBuilder::builder).thenReturn(builder);
-
-            ConsoleApp app = new ConsoleApp(uiState, mainMenu, unaryScreen, binaryScreen, matrixScreen,threadPoolScreen);
-
-            assertThrows(IOException.class, app::start);
-
-            terminalBuilderMock.verify(TerminalBuilder::builder);
-            verify(builder).build();
-            verify(uiState, times(2)).getScreen();
-            verify(mainMenu, times(2)).show(uiState);
-            verifyNoInteractions(unaryScreen, binaryScreen, matrixScreen);
-        }
+        verify(threadPoolScreen).show(state);
+        verifyNoInteractions(mainMenu, unaryScreen, binaryScreen, matrixScreen);
     }
 
+    @Test
+    void dispatchCurrentScreen_shouldThrow_whenScreenIsNull() {
+        when(state.getScreen()).thenReturn(null);
 
+        assertThrows(IllegalStateException.class, () -> app.dispatchCurrentScreen());
+
+        verifyNoInteractions(mainMenu, unaryScreen, binaryScreen, matrixScreen, threadPoolScreen);
+    }
+
+    @Test
+    void start_shouldDispatchOnceAndExit_whenScreenBecomesNullAfterFirstIteration() throws IOException {
+        when(state.getScreen()).thenReturn(
+                UiState.Screen.MAIN,
+                UiState.Screen.MAIN,
+                null
+        );
+
+        app.start();
+
+        verify(mainMenu).show(state);
+        verifyNoInteractions(unaryScreen, binaryScreen, matrixScreen, threadPoolScreen);
+    }
+
+    @Test
+    void start_shouldDoNothing_whenInitialScreenIsNull() throws IOException {
+        when(state.getScreen()).thenReturn(null);
+
+        app.start();
+
+        verifyNoInteractions(mainMenu, unaryScreen, binaryScreen, matrixScreen, threadPoolScreen);
+    }
 }

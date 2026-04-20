@@ -40,7 +40,7 @@ public class MainMenuScreen {
             case "3" -> state.setScreen(UiState.Screen.MATRIX);
             case "4" -> state.toggleMode();
             case "5" -> state.setScreen(UiState.Screen.THREADPOOL);
-        //    case "6" -> System.exit(0);
+            case "6" -> System.exit(0);
             default -> terminal.writer().println("Invalid choice");
         }
     }

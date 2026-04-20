@@ -1,6 +1,6 @@
 package org.example;
-import javax.jms.*;
-//import jakarta.jms.*;
+
+import jakarta.jms.*;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import java.io.FileOutputStream;
@@ -28,17 +28,15 @@ public class MatrixConsumer {
 
                 if (message instanceof BytesMessage bytesMessage) {
 
-                    // ===== SAFE read =====
                     byte[] data = new byte[(int) bytesMessage.getBodyLength()];
                     bytesMessage.readBytes(data);
 
-                    String fileName = bytesMessage.getStringProperty("fileName");
+                    String fileName = message.getStringProperty("fileName");
                     if (fileName == null) {
                         fileName = "matrix.xlsx";
-                        System.out.printf("File name is null");
+                        System.out.println("File name is null, using default");
                     }
 
-                    // ===== Save file =====
                     try (FileOutputStream fos = new FileOutputStream(fileName)) {
                         fos.write(data);
                     }
@@ -48,5 +46,4 @@ public class MatrixConsumer {
             }
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package org.example.ui.screens;
 
 import com.google.inject.Inject;
+import org.example.consumers.MatrixXlsx;
 import org.example.enums.BinaryType;
 import org.example.execution.DefaultAsyncMatrixExecutor;
 import org.example.execution.DefaultMatrixExecutor;
@@ -44,6 +45,7 @@ public class MatrixScreen {
 
             Matrix A = readMatrix("A");
             Matrix B = readMatrix("B");
+            MatrixXlsx xlsx = new MatrixXlsx();
 
             Matrix result;
             long start = System.nanoTime();
@@ -70,6 +72,7 @@ public class MatrixScreen {
             // ✅ PRINT RESULT
             terminal.writer().println("\nResult:");
             printMatrix(result);
+            xlsx.accept(result);
 
             long end = System.nanoTime();
 

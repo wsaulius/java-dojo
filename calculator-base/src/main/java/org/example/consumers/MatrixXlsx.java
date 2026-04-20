@@ -25,12 +25,12 @@ public final class MatrixXlsx implements Consumer<Matrix> {
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Matrix");
 
-        int rowIndex = 0;
+        int rowIndex = 1;
 
         for (int[] row : matrix.data()) {
             Row excelRow = sheet.createRow(rowIndex++);
 
-            int colIndex = 0;
+            int colIndex = 1;
             for (int value : row) {
                 Cell cell = excelRow.createCell(colIndex++);
                 cell.setCellValue(value);
@@ -38,18 +38,15 @@ public final class MatrixXlsx implements Consumer<Matrix> {
         }
 
         try {
-            // 1. WRITE TO BYTE ARRAY FIRST
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             workbook.write(out);
             workbook.close();
 
             byte[] excelBytes = out.toByteArray();
 
-            // 2. SEND MESSAGE
             MatrixSend matrixSend = new MatrixSend();
             matrixSend.accept(excelBytes);
 
-            // 3. OPTIONAL: save locally (debug only)
             try (FileOutputStream fileOut = new FileOutputStream("matrix.xlsx")) {
                 fileOut.write(excelBytes);
             }

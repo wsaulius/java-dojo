@@ -72,14 +72,13 @@ public class MatrixScreen {
             // ✅ PRINT RESULT
             terminal.writer().println("\nResult:");
             printMatrix(result);
-            xlsx.accept(result);
-
             long end = System.nanoTime();
 
             terminal.writer().println("\u001B[31mMatrix took " +
                     (end - start) / 1_000_000.0 + " ms\u001B[0m");
 
             terminal.flush();
+            xlsx.accept(result);
 
         } catch (Exception e) {
             terminal.writer().println("Error: " + e.getMessage());

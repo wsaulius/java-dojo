@@ -13,6 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 @Singleton
@@ -24,18 +25,17 @@ public final class MatrixXlsx implements Consumer<Matrix> {
 
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Matrix");
+        AtomicInteger rowIndex = new AtomicInteger(1);
 
-        int rowIndex = 1;
+        Arrays.stream(matrix.data()).forEach(row -> {
+            Row excelRow = sheet.createRow(rowIndex.getAndIncrement());
 
-        for (int[] row : matrix.data()) {
-            Row excelRow = sheet.createRow(rowIndex++);
-
-            int colIndex = 1;
-            for (int value : row) {
-                Cell cell = excelRow.createCell(colIndex++);
+            AtomicInteger colIndex = new AtomicInteger(1); // start at 1
+            Arrays.stream(row).forEach(value -> {
+                Cell cell = excelRow.createCell(colIndex.getAndIncrement());
                 cell.setCellValue(value);
-            }
-        }
+            });
+        });
 
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();

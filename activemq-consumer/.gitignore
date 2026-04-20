@@ -3,7 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-matrix.xlsx
+*.xlsx
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

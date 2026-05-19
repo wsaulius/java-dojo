@@ -1,5 +1,6 @@
 package org.example.phase1;
 
+import org.example.phase1.interfaces.TotalSumFunctionalInterface;
 import org.example.phase1.records.Customer;
 import org.example.phase1.records.Order;
 
@@ -55,6 +56,18 @@ public class PhaseOneDemo {
                 .sum();
 
         System.out.println("Orders total converting nested loops using streams: " + totalSum);
+
+        //Using a custom TotalSumFunctionalInterface
+        TotalSumFunctionalInterface totalSumCalculator = customers ->
+                customers.stream()
+                        .flatMap(customer -> customer.orders().stream())
+                        .mapToDouble(order -> order.amount())
+                        .sum();
+
+        double customTotalSum = totalSumCalculator.calculate(customerList);
+        TotalSumFunctionalInterface.info();
+        totalSumCalculator.printTotalSum(customTotalSum);
+
     }
 
 

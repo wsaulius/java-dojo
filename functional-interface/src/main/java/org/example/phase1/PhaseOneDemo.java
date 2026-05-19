@@ -1,5 +1,6 @@
 package org.example.phase1;
 
+import org.example.phase1.collectors.TotalSumCollector;
 import org.example.phase1.interfaces.TotalSumFunctionalInterface;
 import org.example.phase1.records.Customer;
 import org.example.phase1.records.Order;
@@ -8,8 +9,8 @@ import java.util.List;
 
 public class PhaseOneDemo {
     public static void main(String[] args) {
-//Base setup
 
+        //Base setup
         double totalSum = 0;
 
         //Orders for Customer1
@@ -64,9 +65,25 @@ public class PhaseOneDemo {
                         .mapToDouble(order -> order.amount())
                         .sum();
 
-        double customTotalSum = totalSumCalculator.calculate(customerList);
+        totalSum = totalSumCalculator.calculate(customerList);
         TotalSumFunctionalInterface.info();
-        totalSumCalculator.printTotalSum(customTotalSum);
+        totalSumCalculator.printTotalSum(totalSum);
+
+        //Exercise: Implement a custom collector
+        totalSum = customerList.stream()
+                .flatMap(customer -> customer.orders().stream())
+                .collect(new TotalSumCollector());
+
+        System.out.println("Orders total using custom collector: " + totalSum);
+
+        //Using a custom functional interface + custom collector
+        totalSumCalculator = customers ->
+                customers.stream()
+                        .flatMap(customer -> customer.orders().stream())
+                        .collect(new TotalSumCollector());
+
+        totalSum = totalSumCalculator.calculate(customerList);
+        System.out.println("Orders total using custom functional interface and custom collector: " + totalSum);
 
     }
 

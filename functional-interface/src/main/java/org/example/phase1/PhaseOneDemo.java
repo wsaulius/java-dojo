@@ -8,6 +8,9 @@ import java.util.List;
 public class PhaseOneDemo {
     public static void main(String[] args) {
 //Base setup
+
+        double totalSum = 0;
+
         //Orders for Customer1
         Order order1 = new Order(1, 100.00);
         Order order2 = new Order(2, 150.00);
@@ -16,12 +19,27 @@ public class PhaseOneDemo {
         Order order3 = new Order(3, 200.00);
         Order order4 = new Order(4, 300.00);
 
+        //Example: Convert a list of orders into total revenue using streams.
+        List<Order> orderList = List.of(order1, order2, order3, order4);
+
+        for(Order o: orderList) {
+            totalSum += o.amount();
+        }
+
+        System.out.println("Orders total sum using for loop: " + totalSum);
+
+        totalSum = orderList.stream()
+                .mapToDouble(Order::amount)
+                .sum();
+
+        System.out.println("Orders total sum converting for loop using streams: " + totalSum);
+        totalSum = 0;
+
+        //Exercise: Refactor nested loops into stream pipelines.
         Customer customer1 = new Customer(1, List.of(order1, order2));
         Customer customer2 = new Customer(1, List.of(order3, order4));
 
         List<Customer> customerList = List.of(customer1, customer2);
-
-        double totalSum = 0;
 
         for(Customer c: customerList) {
             for(Order o: c.orders()) {
@@ -29,6 +47,15 @@ public class PhaseOneDemo {
             }
         }
 
-        System.out.println(totalSum);
+        System.out.println("Orders total using nested loops: " + totalSum);
+
+        totalSum = customerList.stream()
+                .flatMap(customer -> customer.orders().stream())
+                .mapToDouble(order -> order.amount())
+                .sum();
+
+        System.out.println("Orders total converting nested loops using streams: " + totalSum);
     }
+
+
 }

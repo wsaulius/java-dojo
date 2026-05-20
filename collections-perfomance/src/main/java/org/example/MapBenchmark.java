@@ -14,6 +14,7 @@ public class MapBenchmark {
 
     private Map<Integer, Integer> hashMap;
     private Map<Integer, Integer> concurrentHashMap;
+    private int size = 50_000;
 
     @Setup(Level.Invocation)
     public void setup() {
@@ -21,7 +22,7 @@ public class MapBenchmark {
         hashMap = new HashMap<>();
         concurrentHashMap = new ConcurrentHashMap<>();
 
-        for (int i = 0; i < 100_000; i++) {
+        for (int i = 0; i < size; i++) {
             hashMap.put(i, i);
             concurrentHashMap.put(i, i);
         }
@@ -29,11 +30,11 @@ public class MapBenchmark {
 
     @Benchmark
     public void hashMapPut() {
-        hashMap.put(100_001, 1);
+        hashMap.put(50_001, 1);
     }
 
     @Benchmark
     public void concurrentHashMapPut() {
-        concurrentHashMap.put(100_001, 1);
+        concurrentHashMap.put(50_001, 1);
     }
 }

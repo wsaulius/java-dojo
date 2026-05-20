@@ -3,6 +3,8 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/calculator-base/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/calculator-base/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/collections-perfomance/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/collections-perfomance/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/concurrency-blocking-queue/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/concurrency-blocking-queue/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/concurrency-cbarrier/src/main/java" charset="UTF-8" />
@@ -27,6 +29,8 @@
     <file url="file://$PROJECT_DIR$/functional-interface/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/multithread-counter/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/multithread-counter/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/multithread-deadlock/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/multithread-deadlock/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

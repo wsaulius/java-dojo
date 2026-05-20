@@ -9,7 +9,7 @@ public class BenchmarkRunnerDemo {
     public static void main(String[] args) throws Exception {
 
         Options options = new OptionsBuilder()
-                .include(ListBenchmark.class.getSimpleName())
+                .include(".*Benchmark.*")
                 .warmupIterations(1)
                 .measurementIterations(1)
                 .forks(1)

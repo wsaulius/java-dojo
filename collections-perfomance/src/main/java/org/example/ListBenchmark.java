@@ -14,7 +14,7 @@ public class ListBenchmark {
 
     private List<Integer> arrayList;
     private List<Integer> linkedList;
-    private int size = 100_000;
+    private int size = 50_000;
     private int operations = 3000;
 
     @Setup(Level.Invocation)

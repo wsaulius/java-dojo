@@ -1,9 +1,11 @@
 package org.example.phase3;
 
-public class SimpleCounter {
-     int count = 0;
+import java.util.concurrent.atomic.AtomicInteger;
 
-     synchronized void increment() {
-         count++;
-     }
+public class SimpleCounter {
+    AtomicInteger count = new AtomicInteger(0);
+
+    void increment() {
+        count.incrementAndGet();
+    }
 }

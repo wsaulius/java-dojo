@@ -23,7 +23,7 @@ public class SharedCounterDemo {
         t1.join();
         t2.join();
 
-        System.out.println("Expected value 20000. \nFinal counter value: " + counter.count);
+        System.out.println("Expected value 20000. \nFinal counter value with synchronized: " + counter.count);
 
     }
 }

@@ -12,17 +12,26 @@ public class SchedulerExecutorServiceDemo {
                 Executors.newScheduledThreadPool(1);
 
         Runnable task = () -> {
+
             System.out.println(
-                    "Task executed at: " +
-                            System.currentTimeMillis()
+                    "Start: " + System.currentTimeMillis()
+            );
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+
+            System.out.println(
+                    "End: " + System.currentTimeMillis()
             );
         };
 
-        System.out.println("Scheduling task...");
+        scheduler.scheduleAtFixedRate(task, 0, 3, TimeUnit.SECONDS); //Start time -> Start time
+        scheduler.scheduleWithFixedDelay(task, 0, 3, TimeUnit.SECONDS); // End time -> Start time
 
-        scheduler.schedule(task, 3, TimeUnit.SECONDS);
-
-        Thread.sleep(5000); // shutdown might happen before the task executes.
+        Thread.sleep(15000);
 
         scheduler.shutdown();
     }

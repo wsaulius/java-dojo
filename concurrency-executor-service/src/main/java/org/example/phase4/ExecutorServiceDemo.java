@@ -1,7 +1,6 @@
 package org.example.phase4;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ExecutorServiceDemo {
 
@@ -12,23 +11,32 @@ public class ExecutorServiceDemo {
 
         ExecutorService executor = Executors.newFixedThreadPool(THREADS);
 
-        for (int i = 0; i <= TASKS; i++) {
+        Callable<Integer> task = () -> {
+            System.out.println("Callable... ");
+            Thread.sleep(3000);
+            return 30;
+        };
 
-            int taskId = i;
+        Future<Integer> future = executor.submit(task);
 
-            executor.submit(() -> {
-                System.out.println("Task " + taskId + " running on thread " + Thread.currentThread().getName());
+        System.out.println("Task submitted.");
 
-            });
+        try {
+            System.out.println("Doing other work...");
 
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Integer result = future.get();
 
-            System.out.println("Task " + taskId + " finished");
+            System.out.println("Result: " + result);
+
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
+       /* Main Thread:
+        submit task ---- continue working ---- waits on get()
+
+        Worker Thread:
+        start task ---- sleep ---- return 30 */
+
         executor.shutdown();
 
     }

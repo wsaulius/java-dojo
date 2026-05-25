@@ -1,6 +1,7 @@
 package org.example.phase5;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 public class CompletableFutureDemo {
 
@@ -87,7 +88,6 @@ public class CompletableFutureDemo {
                             throw new RuntimeException("Boom");
                         })
                         .handle((value, ex) -> {
-
                             if (ex != null) {
                                 return "Recovered";
                             }
@@ -103,18 +103,64 @@ public class CompletableFutureDemo {
         //do side effect
         //↓
         //original outcome continues
-        CompletableFuture<String> futureWhen =
+//        CompletableFuture<String> futureWhen =
+//                CompletableFuture.<String>supplyAsync(() -> {
+//                            throw new RuntimeException("Failure");
+//                        })
+//                        .whenComplete((value, ex) -> {
+//
+//                            if (ex != null) {
+//                                System.out.println("Logging error: " + ex.getMessage());
+//                            }
+//                        });
+//
+//        System.out.println(futureWhen.join());
+
+        //timeouts
+        //orTimeout() - fail with exception
+        //Task too slow
+        //↓
+        //future marked failed
+        //↓
+        //pipeline moves to error handling
+        CompletableFuture<String> futureTimeout =
                 CompletableFuture.<String>supplyAsync(() -> {
-                            throw new RuntimeException("Failure");
+                            sleep(5000);
+                            return "API Response";
                         })
-                        .whenComplete((value, ex) -> {
+                        .orTimeout(2, TimeUnit.SECONDS);
 
-                            if (ex != null) {
-                                System.out.println("Logging error: " + ex.getMessage());
-                            }
-                        });
+        try {
+            System.out.println(futureTimeout.join());
+        } catch (Exception e) {
+            System.out.println("Timeout happened!");
+            System.out.println(e.getMessage());
+        }
 
-        System.out.println(futureWhen.join());
+        //completeOnTimeout() - return fallback value
+        //Timeout
+        //↓
+        //return fallback value
+        CompletableFuture<String> futureComplete =
+                CompletableFuture.<String>supplyAsync(() -> {
+                            sleep(5000);
+                            return "Real API Response";
+                        })
+                        .completeOnTimeout("Default Response", 2, TimeUnit.SECONDS);
+
+        System.out.println(futureComplete.join());
+
+        //combining orTimeout() with exceptionally()
+        CompletableFuture<String> futureCombined =
+                CompletableFuture.<String>supplyAsync(() -> {
+                            sleep(5000);
+                            return "Response";
+                        })
+                        .orTimeout(2, TimeUnit.SECONDS)
+                        .exceptionally(ex -> "Fallback after timeout");
+
+        System.out.println(futureCombined.join());
 
     }
 }
+

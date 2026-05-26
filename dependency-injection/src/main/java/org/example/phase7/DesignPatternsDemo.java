@@ -1,6 +1,10 @@
 package org.example.phase7;
 
+import org.example.phase7.interfaces.EventListener;
 import org.example.phase7.interfaces.PaymentStrategyInterface;
+import org.example.phase7.observers.EmailListener;
+import org.example.phase7.observers.SmsListener;
+import org.example.phase7.publishers.EventManager;
 import org.example.phase7.services.CardPayment;
 import org.example.phase7.services.CashPayment;
 import org.example.phase7.services.CheckoutStrategy;
@@ -18,5 +22,11 @@ public class DesignPatternsDemo {
         checkoutServiceCard.checkout(200);
         checkoutServiceCash.checkout(100);
         checkoutServiceCrypto.checkout(50);
+
+        //Observer/Publisher usage
+        EventManager manager = new EventManager();
+        manager.order(new EmailListener());
+        manager.order(new SmsListener());
+        manager.notifyListeners("Order complete");
     }
 }

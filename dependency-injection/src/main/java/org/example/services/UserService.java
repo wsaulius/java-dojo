@@ -1,12 +1,17 @@
 package org.example.services;
 
+import org.example.interfaces.NotificationServiceInterface;
+
 public class UserService {
 
-    private EmailService emailService = new EmailService();
+    private final NotificationServiceInterface notificationService;
+
+    public UserService(NotificationServiceInterface notificationService) {
+        this.notificationService = notificationService;
+    }
 
     public void registerUser(String username) {
-
         System.out.println("Registering user: " + username);
-        emailService.sendEmail();
+        notificationService.sendNotification();
     }
 }

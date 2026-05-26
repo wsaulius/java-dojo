@@ -6,6 +6,7 @@ public class UserService {
 
     private final NotificationServiceInterface notificationService;
 
+    //Manual constructor injection
     public UserService(NotificationServiceInterface notificationService) {
         this.notificationService = notificationService;
     }

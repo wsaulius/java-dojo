@@ -8,9 +8,10 @@ import org.example.services.UserService;
 public class DependencyInjectionDemo {
     public static void main(String[] args) {
 
-        //No need to change the userService
+        //No need to change the userService to change the implementation
         //NotificationServiceInterface notificationService = new EmailService();
         NotificationServiceInterface notificationService = new SmsService();
+        //
         UserService userService = new UserService(notificationService);
         userService.registerUser("John");
 

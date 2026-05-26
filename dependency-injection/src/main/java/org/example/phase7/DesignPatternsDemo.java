@@ -1,17 +1,20 @@
 package org.example.phase7;
 
+import org.example.phase7.decorators.LoggingDecorator;
+import org.example.phase7.interfaces.DataService;
 import org.example.phase7.interfaces.EventListener;
 import org.example.phase7.interfaces.PaymentStrategyInterface;
 import org.example.phase7.observers.EmailListener;
 import org.example.phase7.observers.SmsListener;
 import org.example.phase7.publishers.EventManager;
-import org.example.phase7.services.CardPayment;
-import org.example.phase7.services.CashPayment;
-import org.example.phase7.services.CheckoutStrategy;
-import org.example.phase7.services.CryptoPayment;
+import org.example.phase7.services.*;
 
 public class DesignPatternsDemo {
     public static void main(String[] args) {
+        //Strategy - interchangeable behaviors
+        //Observer - event communication
+        //Decorator - behavior extension
+
         //Runtime selection
         PaymentStrategyInterface cardPayment = new CardPayment();
         PaymentStrategyInterface cashPayment = new CashPayment();
@@ -28,5 +31,10 @@ public class DesignPatternsDemo {
         manager.order(new EmailListener());
         manager.order(new SmsListener());
         manager.notifyListeners("Order complete");
+
+        //Decorator usage
+        DataService service = new LoggingDecorator(new SimpleDataService());
+        service.save();
+
     }
 }

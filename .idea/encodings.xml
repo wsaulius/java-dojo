@@ -13,6 +13,8 @@
     <file url="file://$PROJECT_DIR$/concurrency-event-ledger/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/concurrency-executor-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/concurrency-executor-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dependency-injection/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/dependency-injection/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fibonacci-binary/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fibonacci-binary/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/fibonacci-collectors/src/main/java" charset="UTF-8" />

@@ -1,12 +1,14 @@
 package org.example.phase8.objects;
 
+import org.example.phase8.enums.PaymentType;
+
 public class Order {
     private final int id;
     private final String product;
     private final double amount;
-    private final String paymentType;
+    private final PaymentType paymentType;
 
-    public Order(int id, String product, double amount, String paymentType) {
+    public Order(int id, String product, double amount, PaymentType paymentType) {
         this.id = id;
         this.product = product;
         this.amount = amount;
@@ -17,17 +19,12 @@ public class Order {
         return id;
     }
 
-    public String getPaymentType() {
+    public PaymentType getPaymentType() {
         return paymentType;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", product='" + product + '\'' +
-                ", amount=" + amount +
-                ", paymentType='" + paymentType + '\'' +
-                '}';
+        return "Order id=" + id + ", product=" + product + ", amount=" + amount + ", paymentType=" + paymentType;
     }
 }

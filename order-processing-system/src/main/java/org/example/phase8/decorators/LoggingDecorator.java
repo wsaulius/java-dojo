@@ -14,10 +14,10 @@ public class LoggingDecorator implements OrderProcessor {
 
     @Override
     public void process(Order order) {
-        System.out.println("[LOG] Starting " + order);
+        System.out.println("[LOG] Starting [" + order + "]");
 
         wrapped.process(order);
 
-        System.out.println("[LOG] Finished " + order);
+        System.out.println("[LOG] Finished [" + order + "]");
     }
 }

@@ -39,6 +39,7 @@
         <module>multithread-deadlock</module>
         <module>collections-perfomance</module>
         <module>dependency-injection</module>
+        <module>order-processing-system</module>
 
     </modules>
 

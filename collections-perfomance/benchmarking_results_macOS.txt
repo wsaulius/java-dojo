@@ -1,0 +1,1377 @@
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 8 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: org.example.ConcurrentMapBenchmark.concurrentHashMapTest
+
+# Run progress: 0.00% complete, ETA 02:13:20
+# Fork: 1 of 5
+# Warmup Iteration   1: 84584239.760 ops/s
+# Warmup Iteration   2: 129547238.070 ops/s
+# Warmup Iteration   3: 55823280.022 ops/s
+# Warmup Iteration   4: 44723736.917 ops/s
+# Warmup Iteration   5: 61381267.491 ops/s
+Iteration   1: 116375235.892 ops/s
+Iteration   2: 158056980.706 ops/s
+Iteration   3: 174764247.149 ops/s
+Iteration   4: 142291484.435 ops/s
+Iteration   5: 46513809.595 ops/s
+
+# Run progress: 1.25% complete, ETA 02:12:04
+# Fork: 2 of 5
+# Warmup Iteration   1: 57078259.401 ops/s
+# Warmup Iteration   2: 65161437.768 ops/s
+# Warmup Iteration   3: 180470865.453 ops/s
+# Warmup Iteration   4: 44566629.569 ops/s
+# Warmup Iteration   5: 47273099.037 ops/s
+Iteration   1: 53822844.928 ops/s
+Iteration   2: 50558715.958 ops/s
+Iteration   3: 152473286.304 ops/s
+Iteration   4: 47177724.929 ops/s
+Iteration   5: 73985374.505 ops/s
+
+# Run progress: 2.50% complete, ETA 02:10:24
+# Fork: 3 of 5
+# Warmup Iteration   1: 94187694.349 ops/s
+# Warmup Iteration   2: 48070043.743 ops/s
+# Warmup Iteration   3: 113906935.305 ops/s
+# Warmup Iteration   4: 196697400.135 ops/s
+# Warmup Iteration   5: 72855856.838 ops/s
+Iteration   1: 56421318.797 ops/s
+Iteration   2: 198998053.148 ops/s
+Iteration   3: 45281623.662 ops/s
+Iteration   4: 59603762.822 ops/s
+Iteration   5: 187701531.001 ops/s
+
+# Run progress: 3.75% complete, ETA 02:08:45
+# Fork: 4 of 5
+# Warmup Iteration   1: 81790400.923 ops/s
+# Warmup Iteration   2: 128553662.897 ops/s
+# Warmup Iteration   3: 181162632.557 ops/s
+# Warmup Iteration   4: 40953425.882 ops/s
+# Warmup Iteration   5: 41483689.575 ops/s
+Iteration   1: 51034596.067 ops/s
+Iteration   2: 96057130.830 ops/s
+Iteration   3: 108411366.049 ops/s
+Iteration   4: 109584089.086 ops/s
+Iteration   5: 77834665.745 ops/s
+
+# Run progress: 5.00% complete, ETA 02:07:04
+# Fork: 5 of 5
+# Warmup Iteration   1: 190107320.850 ops/s
+# Warmup Iteration   2: 48551493.314 ops/s
+# Warmup Iteration   3: 188952387.205 ops/s
+# Warmup Iteration   4: 40261184.950 ops/s
+# Warmup Iteration   5: 48993779.691 ops/s
+Iteration   1: 53783327.860 ops/s
+Iteration   2: 44333427.855 ops/s
+Iteration   3: 132497039.520 ops/s
+Iteration   4: 104785844.649 ops/s
+Iteration   5: 49466321.458 ops/s
+
+
+Result "org.example.ConcurrentMapBenchmark.concurrentHashMapTest":
+  95672552.118 ±(99.9%) 37503409.782 ops/s [Average]
+  (min, avg, max) = (44333427.855, 95672552.118, 198998053.148), stdev = 50065979.078
+  CI (99.9%): [58169142.336, 133175961.900] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 8 threads, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: org.example.ConcurrentMapBenchmark.hashMapTest
+
+# Run progress: 6.25% complete, ETA 02:05:26
+# Fork: 1 of 5
+# Warmup Iteration   1: 268488153.885 ops/s
+# Warmup Iteration   2: 132434216.994 ops/s
+# Warmup Iteration   3: 53014683.815 ops/s
+# Warmup Iteration   4: 371109764.076 ops/s
+# Warmup Iteration   5: 278509656.428 ops/s
+Iteration   1: 383681697.295 ops/s
+Iteration   2: 57767894.659 ops/s
+Iteration   3: 88255806.118 ops/s
+Iteration   4: 411437578.407 ops/s
+Iteration   5: 276376550.860 ops/s
+
+# Run progress: 7.50% complete, ETA 02:03:49
+# Fork: 2 of 5
+# Warmup Iteration   1: 74347314.665 ops/s
+# Warmup Iteration   2: 79972239.844 ops/s
+# Warmup Iteration   3: 78469800.008 ops/s
+# Warmup Iteration   4: 116030703.858 ops/s
+# Warmup Iteration   5: 363697390.787 ops/s
+Iteration   1: 343135192.641 ops/s
+Iteration   2: 290869313.476 ops/s
+Iteration   3: 312514698.835 ops/s
+Iteration   4: 303670298.913 ops/s
+Iteration   5: 167806126.927 ops/s
+
+# Run progress: 8.75% complete, ETA 02:02:09
+# Fork: 3 of 5
+# Warmup Iteration   1: 59666147.357 ops/s
+# Warmup Iteration   2: 336012767.838 ops/s
+# Warmup Iteration   3: 87551061.539 ops/s
+# Warmup Iteration   4: 363513288.048 ops/s
+# Warmup Iteration   5: 340814394.168 ops/s
+Iteration   1: 80816368.463 ops/s
+Iteration   2: 57328186.146 ops/s
+Iteration   3: 111743822.948 ops/s
+Iteration   4: 340781770.580 ops/s
+Iteration   5: 290978581.456 ops/s
+
+# Run progress: 10.00% complete, ETA 02:00:29
+# Fork: 4 of 5
+# Warmup Iteration   1: 51314096.027 ops/s
+# Warmup Iteration   2: 241827438.600 ops/s
+# Warmup Iteration   3: 243634553.578 ops/s
+# Warmup Iteration   4: 123749333.457 ops/s
+# Warmup Iteration   5: 260027584.447 ops/s
+Iteration   1: 235039208.363 ops/s
+Iteration   2: 72452377.187 ops/s
+Iteration   3: 249265528.676 ops/s
+Iteration   4: 67422803.811 ops/s
+Iteration   5: 183117875.767 ops/s
+
+# Run progress: 11.25% complete, ETA 01:58:49
+# Fork: 5 of 5
+# Warmup Iteration   1: 89932290.177 ops/s
+# Warmup Iteration   2: 77760723.876 ops/s
+# Warmup Iteration   3: 230274142.178 ops/s
+# Warmup Iteration   4: 81042402.680 ops/s
+# Warmup Iteration   5: 325060605.219 ops/s
+Iteration   1: 284845666.755 ops/s
+Iteration   2: 53631685.964 ops/s
+Iteration   3: 82023355.162 ops/s
+Iteration   4: 297381249.064 ops/s
+Iteration   5: 278541291.658 ops/s
+
+
+Result "org.example.ConcurrentMapBenchmark.hashMapTest":
+  212835397.205 ±(99.9%) 88167907.947 ops/s [Average]
+  (min, avg, max) = (53631685.964, 212835397.205, 411437578.407), stdev = 117701634.604
+  CI (99.9%): [124667489.258, 301003305.152] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertLastMultiple
+
+# Run progress: 12.50% complete, ETA 01:57:09
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.017 ms/op
+# Warmup Iteration   2: 0.016 ms/op
+# Warmup Iteration   3: 0.016 ms/op
+# Warmup Iteration   4: 0.015 ms/op
+# Warmup Iteration   5: 0.014 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.011 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.011 ms/op
+
+# Run progress: 13.75% complete, ETA 01:55:29
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.011 ms/op
+# Warmup Iteration   3: 0.011 ms/op
+# Warmup Iteration   4: 0.011 ms/op
+# Warmup Iteration   5: 0.010 ms/op
+Iteration   1: 0.010 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.012 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.010 ms/op
+
+# Run progress: 15.00% complete, ETA 01:53:48
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.011 ms/op
+# Warmup Iteration   3: 0.010 ms/op
+# Warmup Iteration   4: 0.011 ms/op
+# Warmup Iteration   5: 0.011 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.012 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.011 ms/op
+
+# Run progress: 16.25% complete, ETA 01:52:08
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.012 ms/op
+# Warmup Iteration   4: 0.013 ms/op
+# Warmup Iteration   5: 0.012 ms/op
+Iteration   1: 0.012 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.011 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.011 ms/op
+
+# Run progress: 17.50% complete, ETA 01:50:28
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.011 ms/op
+# Warmup Iteration   2: 0.011 ms/op
+# Warmup Iteration   3: 0.011 ms/op
+# Warmup Iteration   4: 0.012 ms/op
+# Warmup Iteration   5: 0.012 ms/op
+Iteration   1: 0.012 ms/op
+Iteration   2: 0.013 ms/op
+Iteration   3: 0.013 ms/op
+Iteration   4: 0.013 ms/op
+Iteration   5: 0.013 ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertLastMultiple":
+  0.012 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.010, 0.012, 0.013), stdev = 0.001
+  CI (99.9%): [0.011, 0.012] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertLastSingle
+
+# Run progress: 18.75% complete, ETA 01:48:47
+# Fork: 1 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 20.00% complete, ETA 01:47:07
+# Fork: 2 of 5
+# Warmup Iteration   1: ≈ 10⁻³ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 21.25% complete, ETA 01:45:26
+# Fork: 3 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 22.50% complete, ETA 01:43:46
+# Fork: 4 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 23.75% complete, ETA 01:42:05
+# Fork: 5 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertLastSingle":
+  ≈ 10⁻⁴ ms/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertMiddleMultiple
+
+# Run progress: 25.00% complete, ETA 01:40:25
+# Fork: 1 of 5
+# Warmup Iteration   1: 6.086 ms/op
+# Warmup Iteration   2: 6.105 ms/op
+# Warmup Iteration   3: 6.176 ms/op
+# Warmup Iteration   4: 5.823 ms/op
+# Warmup Iteration   5: 5.969 ms/op
+Iteration   1: 5.406 ms/op
+Iteration   2: 5.711 ms/op
+Iteration   3: 6.216 ms/op
+Iteration   4: 6.261 ms/op
+Iteration   5: 6.593 ms/op
+
+# Run progress: 26.25% complete, ETA 01:38:44
+# Fork: 2 of 5
+# Warmup Iteration   1: 5.664 ms/op
+# Warmup Iteration   2: 5.337 ms/op
+# Warmup Iteration   3: 5.796 ms/op
+# Warmup Iteration   4: 6.589 ms/op
+# Warmup Iteration   5: 7.537 ms/op
+Iteration   1: 6.277 ms/op
+Iteration   2: 6.458 ms/op
+Iteration   3: 6.218 ms/op
+Iteration   4: 7.093 ms/op
+Iteration   5: 7.234 ms/op
+
+# Run progress: 27.50% complete, ETA 01:37:04
+# Fork: 3 of 5
+# Warmup Iteration   1: 7.288 ms/op
+# Warmup Iteration   2: 7.007 ms/op
+# Warmup Iteration   3: 7.028 ms/op
+# Warmup Iteration   4: 6.876 ms/op
+# Warmup Iteration   5: 7.824 ms/op
+Iteration   1: 7.777 ms/op
+Iteration   2: 7.065 ms/op
+Iteration   3: 6.403 ms/op
+Iteration   4: 6.129 ms/op
+Iteration   5: 5.989 ms/op
+
+# Run progress: 28.75% complete, ETA 01:35:23
+# Fork: 4 of 5
+# Warmup Iteration   1: 6.420 ms/op
+# Warmup Iteration   2: 6.424 ms/op
+# Warmup Iteration   3: 6.461 ms/op
+# Warmup Iteration   4: 6.419 ms/op
+# Warmup Iteration   5: 6.323 ms/op
+Iteration   1: 6.401 ms/op
+Iteration   2: 6.270 ms/op
+Iteration   3: 6.566 ms/op
+Iteration   4: 5.850 ms/op
+Iteration   5: 6.303 ms/op
+
+# Run progress: 30.00% complete, ETA 01:33:43
+# Fork: 5 of 5
+# Warmup Iteration   1: 6.477 ms/op
+# Warmup Iteration   2: 6.025 ms/op
+# Warmup Iteration   3: 6.365 ms/op
+# Warmup Iteration   4: 6.194 ms/op
+# Warmup Iteration   5: 6.367 ms/op
+Iteration   1: 5.637 ms/op
+Iteration   2: 5.976 ms/op
+Iteration   3: 5.950 ms/op
+Iteration   4: 5.643 ms/op
+Iteration   5: 6.666 ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertMiddleMultiple":
+  6.324 ±(99.9%) 0.410 ms/op [Average]
+  (min, avg, max) = (5.406, 6.324, 7.777), stdev = 0.547
+  CI (99.9%): [5.914, 6.733] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertMiddleSingle
+
+# Run progress: 31.25% complete, ETA 01:32:03
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.003 ms/op
+# Warmup Iteration   2: 0.003 ms/op
+# Warmup Iteration   3: 0.003 ms/op
+# Warmup Iteration   4: 0.003 ms/op
+# Warmup Iteration   5: 0.003 ms/op
+Iteration   1: 0.004 ms/op
+Iteration   2: 0.003 ms/op
+Iteration   3: 0.003 ms/op
+Iteration   4: 0.003 ms/op
+Iteration   5: 0.004 ms/op
+
+# Run progress: 32.50% complete, ETA 01:30:23
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.003 ms/op
+# Warmup Iteration   2: 0.003 ms/op
+# Warmup Iteration   3: 0.003 ms/op
+# Warmup Iteration   4: 0.003 ms/op
+# Warmup Iteration   5: 0.003 ms/op
+Iteration   1: 0.003 ms/op
+Iteration   2: 0.003 ms/op
+Iteration   3: 0.003 ms/op
+Iteration   4: 0.003 ms/op
+Iteration   5: 0.003 ms/op
+
+# Run progress: 33.75% complete, ETA 01:28:43
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.004 ms/op
+# Warmup Iteration   2: 0.003 ms/op
+# Warmup Iteration   3: 0.004 ms/op
+# Warmup Iteration   4: 0.003 ms/op
+# Warmup Iteration   5: 0.004 ms/op
+Iteration   1: 0.003 ms/op
+Iteration   2: 0.003 ms/op
+Iteration   3: 0.003 ms/op
+Iteration   4: 0.003 ms/op
+Iteration   5: 0.003 ms/op
+
+# Run progress: 35.00% complete, ETA 01:27:03
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.004 ms/op
+# Warmup Iteration   2: 0.004 ms/op
+# Warmup Iteration   3: 0.003 ms/op
+# Warmup Iteration   4: 0.003 ms/op
+# Warmup Iteration   5: 0.003 ms/op
+Iteration   1: 0.003 ms/op
+Iteration   2: 0.003 ms/op
+Iteration   3: 0.003 ms/op
+Iteration   4: 0.003 ms/op
+Iteration   5: 0.003 ms/op
+
+# Run progress: 36.25% complete, ETA 01:25:22
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.003 ms/op
+# Warmup Iteration   2: 0.003 ms/op
+# Warmup Iteration   3: 0.003 ms/op
+# Warmup Iteration   4: 0.003 ms/op
+# Warmup Iteration   5: 0.003 ms/op
+Iteration   1: 0.003 ms/op
+Iteration   2: 0.003 ms/op
+Iteration   3: 0.003 ms/op
+Iteration   4: 0.003 ms/op
+Iteration   5: 0.003 ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertMiddleSingle":
+  0.003 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.003, 0.003, 0.004), stdev = 0.001
+  CI (99.9%): [0.003, 0.003] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertStartMultiple
+
+# Run progress: 37.50% complete, ETA 01:23:42
+# Fork: 1 of 5
+# Warmup Iteration   1: 14.232 ms/op
+# Warmup Iteration   2: 15.194 ms/op
+# Warmup Iteration   3: 13.684 ms/op
+# Warmup Iteration   4: 13.208 ms/op
+# Warmup Iteration   5: 13.910 ms/op
+Iteration   1: 14.014 ms/op
+Iteration   2: 12.735 ms/op
+Iteration   3: 14.738 ms/op
+Iteration   4: 12.830 ms/op
+Iteration   5: 13.753 ms/op
+
+# Run progress: 38.75% complete, ETA 01:22:02
+# Fork: 2 of 5
+# Warmup Iteration   1: 13.065 ms/op
+# Warmup Iteration   2: 11.861 ms/op
+# Warmup Iteration   3: 11.492 ms/op
+# Warmup Iteration   4: 11.914 ms/op
+# Warmup Iteration   5: 12.634 ms/op
+Iteration   1: 12.012 ms/op
+Iteration   2: 12.148 ms/op
+Iteration   3: 13.101 ms/op
+Iteration   4: 12.061 ms/op
+Iteration   5: 13.102 ms/op
+
+# Run progress: 40.00% complete, ETA 01:20:21
+# Fork: 3 of 5
+# Warmup Iteration   1: 13.702 ms/op
+# Warmup Iteration   2: 13.586 ms/op
+# Warmup Iteration   3: 13.540 ms/op
+# Warmup Iteration   4: 13.030 ms/op
+# Warmup Iteration   5: 12.774 ms/op
+Iteration   1: 12.367 ms/op
+Iteration   2: 12.446 ms/op
+Iteration   3: 13.365 ms/op
+Iteration   4: 14.136 ms/op
+Iteration   5: 14.490 ms/op
+
+# Run progress: 41.25% complete, ETA 01:18:41
+# Fork: 4 of 5
+# Warmup Iteration   1: 14.623 ms/op
+# Warmup Iteration   2: 14.487 ms/op
+# Warmup Iteration   3: 14.144 ms/op
+# Warmup Iteration   4: 13.561 ms/op
+# Warmup Iteration   5: 13.279 ms/op
+Iteration   1: 13.083 ms/op
+Iteration   2: 12.820 ms/op
+Iteration   3: 12.536 ms/op
+Iteration   4: 13.451 ms/op
+Iteration   5: 12.324 ms/op
+
+# Run progress: 42.50% complete, ETA 01:17:00
+# Fork: 5 of 5
+# Warmup Iteration   1: 13.199 ms/op
+# Warmup Iteration   2: 13.357 ms/op
+# Warmup Iteration   3: 12.242 ms/op
+# Warmup Iteration   4: 12.953 ms/op
+# Warmup Iteration   5: 13.542 ms/op
+Iteration   1: 15.094 ms/op
+Iteration   2: 15.593 ms/op
+Iteration   3: 15.879 ms/op
+Iteration   4: 15.619 ms/op
+Iteration   5: 15.411 ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertStartMultiple":
+  13.564 ±(99.9%) 0.926 ms/op [Average]
+  (min, avg, max) = (12.012, 13.564, 15.879), stdev = 1.237
+  CI (99.9%): [12.638, 14.491] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.arrayListInsertStartSingle
+
+# Run progress: 43.75% complete, ETA 01:15:20
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.007 ms/op
+# Warmup Iteration   2: 0.006 ms/op
+# Warmup Iteration   3: 0.006 ms/op
+# Warmup Iteration   4: 0.006 ms/op
+# Warmup Iteration   5: 0.006 ms/op
+Iteration   1: 0.006 ms/op
+Iteration   2: 0.006 ms/op
+Iteration   3: 0.006 ms/op
+Iteration   4: 0.006 ms/op
+Iteration   5: 0.005 ms/op
+
+# Run progress: 45.00% complete, ETA 01:13:39
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.006 ms/op
+# Warmup Iteration   2: 0.006 ms/op
+# Warmup Iteration   3: 0.006 ms/op
+# Warmup Iteration   4: 0.006 ms/op
+# Warmup Iteration   5: 0.006 ms/op
+Iteration   1: 0.006 ms/op
+Iteration   2: 0.006 ms/op
+Iteration   3: 0.006 ms/op
+Iteration   4: 0.006 ms/op
+Iteration   5: 0.006 ms/op
+
+# Run progress: 46.25% complete, ETA 01:11:59
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.006 ms/op
+# Warmup Iteration   2: 0.006 ms/op
+# Warmup Iteration   3: 0.006 ms/op
+# Warmup Iteration   4: 0.006 ms/op
+# Warmup Iteration   5: 0.006 ms/op
+Iteration   1: 0.006 ms/op
+Iteration   2: 0.006 ms/op
+Iteration   3: 0.006 ms/op
+Iteration   4: 0.006 ms/op
+Iteration   5: 0.005 ms/op
+
+# Run progress: 47.50% complete, ETA 01:10:18
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.006 ms/op
+# Warmup Iteration   2: 0.006 ms/op
+# Warmup Iteration   3: 0.007 ms/op
+# Warmup Iteration   4: 0.006 ms/op
+# Warmup Iteration   5: 0.006 ms/op
+Iteration   1: 0.006 ms/op
+Iteration   2: 0.006 ms/op
+Iteration   3: 0.006 ms/op
+Iteration   4: 0.006 ms/op
+Iteration   5: 0.006 ms/op
+
+# Run progress: 48.75% complete, ETA 01:08:38
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.006 ms/op
+# Warmup Iteration   2: 0.005 ms/op
+# Warmup Iteration   3: 0.005 ms/op
+# Warmup Iteration   4: 0.005 ms/op
+# Warmup Iteration   5: 0.006 ms/op
+Iteration   1: 0.006 ms/op
+Iteration   2: 0.005 ms/op
+Iteration   3: 0.005 ms/op
+Iteration   4: 0.006 ms/op
+Iteration   5: 0.005 ms/op
+
+
+Result "org.example.ListBenchmark.arrayListInsertStartSingle":
+  0.006 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.005, 0.006, 0.006), stdev = 0.001
+  CI (99.9%): [0.005, 0.006] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertLastMultiple
+
+# Run progress: 50.00% complete, ETA 01:06:57
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.013 ms/op
+# Warmup Iteration   4: 0.011 ms/op
+# Warmup Iteration   5: 0.012 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.011 ms/op
+Iteration   3: 0.012 ms/op
+Iteration   4: 0.012 ms/op
+Iteration   5: 0.012 ms/op
+
+# Run progress: 51.25% complete, ETA 01:05:17
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.012 ms/op
+# Warmup Iteration   4: 0.011 ms/op
+# Warmup Iteration   5: 0.012 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.011 ms/op
+Iteration   3: 0.011 ms/op
+Iteration   4: 0.012 ms/op
+Iteration   5: 0.011 ms/op
+
+# Run progress: 52.50% complete, ETA 01:03:37
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.012 ms/op
+# Warmup Iteration   4: 0.011 ms/op
+# Warmup Iteration   5: 0.012 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.011 ms/op
+Iteration   3: 0.011 ms/op
+Iteration   4: 0.012 ms/op
+Iteration   5: 0.011 ms/op
+
+# Run progress: 53.75% complete, ETA 01:01:56
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.013 ms/op
+# Warmup Iteration   4: 0.012 ms/op
+# Warmup Iteration   5: 0.011 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.011 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.012 ms/op
+
+# Run progress: 55.00% complete, ETA 01:00:16
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.012 ms/op
+# Warmup Iteration   2: 0.012 ms/op
+# Warmup Iteration   3: 0.012 ms/op
+# Warmup Iteration   4: 0.012 ms/op
+# Warmup Iteration   5: 0.011 ms/op
+Iteration   1: 0.013 ms/op
+Iteration   2: 0.012 ms/op
+Iteration   3: 0.012 ms/op
+Iteration   4: 0.011 ms/op
+Iteration   5: 0.011 ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertLastMultiple":
+  0.012 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.011, 0.012, 0.013), stdev = 0.001
+  CI (99.9%): [0.011, 0.012] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertLastSingle
+
+# Run progress: 56.25% complete, ETA 00:58:35
+# Fork: 1 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 57.50% complete, ETA 00:56:55
+# Fork: 2 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 58.75% complete, ETA 00:55:14
+# Fork: 3 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻³ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 60.00% complete, ETA 00:53:34
+# Fork: 4 of 5
+# Warmup Iteration   1: ≈ 10⁻³ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 61.25% complete, ETA 00:51:53
+# Fork: 5 of 5
+# Warmup Iteration   1: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   2: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻³ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertLastSingle":
+  ≈ 10⁻⁴ ms/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertMiddleMultiple
+
+# Run progress: 62.50% complete, ETA 00:50:13
+# Fork: 1 of 5
+# Warmup Iteration   1: 196.111 ms/op
+# Warmup Iteration   2: 184.393 ms/op
+# Warmup Iteration   3: 178.381 ms/op
+# Warmup Iteration   4: 168.647 ms/op
+# Warmup Iteration   5: 163.202 ms/op
+Iteration   1: 153.664 ms/op
+Iteration   2: 165.782 ms/op
+Iteration   3: 152.558 ms/op
+Iteration   4: 144.507 ms/op
+Iteration   5: 141.452 ms/op
+
+# Run progress: 63.75% complete, ETA 00:48:33
+# Fork: 2 of 5
+# Warmup Iteration   1: 147.073 ms/op
+# Warmup Iteration   2: 146.592 ms/op
+# Warmup Iteration   3: 144.699 ms/op
+# Warmup Iteration   4: 147.947 ms/op
+# Warmup Iteration   5: 145.891 ms/op
+Iteration   1: 145.844 ms/op
+Iteration   2: 145.556 ms/op
+Iteration   3: 156.230 ms/op
+Iteration   4: 167.543 ms/op
+Iteration   5: 175.834 ms/op
+
+# Run progress: 65.00% complete, ETA 00:46:53
+# Fork: 3 of 5
+# Warmup Iteration   1: 180.251 ms/op
+# Warmup Iteration   2: 164.923 ms/op
+# Warmup Iteration   3: 170.010 ms/op
+# Warmup Iteration   4: 154.916 ms/op
+# Warmup Iteration   5: 166.928 ms/op
+Iteration   1: 166.446 ms/op
+Iteration   2: 179.016 ms/op
+Iteration   3: 180.946 ms/op
+Iteration   4: 207.686 ms/op
+Iteration   5: 251.677 ms/op
+
+# Run progress: 66.25% complete, ETA 00:45:13
+# Fork: 4 of 5
+# Warmup Iteration   1: 257.936 ms/op
+# Warmup Iteration   2: 276.945 ms/op
+# Warmup Iteration   3: 286.016 ms/op
+# Warmup Iteration   4: 296.334 ms/op
+# Warmup Iteration   5: 319.213 ms/op
+Iteration   1: 364.179 ms/op
+Iteration   2: 325.991 ms/op
+Iteration   3: 341.272 ms/op
+Iteration   4: 346.761 ms/op
+Iteration   5: 396.149 ms/op
+
+# Run progress: 67.50% complete, ETA 00:43:33
+# Fork: 5 of 5
+# Warmup Iteration   1: 369.113 ms/op
+# Warmup Iteration   2: 403.833 ms/op
+# Warmup Iteration   3: 363.415 ms/op
+# Warmup Iteration   4: 327.518 ms/op
+# Warmup Iteration   5: 312.971 ms/op
+Iteration   1: 283.593 ms/op
+Iteration   2: 258.067 ms/op
+Iteration   3: 237.770 ms/op
+Iteration   4: 241.568 ms/op
+Iteration   5: 234.186 ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertMiddleMultiple":
+  222.571 ±(99.9%) 59.403 ms/op [Average]
+  (min, avg, max) = (141.452, 222.571, 396.149), stdev = 79.302
+  CI (99.9%): [163.168, 281.974] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertMiddleSingle
+
+# Run progress: 68.75% complete, ETA 00:41:54
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.138 ms/op
+# Warmup Iteration   2: 0.146 ms/op
+# Warmup Iteration   3: 0.143 ms/op
+# Warmup Iteration   4: 0.140 ms/op
+# Warmup Iteration   5: 0.143 ms/op
+Iteration   1: 0.154 ms/op
+Iteration   2: 0.150 ms/op
+Iteration   3: 0.152 ms/op
+Iteration   4: 0.145 ms/op
+Iteration   5: 0.145 ms/op
+
+# Run progress: 70.00% complete, ETA 00:40:13
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.148 ms/op
+# Warmup Iteration   2: 0.145 ms/op
+# Warmup Iteration   3: 0.144 ms/op
+# Warmup Iteration   4: 0.140 ms/op
+# Warmup Iteration   5: 0.138 ms/op
+Iteration   1: 0.137 ms/op
+Iteration   2: 0.136 ms/op
+Iteration   3: 0.132 ms/op
+Iteration   4: 0.131 ms/op
+Iteration   5: 0.137 ms/op
+
+# Run progress: 71.25% complete, ETA 00:38:33
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.142 ms/op
+# Warmup Iteration   2: 0.137 ms/op
+# Warmup Iteration   3: 0.139 ms/op
+# Warmup Iteration   4: 0.140 ms/op
+# Warmup Iteration   5: 0.141 ms/op
+Iteration   1: 0.141 ms/op
+Iteration   2: 0.139 ms/op
+Iteration   3: 0.137 ms/op
+Iteration   4: 0.136 ms/op
+Iteration   5: 0.137 ms/op
+
+# Run progress: 72.50% complete, ETA 00:36:52
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.139 ms/op
+# Warmup Iteration   2: 0.139 ms/op
+# Warmup Iteration   3: 0.146 ms/op
+# Warmup Iteration   4: 0.148 ms/op
+# Warmup Iteration   5: 0.144 ms/op
+Iteration   1: 0.140 ms/op
+Iteration   2: 0.137 ms/op
+Iteration   3: 0.137 ms/op
+Iteration   4: 0.139 ms/op
+Iteration   5: 0.159 ms/op
+
+# Run progress: 73.75% complete, ETA 00:35:12
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.143 ms/op
+# Warmup Iteration   2: 0.138 ms/op
+# Warmup Iteration   3: 0.139 ms/op
+# Warmup Iteration   4: 0.139 ms/op
+# Warmup Iteration   5: 0.137 ms/op
+Iteration   1: 0.135 ms/op
+Iteration   2: 0.132 ms/op
+Iteration   3: 0.130 ms/op
+Iteration   4: 0.140 ms/op
+Iteration   5: 0.143 ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertMiddleSingle":
+  0.140 ±(99.9%) 0.005 ms/op [Average]
+  (min, avg, max) = (0.130, 0.140, 0.159), stdev = 0.007
+  CI (99.9%): [0.135, 0.146] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertStartMultiple
+
+# Run progress: 75.00% complete, ETA 00:33:31
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.024 ms/op
+# Warmup Iteration   2: 0.023 ms/op
+# Warmup Iteration   3: 0.022 ms/op
+# Warmup Iteration   4: 0.022 ms/op
+# Warmup Iteration   5: 0.023 ms/op
+Iteration   1: 0.023 ms/op
+Iteration   2: 0.021 ms/op
+Iteration   3: 0.021 ms/op
+Iteration   4: 0.020 ms/op
+Iteration   5: 0.020 ms/op
+
+# Run progress: 76.25% complete, ETA 00:31:50
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.023 ms/op
+# Warmup Iteration   2: 0.022 ms/op
+# Warmup Iteration   3: 0.020 ms/op
+# Warmup Iteration   4: 0.022 ms/op
+# Warmup Iteration   5: 0.022 ms/op
+Iteration   1: 0.020 ms/op
+Iteration   2: 0.022 ms/op
+Iteration   3: 0.024 ms/op
+Iteration   4: 0.024 ms/op
+Iteration   5: 0.023 ms/op
+
+# Run progress: 77.50% complete, ETA 00:30:10
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.028 ms/op
+# Warmup Iteration   2: 0.025 ms/op
+# Warmup Iteration   3: 0.028 ms/op
+# Warmup Iteration   4: 0.024 ms/op
+# Warmup Iteration   5: 0.023 ms/op
+Iteration   1: 0.023 ms/op
+Iteration   2: 0.023 ms/op
+Iteration   3: 0.024 ms/op
+Iteration   4: 0.025 ms/op
+Iteration   5: 0.025 ms/op
+
+# Run progress: 78.75% complete, ETA 00:28:29
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.033 ms/op
+# Warmup Iteration   2: 0.026 ms/op
+# Warmup Iteration   3: 0.024 ms/op
+# Warmup Iteration   4: 0.027 ms/op
+# Warmup Iteration   5: 0.024 ms/op
+Iteration   1: 0.027 ms/op
+Iteration   2: 0.024 ms/op
+Iteration   3: 0.024 ms/op
+Iteration   4: 0.024 ms/op
+Iteration   5: 0.025 ms/op
+
+# Run progress: 80.00% complete, ETA 00:26:49
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.027 ms/op
+# Warmup Iteration   2: 0.026 ms/op
+# Warmup Iteration   3: 0.026 ms/op
+# Warmup Iteration   4: 0.027 ms/op
+# Warmup Iteration   5: 0.028 ms/op
+Iteration   1: 0.028 ms/op
+Iteration   2: 0.027 ms/op
+Iteration   3: 0.029 ms/op
+Iteration   4: 0.026 ms/op
+Iteration   5: 0.027 ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertStartMultiple":
+  0.024 ±(99.9%) 0.002 ms/op [Average]
+  (min, avg, max) = (0.020, 0.024, 0.029), stdev = 0.003
+  CI (99.9%): [0.022, 0.026] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.ListBenchmark.linkedListInsertStartSingle
+
+# Run progress: 81.25% complete, ETA 00:25:08
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: 0.001 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: ≈ 10⁻³ ms/op
+
+# Run progress: 82.50% complete, ETA 00:23:28
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: ≈ 10⁻³ ms/op
+# Warmup Iteration   5: ≈ 10⁻³ ms/op
+Iteration   1: ≈ 10⁻³ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 83.75% complete, ETA 00:21:47
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.001 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: ≈ 10⁻³ ms/op
+# Warmup Iteration   4: ≈ 10⁻³ ms/op
+# Warmup Iteration   5: ≈ 10⁻³ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻³ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 85.00% complete, ETA 00:20:07
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.001 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: ≈ 10⁻³ ms/op
+# Warmup Iteration   4: ≈ 10⁻³ ms/op
+# Warmup Iteration   5: ≈ 10⁻⁴ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻⁴ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+# Run progress: 86.25% complete, ETA 00:18:26
+# Fork: 5 of 5
+# Warmup Iteration   1: ≈ 10⁻³ ms/op
+# Warmup Iteration   2: ≈ 10⁻³ ms/op
+# Warmup Iteration   3: ≈ 10⁻⁴ ms/op
+# Warmup Iteration   4: ≈ 10⁻³ ms/op
+# Warmup Iteration   5: ≈ 10⁻³ ms/op
+Iteration   1: ≈ 10⁻⁴ ms/op
+Iteration   2: ≈ 10⁻³ ms/op
+Iteration   3: ≈ 10⁻⁴ ms/op
+Iteration   4: ≈ 10⁻⁴ ms/op
+Iteration   5: ≈ 10⁻⁴ ms/op
+
+
+Result "org.example.ListBenchmark.linkedListInsertStartSingle":
+  ≈ 10⁻³ ms/op
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.MapBenchmark.concurrentHashMapPut
+
+# Run progress: 87.50% complete, ETA 00:16:45
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: 0.001 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 88.75% complete, ETA 00:15:05
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.001 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: 0.001 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 90.00% complete, ETA 00:13:24
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.001 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: 0.001 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 91.25% complete, ETA 00:11:44
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.001 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 92.50% complete, ETA 00:10:03
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.002 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+
+Result "org.example.MapBenchmark.concurrentHashMapPut":
+  0.001 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.001, 0.001, 0.001), stdev = 0.001
+  CI (99.9%): [0.001, 0.001] (assumes normal distribution)
+
+
+# JMH version: 1.37
+# VM version: JDK 21.0.11, OpenJDK 64-Bit Server VM, 21.0.11+10-LTS
+# VM invoker: /Users/sveinsreider/.sdkman/candidates/java/21.0.11-amzn/bin/java
+# VM options: <none>
+# Blackhole mode: compiler (auto-detected, use -Djmh.blackhole.autoDetect=false to disable)
+# Warmup: 5 iterations, 10 s each
+# Measurement: 5 iterations, 10 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: org.example.MapBenchmark.hashMapPut
+
+# Run progress: 93.75% complete, ETA 00:08:22
+# Fork: 1 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.001 ms/op
+# Warmup Iteration   3: 0.001 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 95.00% complete, ETA 00:06:42
+# Fork: 2 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.002 ms/op
+Iteration   3: 0.002 ms/op
+Iteration   4: 0.002 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 96.25% complete, ETA 00:05:01
+# Fork: 3 of 5
+# Warmup Iteration   1: 0.003 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.002 ms/op
+Iteration   1: 0.002 ms/op
+Iteration   2: 0.002 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.002 ms/op
+Iteration   5: 0.002 ms/op
+
+# Run progress: 97.50% complete, ETA 00:03:21
+# Fork: 4 of 5
+# Warmup Iteration   1: 0.003 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.002 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.002 ms/op
+Iteration   5: 0.001 ms/op
+
+# Run progress: 98.75% complete, ETA 00:01:40
+# Fork: 5 of 5
+# Warmup Iteration   1: 0.002 ms/op
+# Warmup Iteration   2: 0.002 ms/op
+# Warmup Iteration   3: 0.002 ms/op
+# Warmup Iteration   4: 0.002 ms/op
+# Warmup Iteration   5: 0.001 ms/op
+Iteration   1: 0.001 ms/op
+Iteration   2: 0.001 ms/op
+Iteration   3: 0.001 ms/op
+Iteration   4: 0.001 ms/op
+Iteration   5: 0.001 ms/op
+
+
+Result "org.example.MapBenchmark.hashMapPut":
+  0.001 ±(99.9%) 0.001 ms/op [Average]
+  (min, avg, max) = (0.001, 0.001, 0.002), stdev = 0.001
+  CI (99.9%): [0.001, 0.002] (assumes normal distribution)
+
+
+# Run complete. Total time: 02:14:06
+
+REMEMBER: The numbers below are just data. To gain reusable insights, you need to follow up on
+why the numbers are the way they are. Use profilers (see -prof, -lprof), design factorial
+experiments, perform baseline and negative tests that provide experimental control, make sure
+the benchmarking environment is safe on JVM/OS/HW level, ask for reviews from the domain experts.
+Do not assume the numbers tell you what you want them to tell.
+
+NOTE: Current JVM experimentally supports Compiler Blackholes, and they are in use. Please exercise
+extra caution when trusting the results, look into the generated code to check the benchmark still
+works, and factor in a small probability of new VM bugs. Additionally, while comparisons between
+different JVMs are already problematic, the performance difference caused by different Blackhole
+modes can be very significant. Please make sure you use the consistent Blackhole mode for comparisons.
+
+Benchmark                                      Mode  Cnt          Score          Error  Units
+ConcurrentMapBenchmark.concurrentHashMapTest  thrpt   25   95672552.118 ± 37503409.782  ops/s
+ConcurrentMapBenchmark.hashMapTest            thrpt   25  212835397.205 ± 88167907.947  ops/s
+ListBenchmark.arrayListInsertLastMultiple      avgt   25          0.012 ±        0.001  ms/op
+ListBenchmark.arrayListInsertLastSingle        avgt   25         ≈ 10⁻⁴                 ms/op
+ListBenchmark.arrayListInsertMiddleMultiple    avgt   25          6.324 ±        0.410  ms/op
+ListBenchmark.arrayListInsertMiddleSingle      avgt   25          0.003 ±        0.001  ms/op
+ListBenchmark.arrayListInsertStartMultiple     avgt   25         13.564 ±        0.926  ms/op
+ListBenchmark.arrayListInsertStartSingle       avgt   25          0.006 ±        0.001  ms/op
+ListBenchmark.linkedListInsertLastMultiple     avgt   25          0.012 ±        0.001  ms/op
+ListBenchmark.linkedListInsertLastSingle       avgt   25         ≈ 10⁻⁴                 ms/op
+ListBenchmark.linkedListInsertMiddleMultiple   avgt   25        222.571 ±       59.403  ms/op
+ListBenchmark.linkedListInsertMiddleSingle     avgt   25          0.140 ±        0.005  ms/op
+ListBenchmark.linkedListInsertStartMultiple    avgt   25          0.024 ±        0.002  ms/op
+ListBenchmark.linkedListInsertStartSingle      avgt   25         ≈ 10⁻³                 ms/op
+MapBenchmark.concurrentHashMapPut              avgt   25          0.001 ±        0.001  ms/op
+MapBenchmark.hashMapPut                        avgt   25          0.001 ±        0.001  ms/op
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:14 h
+[INFO] Finished at: 2026-05-28T11:46:07+03:00
+[INFO] ------------------------------------------------------------------------
+

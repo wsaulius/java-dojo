@@ -1,14 +1,22 @@
 package org.example.phase8.services;
 
-import org.example.phase8.interfaces.PaymentStrategyInterface;
-import org.example.phase8.objects.Order;
+import org.example.phase8.enums.PaymentType;
 
 //Strategy implementation
-public class CashPayment implements PaymentStrategyInterface {
+public class CashPayment extends AbstractPaymentStrategy {
 
     @Override
-    public boolean pay(Order order) {
-        System.out.println("Cash payment processed for order : " + order);
-        return true;
+    protected PaymentType getPaymentType() {
+        return PaymentType.CASH;
+    }
+
+    @Override
+    protected int getDelay() {
+        return 1500;
+    }
+
+    @Override
+    protected double getFailureRate() {
+        return 0.3;
     }
 }

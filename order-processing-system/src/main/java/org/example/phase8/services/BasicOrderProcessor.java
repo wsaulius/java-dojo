@@ -20,11 +20,43 @@ public class BasicOrderProcessor implements OrderProcessor {
     public void process(Order order) {
         PaymentStrategyInterface strategy = factory.getStrategy(order.getPaymentType());
 
-        boolean success = strategy.pay(order);
+        int maxRetries = 3;
 
-        if (success) {
-            orderEventManager.notifyOnOrderComplete(order);
+        for (int attempt = 1; attempt <= maxRetries; attempt++) {
+
+            try {
+
+                System.out.println("[PROCESSOR] Attempt " + attempt + " for " + order);
+                strategy.pay(order);
+                System.out.println("[PROCESSOR] SUCCESS " + order);
+                orderEventManager.notifyOnOrderComplete(order);
+
+                return;
+
+            } catch (Exception e) {
+
+                System.out.println("[PROCESSOR] FAILED attempt " + attempt + " for " + order + " -> " + e.getMessage());
+                sleep(1000);
+            }
         }
+        handleFailure(order);
+    }
 
+
+    private void handleFailure(Order order) {
+
+        System.out.println(
+                "[PROCESSOR] ORDER FAILED permanently: "
+                        + order
+        );
+    }
+
+    private void sleep(long ms) {
+
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

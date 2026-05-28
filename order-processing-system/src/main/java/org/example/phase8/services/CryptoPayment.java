@@ -1,14 +1,22 @@
 package org.example.phase8.services;
 
-import org.example.phase8.interfaces.PaymentStrategyInterface;
-import org.example.phase8.objects.Order;
+import org.example.phase8.enums.PaymentType;
 
 //Strategy implementation
-public class CryptoPayment implements PaymentStrategyInterface {
+public class CryptoPayment extends AbstractPaymentStrategy {
 
     @Override
-    public boolean pay(Order order) {
-        System.out.println("Crypto payment processed for order : " + order);
-        return true;
+    protected PaymentType getPaymentType() {
+        return PaymentType.CRYPTO;
+    }
+
+    @Override
+    protected int getDelay() {
+        return 1700;
+    }
+
+    @Override
+    protected double getFailureRate() {
+        return 0.2;
     }
 }

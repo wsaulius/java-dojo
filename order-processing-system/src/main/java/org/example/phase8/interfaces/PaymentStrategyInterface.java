@@ -4,5 +4,5 @@ import org.example.phase8.objects.Order;
 
 //Common interface
 public interface PaymentStrategyInterface {
-    boolean pay(Order order);
+    void pay(Order order);
 }

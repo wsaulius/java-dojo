@@ -37,6 +37,7 @@
         <module>concurrency-event-ledger</module>
         <module>concurrency-executor-service</module>
         <module>multithread-deadlock</module>
+        <module>collections-perfomance</module>
 
     </modules>
 

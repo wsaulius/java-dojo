@@ -15,6 +15,7 @@ public class MiniKafkaBaseDemo {
         broker.publish("orders", new Message("Order 2"));
 
         consumer.consume(broker.getTopic("orders"));
+        //Will get nothing since the consumer already consumed these orders, and it's keeping an offset.
         consumer.consume(broker.getTopic("orders"));
     }
 }

@@ -38,6 +38,7 @@
         <module>concurrency-executor-service</module>
         <module>multithread-deadlock</module>
         <module>collections-perfomance</module>
+        <module>mini-kafka-base</module>
 
     </modules>
 

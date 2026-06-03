@@ -3,19 +3,26 @@ package org.example;
 import org.example.consumer.Consumer;
 import org.example.models.Broker;
 import org.example.models.Message;
+import org.example.models.Topic;
 
 public class MiniKafkaBaseDemo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Broker broker = new Broker();
-        Consumer consumer = new Consumer();
 
         broker.createTopic("orders");
 
-        broker.publish("orders", new Message("Order 1"));
-        broker.publish("orders", new Message("Order 2"));
+        Topic orders = broker.getTopic("orders");
 
-        consumer.consume(broker.getTopic("orders"));
-        //Will get nothing since the consumer already consumed these orders, and it's keeping an offset.
-        consumer.consume(broker.getTopic("orders"));
+        Consumer consumer = new Consumer(orders);
+
+        Thread consumerThread = new Thread(consumer::start);
+
+        consumerThread.start();
+
+        Producer producer = new Producer(broker);
+
+        producer.send("orders", "Order 1");
+        producer.send("orders", "Order 2");
+        producer.send("orders", "Order 3");
     }
 }

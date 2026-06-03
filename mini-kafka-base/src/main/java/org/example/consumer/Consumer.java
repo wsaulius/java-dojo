@@ -3,20 +3,24 @@ package org.example.consumer;
 import org.example.models.Message;
 import org.example.models.Topic;
 
-import java.util.List;
 
 public class Consumer {
 
-    private int currentOffset = 0;
+    private final Topic topic;
 
-    public void consume(Topic topic) {
-        List<Message> messages = topic.getMessages();
+    public Consumer(Topic topic) {
+        this.topic = topic;
+    }
 
-        while(currentOffset < messages.size()) {
-            Message message = messages.get(currentOffset);
-            System.out.println("Consumed: " + message.getPayload());
-            currentOffset++;
+    public void start() {
+        while (true) {
+            Message message = topic.getMessage();
+
+            if (message != null) {
+                System.out.println(Thread.currentThread().getName() + " processed " + message.getPayload());
+            }
         }
     }
+
 }
 

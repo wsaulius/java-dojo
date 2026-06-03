@@ -1,11 +1,11 @@
 package org.example.models;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Broker {
 
-    private final Map<String, Topic> topics = new HashMap<>();
+    private final Map<String, Topic> topics = new ConcurrentHashMap<>();
 
     public void createTopic(String name) {
         topics.put(name, new Topic(name));
@@ -13,7 +13,7 @@ public class Broker {
 
     public void publish(String topicName, Message message) {
         Topic topic = topics.get(topicName);
-        if(topic == null) {
+        if (topic == null) {
             throw new RuntimeException("Topic not found");
         }
         topic.addMessage(message);

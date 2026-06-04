@@ -1,4 +1,4 @@
-package org.example;
+package org.example.producer;
 
 import org.example.models.Broker;
 import org.example.models.Message;

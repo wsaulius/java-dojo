@@ -8,17 +8,19 @@ import org.example.models.Topic;
 public class Consumer {
 
     private final String consumerId;
+    private final String groupId;
     private final Topic topic;
     private final OffsetManager offsetManager;
 
-    public Consumer(String consumerId, Topic topic, OffsetManager offsetManager) {
+    public Consumer(String consumerId, String groupId, Topic topic, OffsetManager offsetManager) {
         this.consumerId = consumerId;
+        this.groupId = groupId;
         this.topic = topic;
         this.offsetManager = offsetManager;
     }
 
     public void poll() {
-        int offset = offsetManager.getOffset(consumerId);
+        int offset = offsetManager.getOffset(groupId);
         Message message = topic.getMessage(offset);
 
         if (message == null) {
@@ -27,7 +29,7 @@ public class Consumer {
 
         System.out.println(consumerId + " consumed: " + message.getPayload());
 
-        offsetManager.commitOffset(consumerId, offset + 1);
+        offsetManager.commitOffset(groupId, offset + 1);
     }
 
 }

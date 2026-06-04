@@ -16,17 +16,18 @@ public class MiniKafkaBaseDemo {
 
         broker.publish("orders", new Message("Order 1"));
         broker.publish("orders", new Message("Order 2"));
+        broker.publish("orders", new Message("Order 3"));
+        broker.publish("orders", new Message("Order 4"));
 
         Topic topic = broker.getTopic("orders");
         OffsetManager offsetManager = new OffsetManager();
 
-        Consumer consumerA = new Consumer("consumerA", topic, offsetManager);
-        Consumer consumerB = new Consumer("consumerB", topic, offsetManager);
+        Consumer consumerA = new Consumer("consumerA", "orders", topic, offsetManager);
+        Consumer consumerB = new Consumer("consumerB", "orders", topic, offsetManager);
 
         consumerA.poll();
-        consumerA.poll();
-
         consumerB.poll();
+        consumerA.poll();
         consumerB.poll();
     }
 }

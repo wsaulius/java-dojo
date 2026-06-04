@@ -6,11 +6,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class OffsetManager {
     private final Map<String, Integer> offsets = new ConcurrentHashMap<>();
 
-    public int getOffset(String consumerId) {
-        return offsets.getOrDefault(consumerId, 0);
+    public int getOffset(String groupId) {
+        return offsets.getOrDefault(groupId, 0);
     }
 
-    public void commitOffset(String consumerId, int offset) {
-        offsets.put(consumerId, offset);
+    public void commitOffset(String groupId, int offset) {
+        offsets.put(groupId, offset);
     }
 }

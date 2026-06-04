@@ -6,41 +6,24 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class Topic {
     private final String name;
-    private final List<Message> messages = new ArrayList<>();
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+    private final List<Partition> partitions = new ArrayList<>();
 
-    public Topic(String name) {
+
+    public Topic(String name, int partitionCount) {
         this.name = name;
-    }
 
-    public void addMessage(Message message) {
-        lock.writeLock().lock();
-        try {
-            messages.add(message);
-        } finally {
-            lock.writeLock().unlock();
+        for (int i = 0; i < partitionCount; i++) {
+            partitions.add(new Partition(i));
         }
     }
 
-    public Message getMessage(int offset) {
-        lock.readLock().lock();
-        try {
-            if (offset >= messages.size()) {
-                return null;
-            }
-            return messages.get(offset);
-        } finally {
-            lock.readLock().unlock();
-        }
+    public Partition getPartition(int id) {
+        return partitions.get(id);
     }
 
-    public int size() {
-        lock.readLock().lock();
-        try {
-            return messages.size();
-        } finally {
-            lock.readLock().unlock();
-        }
-
+    public List<Partition> getPartitions() {
+        return partitions;
     }
+
 }
+

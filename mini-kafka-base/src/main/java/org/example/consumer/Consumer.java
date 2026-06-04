@@ -19,18 +19,18 @@ public class Consumer {
         this.offsetManager = offsetManager;
     }
 
-    public void poll() {
-        int offset = offsetManager.getOffset(groupId);
-        Message message = topic.getMessage(offset);
-
-        if (message == null) {
-            return;
-        }
-
-        System.out.println(consumerId + " consumed: " + message.getPayload());
-
-        offsetManager.commitOffset(groupId, offset + 1);
-    }
+//    public void poll() {
+//        int offset = offsetManager.getOffset(groupId);
+//        Message message = topic.getMessage(offset);
+//
+//        if (message == null) {
+//            return;
+//        }
+//
+//        System.out.println(consumerId + " consumed: " + message.getPayload());
+//
+//        offsetManager.commitOffset(groupId, offset + 1);
+//    }
 
 }
 
